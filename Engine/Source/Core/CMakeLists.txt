@@ -1,0 +1,5 @@
+set(XD_CORE_SRC
+    ${XD_ENGINE_SOURCE_DIRECTORY}/Core/Main.cpp
+)
+
+set(XD_CORE_HEADERS)
