@@ -26,23 +26,22 @@ include(${XD_ENGINE_SOURCE_DIRECTORY}/Core/CMakeLists.txt)
 list(APPEND XD_ENGINE_SRC ${XD_CORE_SRC})
 list(APPEND XD_ENGINE_HEADERS ${XD_CORE_HEADERS})
 
-add_library(XD_ENGINE SHARED ${XD_ENGINE_SRC})
+add_library(XDEngine SHARED ${XD_ENGINE_SRC})
 
 #Headers
-target_include_directories(XD_ENGINE PRIVATE ${XD_ENGINE_HEADERS})
+target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
 
 #Definitions
-target_compile_definitions(XD_ENGINE PRIVATE -DXD_EXPORTING=1)
+target_compile_definitions(XDEngine PRIVATE -DXD_EXPORTING=1)
 
 if(${XD_BUILD_TYPE} STREQUAL "Debug")
-    target_compile_definitions(XD_ENGINE PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
+    target_compile_definitions(XDEngine PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
 endif()
 
 if(DEFINED XD_ENGINE_BUILD_TESTS)
     message("Started to build tests")
 endif()
 
-install(TARGETS XD_ENGINE
+install(TARGETS XDEngine
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
