@@ -1,0 +1,12 @@
+[submodule "Engine/Plugins/tinyxml2"]
+	path = Engine/Plugins/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
+[submodule "Engine/tinyxml2"]
+	path = Engine/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
+[submodule "Plugins/tinyxml2"]
+	path = Plugins/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
+[submodule "Modules/tinyxml2"]
+	path = Modules/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
