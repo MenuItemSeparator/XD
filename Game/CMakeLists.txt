@@ -34,6 +34,4 @@ if(${XD_BUILD_TYPE} STREQUAL "Debug")
     target_compile_definitions(XDGame PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
 endif()
 
-install(TARGETS XDGame
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
+install(TARGETS XDGame XDEngine DESTINATION XDGame)

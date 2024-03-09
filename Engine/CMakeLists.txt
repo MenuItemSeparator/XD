@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(XD_ENGINE LANGUAGES CXX)
 
-include(GNUInstallDirs)
 include(XDCommon)
 
 #Options block
@@ -46,6 +45,4 @@ if(DEFINED XD_ENGINE_BUILD_TESTS)
     message("Started to build tests")
 endif()
 
-install(TARGETS XDEngine
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
+install(TARGETS XDEngine DESTINATION XDEngine)
