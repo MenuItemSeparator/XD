@@ -1,10 +1,8 @@
-#include <iostream>
-#include "Essentials.h"
+#include "FrameworkDummy.h"
 
 int main()
 {
-    FooClass c{};
-    c.SayHello();
-
+    XDFramework::FrameworkDummy dummy{};
+    dummy.SayHello();
     return 0;
 }

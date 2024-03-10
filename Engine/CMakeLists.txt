@@ -18,7 +18,7 @@ if(MINGW)
     set(CMAKE_EXE_LINKER_FLAGS "-static")
 endif()
 
-#Including source modules
+#Including modules
 
 set(XD_ENGINE_SRC)
 set(XD_ENGINE_HEADERS)
@@ -33,6 +33,7 @@ add_library(XDEngine SHARED ${XD_ENGINE_SRC})
 
 #Headers
 target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
+target_include_directories(XDEngine PRIVATE ${XD_ENGINE_ROOT_DIRECTORY})
 
 #Definitions
 target_compile_definitions(XDEngine PRIVATE -DXD_EXPORTING=1)
