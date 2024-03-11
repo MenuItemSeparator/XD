@@ -10,6 +10,9 @@ include(XDCommon)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#Options block
+option(XD_FRAMEWORK_BUILD_TESTS "Build framework tests" ON)
+
 set(XD_FRAMEWORK_ROOT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 set(XD_FRAMEWORK_SOURCE_DIRECTORY ${XD_FRAMEWORK_ROOT_DIRECTORY}/Source)
 
@@ -36,6 +39,11 @@ target_compile_definitions(XDFramework PRIVATE -DXD_EXPORTING=1)
 
 if(${XD_BUILD_TYPE} STREQUAL "Debug")
     target_compile_definitions(XDFramework PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
+endif()
+
+if(DEFINED XD_FRAMEWORK_BUILD_TESTS)
+    message("Started to build framework tests")
+    add_subdirectory(Tests)
 endif()
 
 install(TARGETS XDFramework DESTINATION XDFramework)

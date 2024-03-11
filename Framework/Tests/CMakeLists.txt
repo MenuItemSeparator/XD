@@ -1,0 +1,18 @@
+#XD Engine tests
+
+cmake_minimum_required(VERSION 3.5)
+
+project(XD_FRAMEWORK_TESTS LANGUAGES CXX)
+
+set(XD_FRAMEWORK_TESTS_ROOT_PATH ${CMAKE_CURRENT_LIST_DIR})
+set(XD_FRAMEWORK_TESTS_SOURCE_PATH ${XD_FRAMEWORK_TESTS_ROOT_PATH}/Source)
+
+set(XD_FRAMEWORK_TESTS_SRC
+    ${XD_FRAMEWORK_TESTS_SOURCE_PATH}/Main.cpp
+)
+
+add_executable(XDFrameworkTests ${XD_FRAMEWORK_TESTS_SRC})
+
+target_include_directories(XDFrameworkTests PUBLIC "${XD_FRAMEWORK_TESTS_SOURCE_PATH}")
+
+install(TARGETS XDFrameworkTests XDFramework XDEngine DESTINATION XDFramework/Tests)

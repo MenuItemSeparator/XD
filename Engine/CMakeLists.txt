@@ -6,7 +6,7 @@ project(XD_ENGINE LANGUAGES CXX)
 include(XDCommon)
 
 #Options block
-option(XD_ENGINE_BUILD_TESTS "Build engine tests" OFF)
+option(XD_ENGINE_BUILD_TESTS "Build engine tests" ON)
 
 #Variables block
 set(CMAKE_CXX_STANDARD 17)
@@ -19,7 +19,6 @@ if(MINGW)
 endif()
 
 #Including modules
-
 set(XD_ENGINE_SRC)
 set(XD_ENGINE_HEADERS)
 
@@ -43,7 +42,8 @@ if(${XD_BUILD_TYPE} STREQUAL "Debug")
 endif()
 
 if(DEFINED XD_ENGINE_BUILD_TESTS)
-    message("Started to build tests")
+    message("Started to build engine tests")
+    add_subdirectory(Tests)
 endif()
 
 install(TARGETS XDEngine DESTINATION XDEngine)
