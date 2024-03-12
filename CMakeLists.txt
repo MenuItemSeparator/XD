@@ -1,6 +1,8 @@
 #Comment me later
 cmake_minimum_required(VERSION 3.5)
 
+set(CMAKE_TOOLCHAIN_FILE ./CMake/Toolchain.cmake)
+
 project(XD LANGUAGES CXX)
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)

@@ -14,4 +14,4 @@ add_executable(XDEngineTests ${XD_ENGINE_TESTS_SRC})
 
 target_include_directories(XDEngineTests PUBLIC "${XD_ENGINE_TESTS_SOURCE_PATH}")
 
-install(TARGETS XDEngineTests XDEngine DESTINATION XDEngine/Tests)
+install(TARGETS XDEngineTests XDEngine DESTINATION ${CMAKE_PREFIX_PATH}/XDEngine/Tests)

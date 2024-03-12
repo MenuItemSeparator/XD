@@ -15,4 +15,4 @@ add_executable(XDFrameworkTests ${XD_FRAMEWORK_TESTS_SRC})
 
 target_include_directories(XDFrameworkTests PUBLIC "${XD_FRAMEWORK_TESTS_SOURCE_PATH}")
 
-install(TARGETS XDFrameworkTests XDFramework XDEngine DESTINATION XDFramework/Tests)
+install(TARGETS XDFrameworkTests XDFramework XDEngine DESTINATION ${CMAKE_PREFIX_PATH}/XDFramework/Tests)

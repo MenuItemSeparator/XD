@@ -8,15 +8,7 @@ include(XDCommon)
 #Options block
 option(XD_ENGINE_BUILD_TESTS "Build engine tests" ON)
 
-#Variables block
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(XD_ENGINE_ROOT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
-
-if(MINGW)
-    set(CMAKE_EXE_LINKER_FLAGS "-static")
-endif()
 
 #Including modules
 set(XD_ENGINE_SRC)
@@ -32,7 +24,7 @@ add_library(XDEngine SHARED ${XD_ENGINE_SRC})
 
 #Headers
 target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
-target_include_directories(XDEngine PRIVATE ${XD_ENGINE_ROOT_DIRECTORY})
+target_include_directories(XDEngine PUBLIC ${XD_ENGINE_ROOT_DIRECTORY})
 
 #Definitions
 target_compile_definitions(XDEngine PRIVATE -DXD_EXPORTING=1)
@@ -46,4 +38,4 @@ if(DEFINED XD_ENGINE_BUILD_TESTS)
     add_subdirectory(Tests)
 endif()
 
-install(TARGETS XDEngine DESTINATION XDEngine)
+install(TARGETS XDEngine DESTINATION ${CMAKE_PREFIX_PATH}/XDEngine)

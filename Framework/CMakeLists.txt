@@ -6,19 +6,11 @@ project(XD_FRAMEWORK LANGUAGES CXX)
 include(GNUInstallDirs)
 include(XDCommon)
 
-#Variables block
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 #Options block
 option(XD_FRAMEWORK_BUILD_TESTS "Build framework tests" ON)
 
 set(XD_FRAMEWORK_ROOT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 set(XD_FRAMEWORK_SOURCE_DIRECTORY ${XD_FRAMEWORK_ROOT_DIRECTORY}/Source)
-
-if(MINGW)
-    set(CMAKE_EXE_LINKER_FLAGS "-static")
-endif()
 
 #Including modules
 include(${XD_FRAMEWORK_SOURCE_DIRECTORY}/CMakeLists.txt)
@@ -26,8 +18,8 @@ include(${XD_FRAMEWORK_SOURCE_DIRECTORY}/CMakeLists.txt)
 add_library(XDFramework SHARED ${XD_FRAMEWORK_SRC})
 
 #Headers
-target_include_directories(XDFramework PUBLIC ${XD_FRAMEWORK_HEADERS})
-target_include_directories(XDFramework PRIVATE ${XD_FRAMEWORK_ROOT_DIRECTORY})
+target_include_directories(XDFramework PRIVATE ${XD_FRAMEWORK_HEADERS})
+target_include_directories(XDFramework PUBLIC ${XD_FRAMEWORK_ROOT_DIRECTORY})
 
 #Libs
 find_package(XDEngine REQUIRED)
@@ -46,4 +38,4 @@ if(DEFINED XD_FRAMEWORK_BUILD_TESTS)
     add_subdirectory(Tests)
 endif()
 
-install(TARGETS XDFramework DESTINATION XDFramework)
+install(TARGETS XDFramework DESTINATION ${CMAKE_PREFIX_PATH}/XDFramework)
