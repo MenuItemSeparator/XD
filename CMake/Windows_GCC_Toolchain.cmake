@@ -4,8 +4,13 @@ ELSE()
     message("Unknown platform")
 ENDIF()
 
-set(CMAKE_C_COMPILER "C:/Cygwin/bin/gcc.exe")
-set(CMAKE_CXX_COMPILER "C:/Cygwin/bin/g++.exe")
+set(CMAKE_CXX_COMPILER_ID "GNU")
+
+set(CMAKE_C_COMPILER "C:/MinGW/bin/gcc.exe")
+set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")
+
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+set(CMAKE_CXX_COMPILER_FORCED TRUE)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

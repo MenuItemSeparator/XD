@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(XD_FRAMEWORK LANGUAGES CXX)
 
-include(GNUInstallDirs)
 include(XDCommon)
 
 #Options block

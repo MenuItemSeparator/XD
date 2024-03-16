@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(XD_GAME LANGUAGES CXX)
 
-include(GNUInstallDirs)
 include(XDCommon)
 
 set(XD_GAME_ROOT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
