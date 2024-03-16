@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(XD_FRAMEWORK LANGUAGES CXX)
 
-include(XDCommon)
+#include(XDCommon)
 
 #Options block
 option(XD_FRAMEWORK_BUILD_TESTS "Build framework tests" ON)
@@ -28,8 +28,10 @@ target_link_libraries(XDFramework PUBLIC XDEngine)
 #Definitions
 target_compile_definitions(XDFramework PRIVATE -DXD_EXPORTING=1)
 
-if(${XD_BUILD_TYPE} STREQUAL "Debug")
-    target_compile_definitions(XDFramework PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
+if(${CMAKE_BUILD_TYPE})
+    if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+        target_compile_definitions(XDFramework PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
+    endif()
 endif()
 
 if(DEFINED XD_FRAMEWORK_BUILD_TESTS)
