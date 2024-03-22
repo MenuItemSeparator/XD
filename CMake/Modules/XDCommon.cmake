@@ -1,1 +1,3 @@
-#set(XD_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+macro(select_toolchain)
+include(SelectToolchain)
+endmacro()

@@ -1,15 +1,22 @@
 #Comment me later
 cmake_minimum_required(VERSION 3.5)
 
-project(XD LANGUAGES CXX)
+set(XD_ROOT				${CMAKE_CURRENT_SOURCE_DIR})
+set(XD_ROOT_SOURCE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+set(XD_ROOT_BINARY_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
+SET(CMAKE_MODULE_PATH	${CMAKE_MODULE_PATH}
+	                    ${CMAKE_SOURCE_DIR}/CMake/Modules
+						${XD_ROOT}/CMake/Modules/Toolsets/
+)
 
 include(XDCommon)
 
-set(XD_ROOT_SOURCE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-set(XD_ROOT_BINARY_PATH ${CMAKE_CURRENT_BINARY_DIR})
+select_toolchain()
+
+project(XD LANGUAGES CXX)
 
 add_subdirectory(${XD_ROOT_SOURCE_PATH}/Engine)
 add_subdirectory(${XD_ROOT_SOURCE_PATH}/Framework)
 add_subdirectory(${XD_ROOT_SOURCE_PATH}/Game)
+
