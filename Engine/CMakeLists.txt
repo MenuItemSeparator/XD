@@ -20,7 +20,16 @@ include(${XD_ENGINE_ROOT_DIRECTORY}/Graphics/CMakeLists.txt)
 list(APPEND XD_ENGINE_SRC ${XD_SOURCE_SRC} ${XD_GRAPHICS_SRC})
 list(APPEND XD_ENGINE_HEADERS ${XD_SOURCE_HEADERS} ${XD_GRAPHICS_HEADERS})
 
-add_library(XDEngine SHARED ${XD_ENGINE_SRC})
+add_library(XDEngine SHARED ${XD_ENGINE_SRC}
+	Common/XD_Types.h
+	Common/XD_Log.h
+
+	Application/XD_PlatformApplication.h
+	Application/XD_PlatformWidget.h
+	Application/XD_ApplicationPlatformSelector.h
+	Application/Windows/WindowsWidget.h
+	Application/PlatformWidgetInterface.h
+)
 
 #Headers
 target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
@@ -30,14 +39,14 @@ target_include_directories(XDEngine PUBLIC ${XD_ENGINE_ROOT_DIRECTORY})
 target_compile_definitions(XDEngine PRIVATE -DXD_EXPORTING=1)
 
 if(${CMAKE_BUILD_TYPE})
-    if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-        target_compile_definitions(XDEngine PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
-    endif()
+	if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+		target_compile_definitions(XDEngine PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
+	endif()
 endif()
 
 if(DEFINED XD_ENGINE_BUILD_TESTS)
-    message("Started to build engine tests")
-    add_subdirectory(Tests)
+	message("Started to build engine tests")
+	add_subdirectory(Tests)
 endif()
 
 install(TARGETS XDEngine DESTINATION ${CMAKE_PREFIX_PATH}/XDEngine)
