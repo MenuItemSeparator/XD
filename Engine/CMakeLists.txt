@@ -16,20 +16,21 @@ set(XD_ENGINE_HEADERS)
 
 include(${XD_ENGINE_ROOT_DIRECTORY}/Source/CMakeLists.txt)
 include(${XD_ENGINE_ROOT_DIRECTORY}/Graphics/CMakeLists.txt)
+include(${XD_ENGINE_ROOT_DIRECTORY}/Application/CMakeLists.txt)
+include(${XD_ENGINE_ROOT_DIRECTORY}/Common/CMakeLists.txt)
 
-list(APPEND XD_ENGINE_SRC ${XD_SOURCE_SRC} ${XD_GRAPHICS_SRC})
-list(APPEND XD_ENGINE_HEADERS ${XD_SOURCE_HEADERS} ${XD_GRAPHICS_HEADERS})
+list(APPEND XD_ENGINE_SRC
+    ${XD_SOURCE_SRC}
+    ${XD_GRAPHICS_SRC}
+    ${XD_APPLICATION_SRC}
+    ${XD_COMMON_SRC})
+list(APPEND XD_ENGINE_HEADERS
+    ${XD_SOURCE_HEADERS}
+    ${XD_GRAPHICS_HEADERS}
+    ${XD_APPLICATION_HEADERS}
+    ${XD_COMMON_HEADERS})
 
-add_library(XDEngine SHARED ${XD_ENGINE_SRC}
-	Common/XD_Types.h
-	Common/XD_Log.h
-
-	Application/XD_PlatformApplication.h
-	Application/XD_PlatformWidget.h
-	Application/XD_ApplicationPlatformSelector.h
-	Application/Windows/WindowsWidget.h
-	Application/PlatformWidgetInterface.h
-)
+add_library(XDEngine SHARED ${XD_ENGINE_SRC})
 
 #Headers
 target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
