@@ -3,7 +3,7 @@
 
 int main()
 {
-    XDFramework::FrameworkDummy dummy{};
+    XD::FrameworkDummy dummy{};
     XD::App App;
 
     App.fLoop();

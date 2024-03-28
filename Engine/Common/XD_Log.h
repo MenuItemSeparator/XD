@@ -2,14 +2,16 @@
 
 #include <iostream>
 
-namespace XD{
-
-class Log
+namespace XD
 {
-public:
-    Log* operator << (char* ) {return nullptr;}
-}Log;
 
-#define mLOG(text) std::cout<<text
+    class XD_Log
+    {
+    public:
+        XD_Log* operator << (char* ) {return nullptr;}
+
+    };
+
+    #define mLOG(text) std::cout<<text
 
 }

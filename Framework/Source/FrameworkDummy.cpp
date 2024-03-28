@@ -1,11 +1,11 @@
 #include "FrameworkDummy.h"
 #include "Core/EngineDummy.h"
 
-namespace XDFramework
+namespace XD
 {
     void FrameworkDummy::SayHello()
     {
-        XDEngine::EngineDummy::SayHello();
+        XD::EngineDummy::SayHello();
     }
 }
 

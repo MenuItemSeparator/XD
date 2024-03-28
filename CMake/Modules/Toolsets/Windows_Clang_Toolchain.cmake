@@ -1,5 +1,6 @@
 if(WIN32)
     set(CMAKE_SYSTEM_NAME Windows)
+    add_definitions(-D_X86_)
 ELSE()
     message("Unknown platform")
 ENDIF()

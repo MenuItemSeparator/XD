@@ -4,6 +4,10 @@ set(XD_COMMON_SRC
     ""
 )
 
+if(WIN32)
+    list(APPEND XD_COMMON_SRC ${XD_ENGINE_COMMON_DIRECTORY}/Windows/XD_LibraryWindows_Implementation.cpp)
+endif()
+
 set(XD_COMMON_HEADERS
     ${XD_ENGINE_COMMON_DIRECTORY}
 )

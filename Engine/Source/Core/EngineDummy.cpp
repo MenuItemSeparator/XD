@@ -1,7 +1,7 @@
 #include "EngineDummy.h"
 #include <iostream>
 
-namespace XDEngine
+namespace XD
 {
     void EngineDummy::SayHello()
     {

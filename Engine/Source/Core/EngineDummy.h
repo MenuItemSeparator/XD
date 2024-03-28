@@ -1,7 +1,7 @@
 #pragma once
 #include "XDEngine.h"
 
-namespace XDEngine
+namespace XD
 {
     class XD_ENGINE_API EngineDummy
     {

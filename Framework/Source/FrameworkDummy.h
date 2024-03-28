@@ -1,7 +1,7 @@
 #pragma once
 #include "XDFramework.h"
 
-namespace XDFramework
+namespace XD
 {
     class XD_FRAMEWORK_API FrameworkDummy
     {

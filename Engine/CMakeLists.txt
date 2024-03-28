@@ -30,7 +30,11 @@ list(APPEND XD_ENGINE_HEADERS
     ${XD_APPLICATION_HEADERS}
     ${XD_COMMON_HEADERS})
 
-add_library(XDEngine SHARED ${XD_ENGINE_SRC})
+add_library(XDEngine SHARED ${XD_ENGINE_SRC}
+    Source/XD_Engine.h Source/XD_Engine.cpp
+    XDEngine_Minimal.h
+    Common/XD_Library.h
+    Common/Windows/XD_LibraryWindows_Implementation.h Common/Windows/XD_LibraryWindows_Implementation.cpp)
 
 #Headers
 target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
