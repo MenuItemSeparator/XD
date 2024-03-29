@@ -39,4 +39,4 @@ if(DEFINED XD_FRAMEWORK_BUILD_TESTS)
     add_subdirectory(Tests)
 endif()
 
-install(TARGETS XDFramework DESTINATION ${CMAKE_PREFIX_PATH}/XDFramework)
+install(TARGETS XDFramework DESTINATION ${CMAKE_INSTALL_PREFIX}/XDFramework)

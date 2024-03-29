@@ -7,6 +7,7 @@ include(XDCommon)
 
 set(XD_GAME_ROOT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 set(XD_GAME_SOURCE_DIRECTORY ${XD_GAME_ROOT_DIRECTORY}/Source)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_INSTALL_PREFIX}/XDGame)
 
 #Including source modules
 include(${XD_GAME_SOURCE_DIRECTORY}/CMakeLists.txt)
@@ -17,8 +18,10 @@ add_executable(XDGame ${XD_GAME_SRC})
 target_include_directories(XDGame PRIVATE ${XD_GAME_HEADERS})
 
 #Libs
+find_package(XDEngine MODULE REQUIRED)
 find_package(XDFramework MODULE REQUIRED)
-target_include_directories(XDGame PRIVATE ${XD_FRAMEWORK_INCLUDE_DIR})
+
+target_include_directories(XDGame PRIVATE ${XD_FRAMEWORK_INCLUDE_DIR} ${XD_ENGINE_INCLUDE_DIR})
 target_link_libraries(XDGame PRIVATE XDFramework)
 
 if(${CMAKE_BUILD_TYPE})
@@ -27,4 +30,5 @@ if(${CMAKE_BUILD_TYPE})
     endif()
 endif()
 
-install(TARGETS XDGame XDFramework XDEngine DESTINATION ${CMAKE_PREFIX_PATH}/XDGame)
+
+install(TARGETS XDGame XDFramework XDEngine DESTINATION ${CMAKE_INSTALL_PREFIX}/XDGame)

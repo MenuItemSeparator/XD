@@ -54,4 +54,6 @@ if(DEFINED XD_ENGINE_BUILD_TESTS)
 	add_subdirectory(Tests)
 endif()
 
-install(TARGETS XDEngine DESTINATION ${CMAKE_PREFIX_PATH}/XDEngine)
+
+
+install(TARGETS XDEngine DESTINATION ${CMAKE_INSTALL_PREFIX}/XDEngine)
