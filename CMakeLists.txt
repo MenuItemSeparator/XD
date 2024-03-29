@@ -1,9 +1,15 @@
 #Comment me later
 cmake_minimum_required(VERSION 3.5)
 
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
 set(XD_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 set(XD_ROOT_SOURCE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 set(XD_ROOT_BINARY_PATH ${CMAKE_CURRENT_BINARY_DIR})
+
+if(${CMAKE_INSTALL_PREFIX} STREQUAL "")
+    set(CMAKE_INSTALL_PREFIX ${XD_ROOT}/../XD_Install/)
+endif()
 
 list(APPEND CMAKE_MODULE_PATH ${XD_ROOT}/CMake/Modules/ ${XD_ROOT}/CMake/Modules/Toolsets)
 

@@ -3,8 +3,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(XD_FRAMEWORK LANGUAGES CXX)
 
-#include(XDCommon)
-
 #Options block
 option(XD_FRAMEWORK_BUILD_TESTS "Build framework tests" ON)
 
@@ -14,7 +12,11 @@ set(XD_FRAMEWORK_SOURCE_DIRECTORY ${XD_FRAMEWORK_ROOT_DIRECTORY}/Source)
 #Including modules
 include(${XD_FRAMEWORK_SOURCE_DIRECTORY}/CMakeLists.txt)
 
-add_library(XDFramework SHARED ${XD_FRAMEWORK_SRC})
+if(BUILD_SHARED_LIBS)
+    add_library(XDFramework SHARED ${XD_FRAMEWORK_SRC})
+else()
+    add_library(XDFramework STATIC ${XD_FRAMEWORK_SRC})
+endif()
 
 #Headers
 target_include_directories(XDFramework PRIVATE ${XD_FRAMEWORK_HEADERS})

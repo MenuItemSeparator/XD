@@ -1,7 +1,8 @@
 set(XD_ENGINE_SOURCE_DIRECTORY ${XD_ENGINE_ROOT_DIRECTORY}/Source)
 
 set(XD_SOURCE_SRC
-    ${XD_ENGINE_SOURCE_DIRECTORY}/Core/EngineDummy.cpp
+    Source/Core/EngineDummy.cpp
+    Source/XD_Engine.cpp
 )
 
 set(XD_SOURCE_HEADERS

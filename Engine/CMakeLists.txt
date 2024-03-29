@@ -30,11 +30,11 @@ list(APPEND XD_ENGINE_HEADERS
     ${XD_APPLICATION_HEADERS}
     ${XD_COMMON_HEADERS})
 
-add_library(XDEngine SHARED ${XD_ENGINE_SRC}
-    Source/XD_Engine.h Source/XD_Engine.cpp
-    XDEngine_Minimal.h
-    Common/XD_Library.h
-    Common/Windows/XD_LibraryWindows_Implementation.h Common/Windows/XD_LibraryWindows_Implementation.cpp)
+if(BUILD_SHARED_LIBS)
+    add_library(XDEngine SHARED ${XD_ENGINE_SRC})
+else()
+    add_library(XDEngine STATIC ${XD_ENGINE_SRC})
+endif()
 
 #Headers
 target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
@@ -53,7 +53,5 @@ if(DEFINED XD_ENGINE_BUILD_TESTS)
 	message("Started to build engine tests")
 	add_subdirectory(Tests)
 endif()
-
-
 
 install(TARGETS XDEngine DESTINATION ${CMAKE_INSTALL_PREFIX}/XDEngine)

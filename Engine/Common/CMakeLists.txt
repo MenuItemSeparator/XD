@@ -1,7 +1,7 @@
 set(XD_ENGINE_COMMON_DIRECTORY ${XD_ENGINE_ROOT_DIRECTORY}/Common)
 
 set(XD_COMMON_SRC
-    ""
+    Common/Windows/XD_LibraryWindows_Implementation.cpp
 )
 
 if(WIN32)
