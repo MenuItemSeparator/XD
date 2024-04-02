@@ -11,9 +11,9 @@ namespace XD
         XD_Library(const std::string& _libraryName);
         ~XD_Library();
 
-        void LoadXDLibrary(const std::string& _libraryName);
-        void UnloadXDLibrary();
-        bool IsLoaded() const;
+        void fLoadXDLibrary(const std::string& _libraryName);
+        void fUnloadXDLibrary();
+        bool fIsLoaded() const;
 
     private:
         UPtr<XD_Library_Impl> m_libraryImplementation;

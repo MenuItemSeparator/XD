@@ -12,6 +12,6 @@ namespace XD
 
     };
 
-    #define mLOG(text) std::cout << text << std::endl;
+    #define mLOG(text) std::cout << ">> " << text << std::endl;
 
 }

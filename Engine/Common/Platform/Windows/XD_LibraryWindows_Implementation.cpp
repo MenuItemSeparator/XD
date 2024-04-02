@@ -13,11 +13,11 @@ namespace XD
     {
         if(m_isLibraryLoaded)
         {
-            UnloadXDLibrary();
+            fUnloadXDLibrary();
         }
     }
 
-    void XD_Library::XD_Library_Impl::LoadXDLibrary(const std::string &_libraryName)
+    void XD_Library::XD_Library_Impl::fLoadXDLibrary(const std::string &_libraryName)
     {
         if(m_isLibraryLoaded)
         {
@@ -37,7 +37,7 @@ namespace XD
         if(!onLoadFunc)
         {
             mLOG("Loaded library " << _libraryName << " is not XD library");
-            UnloadXDLibrary();
+            fUnloadXDLibrary();
             return;
         }
 
@@ -46,7 +46,7 @@ namespace XD
         m_isLibraryLoaded = true;
     }
 
-    void XD_Library::XD_Library_Impl::UnloadXDLibrary()
+    void XD_Library::XD_Library_Impl::fUnloadXDLibrary()
     {
         OnBeforeModuleUnloadedFunc onUnloadFunc = (OnBeforeModuleUnloadedFunc)GetProcAddress(m_libraryHandle, "OnBeforeModuleUnloaded");
         if(onUnloadFunc)
@@ -73,7 +73,7 @@ namespace XD
         m_isLibraryLoaded = false;
     }
 
-    bool XD_Library::XD_Library_Impl::IsLoaded() const
+    bool XD_Library::XD_Library_Impl::fIsLoaded() const
     {
         return m_isLibraryLoaded;
     }
@@ -86,25 +86,25 @@ namespace XD
 
     XD_Library::XD_Library(const std::string &_libraryName) : XD_Library()
     {
-        LoadXDLibrary(_libraryName);
+        fLoadXDLibrary(_libraryName);
     }
 
     XD_Library::~XD_Library()
     {
     }
 
-    void XD_Library::LoadXDLibrary(const std::string& _libraryName)
+    void XD_Library::fLoadXDLibrary(const std::string& _libraryName)
     {
-        m_libraryImplementation->LoadXDLibrary(_libraryName);
+        m_libraryImplementation->fLoadXDLibrary(_libraryName);
     }
 
-    void XD_Library::UnloadXDLibrary()
+    void XD_Library::fUnloadXDLibrary()
     {
-        m_libraryImplementation->UnloadXDLibrary();
+        m_libraryImplementation->fUnloadXDLibrary();
     }
 
-    bool XD_Library::IsLoaded() const
+    bool XD_Library::fIsLoaded() const
     {
-        return m_libraryImplementation->IsLoaded();
+        return m_libraryImplementation->fIsLoaded();
     }
 }
