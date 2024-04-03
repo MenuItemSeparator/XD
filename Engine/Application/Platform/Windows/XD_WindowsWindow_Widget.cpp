@@ -113,13 +113,12 @@ XD_WindowsWindow_Widget::XD_WindowsWindow_Widget(const XD_WindowConfig& _config)
 
     void XD_WindowsWindow_Widget::fUpdate()
     {
-        //@TODO: process result
-        bool result = fProcessEvents();
+        fProcessEvents();
     }
 
     void* XD_WindowsWindow_Widget::fGetWindowRawPtr()
     {
-        return nullptr;
+        return &m_hwnd;
     }
 
     XD_Result XD_WindowsWindow_Widget::fCloseWindow()
@@ -133,7 +132,7 @@ XD_WindowsWindow_Widget::XD_WindowsWindow_Widget(const XD_WindowConfig& _config)
         return m_isWindowCloseRequested;
     }
 
-    XD_Result XD_WindowsWindow_Widget::fProcessEvents()
+    void XD_WindowsWindow_Widget::fProcessEvents()
     {
         MSG msg{};
         BOOL result = PeekMessage(&msg, m_hwnd, NULL, NULL, PM_REMOVE);
@@ -142,10 +141,8 @@ XD_WindowsWindow_Widget::XD_WindowsWindow_Widget(const XD_WindowConfig& _config)
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
-            return XD_Result::Success();
         }
 
-        return XD_Result::Fail();
     }
 
     LRESULT XD_WindowsWindow_Widget::fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)

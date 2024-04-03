@@ -48,6 +48,8 @@ namespace XD
 
     XD_ApplicationTerminationReason_Enum XD_Application::fLoop()
     {
+        mXD_ASSERT(m_window);
+
         while(!fWantsToTerminate())
         {
             m_window->fUpdate();

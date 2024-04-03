@@ -27,7 +27,7 @@ namespace XD
         HWND m_hwnd{};
         bool m_isWindowCloseRequested{};
 
-        XD_Result fProcessEvents();
+        void fProcessEvents();
 
         static LRESULT fSetupMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
         LRESULT fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
