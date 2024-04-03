@@ -24,8 +24,8 @@ namespace
 namespace XD
 {
 
-    XD_WindowsWindow_Widget::XD_WindowsWindow_Widget() :
-        XD_Window_Widget(),
+XD_WindowsWindow_Widget::XD_WindowsWindow_Widget(const XD_WindowConfig& _config) :
+        XD_Window_Widget(_config),
         m_hwnd(NULL),
         m_isWindowCloseRequested(false)
     {
@@ -62,7 +62,7 @@ namespace XD
         (
             WS_EX_CLIENTEDGE,
             XD_WINDOW_CLASS_NAME,
-            "XD",
+            m_config.m_windowName.c_str(),
             WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT,
             CW_USEDEFAULT,
@@ -84,6 +84,11 @@ namespace XD
         ShowWindow(m_hwnd, SW_SHOW);
         UpdateWindow(m_hwnd);
 
+        return XD_Result::Success();
+    }
+
+    XD_Result XD_WindowsWindow_Widget::fDeinitialize()
+    {
         return XD_Result::Success();
     }
 

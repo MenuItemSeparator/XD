@@ -1,25 +1,27 @@
-#include <cstdlib>
-#include "XDEngine_Minimal.h"
-#include "FrameworkDummy.h"
-#include "Source/XD_Engine.h"
 #include "Application/XD_Application.h"
-#include "Application/XD_Window_Widget.h"
 
 int main()
 {
-    XD::XD_Engine engine{};
-    engine.Initialize();
-    XD::FrameworkDummy dummy{};
 
-    XD::SPtr<XD::XD_Window_Widget> window = XD::XD_Window_Widget::fCreatePlatformWindow();
-    window->fInitialize();
+    XD::XD_ApplicationConfig applicationConfig{};
+    applicationConfig.m_displayName = "XD";
 
-    while(!window->fWindowShouldClose())
+    XD::XD_Application application{applicationConfig};
+    if(!application.fInitialize())
     {
-        window->fUpdate();
+        mLOG("Invalid application initialization");
+        return 1;
     }
 
-    system("pause");
+    XD::XD_ApplicationTerminationReason_Enum terminationReason = application.fLoop();
 
-    return 0;
+    switch (terminationReason)
+    {
+    case XD::XD_ApplicationTerminationReason_Enum::ClosedByUser:
+        mLOG(applicationConfig.m_displayName << " was closed by user");
+        return 0;
+    default:
+        mLOG(applicationConfig.m_displayName << " has unknown reason of termination");
+        return 1;
+    }
 }

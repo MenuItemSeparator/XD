@@ -8,15 +8,28 @@
 namespace XD
 {
 
-    SPtr<XD_Window_Widget> XD_Window_Widget::fCreatePlatformWindow()
+    XD_WindowConfig::XD_WindowConfig() :
+        m_windowName("Nameless window")
+    {
+
+    }
+
+    XD_Window_Widget::XD_Window_Widget(const XD_WindowConfig &_config) :
+        m_config(_config)
+    {
+
+    }
+
+    SPtr<XD_Window_Widget> XD_Window_Widget::fCreatePlatformWindow(const XD_WindowConfig& _config)
     {
 
 #ifdef dXD_PLATFORM_WINDOWS
-        return std::make_shared<XD_WindowsWindow_Widget>();
+        return std::make_shared<XD_WindowsWindow_Widget>(_config);
 #endif
 
         mLOG("Unknown platform while creating window widget");
         return nullptr;
     }
+
 
 }
