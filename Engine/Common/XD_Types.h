@@ -31,5 +31,4 @@ namespace XD
     private:
         i4 Result;
     };
-
 }

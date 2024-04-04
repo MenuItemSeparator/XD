@@ -3,6 +3,14 @@
 
 namespace XD
 {
+    class XD_Module
+    {
+    public:
+        virtual ~XD_Module() = default;
+        virtual void OnAfterModuleLoadedFunc() = 0;
+        virtual void OnBeforeModuleUnloadedFunc() = 0;
+    };
+
     class XD_Library final
     {
         class XD_Library_Impl;

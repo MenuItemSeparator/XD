@@ -44,7 +44,7 @@ namespace XD
         XD_Application(const XD_ApplicationConfig& _config);
         XD_Application(const XD_Application&) = delete;
         XD_Application& operator=(const XD_Application&) = delete;
-        ~XD_Application() = default;
+        virtual ~XD_Application() = default;
 
         virtual XD_Result fInitialize() override;
         virtual void fForceTerminate() override;
