@@ -20,14 +20,16 @@ namespace XD
         m_context(),
         m_window()
     {
-        XD_WindowConfig windowConfig{};
-        windowConfig.m_windowName = m_config.m_displayName;
 
-        m_window = XD_Window_Widget::fCreatePlatformWindow(windowConfig);
     }
 
     XD_Result XD_Application::fInitialize()
     {
+        XD_WindowConfig windowConfig{};
+        windowConfig.m_windowName = m_config.m_displayName;
+
+        m_window = XD_Window_Widget::fCreatePlatformWindow(windowConfig);
+
         return m_window->fInitialize();
     }
 
@@ -40,7 +42,7 @@ namespace XD
     {
         bool shouldTerminate = false;
 
-        shouldTerminate |= m_window->fWindowShouldClose();
+        shouldTerminate |= !m_window->fIsValid();
         shouldTerminate |= m_context.m_requestedTermination;
 
         return shouldTerminate;
@@ -55,13 +57,15 @@ namespace XD
             m_window->fUpdate();
         }
 
-        fDeinitialize();
+        mLOG("Requested termination");
+
+        fTerminateSubsystems();
 
         return XD_ApplicationTerminationReason_Enum::ClosedByUser;
     }
 
-    XD_Result XD_Application::fDeinitialize()
+    XD_Result XD_Application::fTerminateSubsystems()
     {
-        return m_window->fDeinitialize();
+        return m_window->fTerminate();
     }
 }

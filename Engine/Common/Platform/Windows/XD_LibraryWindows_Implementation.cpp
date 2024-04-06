@@ -6,6 +6,7 @@ namespace XD
     XD_Library::XD_Library_Impl::XD_Library_Impl() :
         m_libraryName(),
         m_libraryHandle(0),
+        m_moduleInterface(nullptr),
         m_isLibraryLoaded(false)
     {}
 
@@ -33,25 +34,35 @@ namespace XD
             return;
         }
 
-        OnAfterModuleLoadedFunc onLoadFunc = (OnAfterModuleLoadedFunc)GetProcAddress(m_libraryHandle, "OnAfterModuleLoaded");
-        if(!onLoadFunc)
+        tCreateModule creatingModuleProc = (tCreateModule)GetProcAddress(m_libraryHandle, "CreateModule");
+        if(!creatingModuleProc)
         {
             mLOG("Loaded library " << _libraryName << " is not XD library");
             fUnloadXDLibrary();
             return;
         }
 
-        onLoadFunc();
+        m_moduleInterface = creatingModuleProc();
+
+        if(!m_moduleInterface)
+        {
+            mLOG("Can't create " << _libraryName << " module");
+            fUnloadXDLibrary();
+            return;
+        }
+
+        m_moduleInterface->InitializeModule();
+
         m_libraryName = _libraryName;
         m_isLibraryLoaded = true;
     }
 
     void XD_Library::XD_Library_Impl::fUnloadXDLibrary()
     {
-        OnBeforeModuleUnloadedFunc onUnloadFunc = (OnBeforeModuleUnloadedFunc)GetProcAddress(m_libraryHandle, "OnBeforeModuleUnloaded");
-        if(onUnloadFunc)
+        if(m_moduleInterface)
         {
-            onUnloadFunc();
+            m_moduleInterface->DeinitializeModule();
+            delete m_moduleInterface;
         }
         else
         {

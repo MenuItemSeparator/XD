@@ -12,7 +12,7 @@ set(XD_ENGINE_ROOT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
 
 #Including modules
 set(XD_ENGINE_SRC)
-set(XD_ENGINE_HEADERS)
+set(XD_ENGINE_HEADERS ${XD_ROOT}/Shared)
 
 include(${XD_ENGINE_ROOT_DIRECTORY}/Source/CMakeLists.txt)
 include(${XD_ENGINE_ROOT_DIRECTORY}/Graphics/CMakeLists.txt)

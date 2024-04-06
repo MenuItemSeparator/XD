@@ -1,8 +1,8 @@
 #include "Application/XD_Application.h"
+#include <Common/XD_Library.h>
 
 int main()
 {
-
     XD::XD_ApplicationConfig applicationConfig{};
     applicationConfig.m_displayName = "XD";
 
@@ -13,6 +13,7 @@ int main()
         return 1;
     }
 
+    mLOG("Main loop started");
     XD::XD_ApplicationTerminationReason_Enum terminationReason = application.fLoop();
 
     switch (terminationReason)

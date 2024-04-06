@@ -19,6 +19,7 @@ namespace XD
     private:
         std::string m_libraryName;
         HMODULE m_libraryHandle;
+        XD_Module_Interface* m_moduleInterface;
         bool m_isLibraryLoaded;
     };
 

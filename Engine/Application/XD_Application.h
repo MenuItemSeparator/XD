@@ -56,7 +56,7 @@ namespace XD
         SPtr<XD_Window_Widget> m_window;
 
         bool fWantsToTerminate() const;
-        XD_Result fDeinitialize();
+        XD_Result fTerminateSubsystems();
     };
 
 }

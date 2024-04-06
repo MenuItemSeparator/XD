@@ -11,6 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_INSTALL_PREFIX}/XDGame)
 
 #Including source modules
 include(${XD_GAME_SOURCE_DIRECTORY}/CMakeLists.txt)
+list(APPEND XD_GAME_HEADERS ${XD_ROOT}/Shared)
 
 add_executable(XDGame ${XD_GAME_SRC})
 

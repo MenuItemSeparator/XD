@@ -15,22 +15,18 @@ namespace XD
         XD_WindowsWindow_Widget(const XD_WindowConfig& _config);
 
         virtual XD_Result fInitialize() override;
-        virtual XD_Result fDeinitialize() override;
+        virtual XD_Result fTerminate() override;
         virtual void fUpdate() override;
         virtual void* fGetWindowRawPtr() override;
-        virtual XD_Result fCloseWindow() override;
-        static LRESULT fPreHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
-    protected:
-        virtual bool fWindowShouldClose() override;
+        virtual bool fIsValid() override;
+
+        void fOnWindowRequestedClosing_Internal();
 
     private:
         HWND m_hwnd{};
-        bool m_isWindowCloseRequested{};
-
         void fProcessEvents();
 
-        static LRESULT fSetupMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
-        LRESULT fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
+        static LRESULT fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
     };
 
 }

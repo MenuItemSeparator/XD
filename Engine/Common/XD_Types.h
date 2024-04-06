@@ -27,7 +27,7 @@ namespace XD
         static XD_Result Success() { return XD_Result{XD_RESULT_SUCCESS}; }
         static XD_Result Fail() { return XD_Result{XD_RESULT_FAIL}; }
 
-        operator bool() const { return Result == XD_RESULT_SUCCESS; }
+        operator bool() const { return Result != XD_RESULT_FAIL; }
     private:
         i4 Result;
     };
