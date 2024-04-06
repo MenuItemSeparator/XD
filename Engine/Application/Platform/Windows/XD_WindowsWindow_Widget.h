@@ -20,8 +20,7 @@ namespace XD
         virtual void* fGetWindowRawPtr() override;
         virtual bool fIsValid() override;
 
-        void fOnWindowRequestedClosing_Internal();
-
+        LRESULT fHandleMessage_Internal(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
     private:
         HWND m_hwnd{};
         void fProcessEvents();

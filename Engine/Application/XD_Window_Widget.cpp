@@ -15,10 +15,10 @@ namespace XD
     }
 
     XD_Window_Widget::XD_Window_Widget(const XD_WindowConfig &_config) :
-        m_config(_config)
-    {
-
-    }
+        m_config(_config),
+        m_onWindowResized(),
+        m_onWindowWantsToClose()
+    {}
 
     SPtr<XD_Window_Widget> XD_Window_Widget::fCreatePlatformWindow(const XD_WindowConfig& _config)
     {

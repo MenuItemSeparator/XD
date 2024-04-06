@@ -29,6 +29,7 @@ namespace XD
         windowConfig.m_windowName = m_config.m_displayName;
 
         m_window = XD_Window_Widget::fCreatePlatformWindow(windowConfig);
+        m_window->fOnWindowWantsToClose().fBind(*this, &XD_Application::fTerminateWindow);
 
         return m_window->fInitialize();
     }
@@ -40,12 +41,7 @@ namespace XD
 
     bool XD_Application::fWantsToTerminate() const
     {
-        bool shouldTerminate = false;
-
-        shouldTerminate |= !m_window->fIsValid();
-        shouldTerminate |= m_context.m_requestedTermination;
-
-        return shouldTerminate;
+        return m_context.m_requestedTermination;
     }
 
     XD_ApplicationTerminationReason_Enum XD_Application::fLoop()
@@ -57,7 +53,7 @@ namespace XD
             m_window->fUpdate();
         }
 
-        mLOG("Requested termination");
+        mLOG("Requested application termination");
 
         fTerminateSubsystems();
 
@@ -66,6 +62,14 @@ namespace XD
 
     XD_Result XD_Application::fTerminateSubsystems()
     {
-        return m_window->fTerminate();
+        return XD_Result::Success();
+    }
+
+    void XD_Application::fTerminateWindow(XD_Window_Widget *_window)
+    {
+        mLOG("Window " << _window->fGetWindowTitleName() << " was terminated");
+
+        _window->fTerminate();
+        m_context.m_requestedTermination = true;
     }
 }

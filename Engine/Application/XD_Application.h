@@ -57,6 +57,7 @@ namespace XD
 
         bool fWantsToTerminate() const;
         XD_Result fTerminateSubsystems();
+        void fTerminateWindow(XD_Window_Widget* _window);
     };
 
 }

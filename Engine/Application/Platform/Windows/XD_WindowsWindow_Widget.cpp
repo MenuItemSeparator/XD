@@ -97,9 +97,19 @@ namespace XD
         return m_hwnd != 0;
     }
 
-    void XD_WindowsWindow_Widget::fOnWindowRequestedClosing_Internal()
+    LRESULT XD_WindowsWindow_Widget::fHandleMessage_Internal(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
     {
-        m_hwnd = NULL;
+        switch (_msg)
+        {
+        case WM_CLOSE:
+            m_onWindowWantsToClose.fInvoke(this);
+            return 0;
+        case WM_DESTROY:
+            PostQuitMessage(NULL);
+            break;
+        }
+
+        return DefWindowProc(_hwnd, _msg, _wParam, _lParam);
     }
 
     void XD_WindowsWindow_Widget::fProcessEvents()
@@ -134,16 +144,6 @@ namespace XD
             windowInstance = reinterpret_cast<XD_WindowsWindow_Widget*>(GetWindowLongPtr(_hwnd, GWLP_USERDATA));
         }
 
-        switch (_msg)
-        {
-        case WM_CLOSE:
-            windowInstance->fOnWindowRequestedClosing_Internal();
-            break;
-        case WM_DESTROY:
-            PostQuitMessage(NULL);
-            break;
-        }
-
-        return DefWindowProc(_hwnd, _msg, _wParam, _lParam);
+        return windowInstance->fHandleMessage_Internal(_hwnd, _msg, _wParam, _lParam);
     }
 }

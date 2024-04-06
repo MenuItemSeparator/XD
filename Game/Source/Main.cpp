@@ -6,6 +6,9 @@ int main()
     XD::XD_ApplicationConfig applicationConfig{};
     applicationConfig.m_displayName = "XD";
 
+    XD::XD_Library library{};
+    library.fLoadXDLibrary("SAMPLE_MATH.dll");
+
     XD::XD_Application application{applicationConfig};
     if(!application.fInitialize())
     {
