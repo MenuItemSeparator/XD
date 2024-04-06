@@ -13,6 +13,7 @@ namespace XD
         XD_Library_Impl();
         ~XD_Library_Impl();
         void fLoadXDLibrary(const std::string& _libraryName);
+        XD_Module_Interface* fGetLibraryModule();
         void fUnloadXDLibrary();
         bool fIsLoaded() const;
 

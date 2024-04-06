@@ -89,6 +89,11 @@ namespace XD
         return m_isLibraryLoaded;
     }
 
+    XD_Module_Interface *XD_Library::XD_Library_Impl::fGetLibraryModule()
+    {
+        return m_moduleInterface;
+    }
+
     //===Impl end===
 
     XD_Library::XD_Library() :
@@ -107,6 +112,11 @@ namespace XD
     void XD_Library::fLoadXDLibrary(const std::string& _libraryName)
     {
         m_libraryImplementation->fLoadXDLibrary(_libraryName);
+    }
+
+    XD_Module_Interface *XD_Library::fGetLibraryModule()
+    {
+        return m_libraryImplementation->fGetLibraryModule();
     }
 
     void XD_Library::fUnloadXDLibrary()
