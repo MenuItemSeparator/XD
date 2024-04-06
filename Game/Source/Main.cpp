@@ -1,6 +1,6 @@
 #include "Application/XD_Application.h"
 #include <Common/XD_Library.h>
-#include "../../../XD_Sample/XD_SampleMath.h"
+
 int main()
 {
     XD::XD_ApplicationConfig applicationConfig{};
