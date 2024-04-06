@@ -9,7 +9,7 @@ namespace XD
     {
     public:
         XD_Engine();
-        XD_Result Initialize();
+        X fInitializeX();
 
     private:
         std::vector<SPtr<XD_Library>> m_libraries;

@@ -1,4 +1,4 @@
-#include "XD_WindowsWindow_Widget.h"
+#include "XD_WindowsWidget.h"
 
 namespace
 {
@@ -8,14 +8,15 @@ namespace
 namespace XD
 {
 
-    XD_WindowsWindow_Widget::XD_WindowsWindow_Widget(const XD_WindowConfig& _config) :
-        XD_Window_Widget(_config),
+XD_WindowsWidget::XD_WindowsWidget(const XD_WidgetConfig& _config) :
+        XD_Widget(_config),
         m_hwnd(NULL)
     {
 
     }
 
-    XD_Result XD_WindowsWindow_Widget::fInitialize()
+    X
+    XD_WindowsWidget::fInitializeX()
     {
         WNDCLASSEX wc{};
         MSG msg{};
@@ -38,14 +39,14 @@ namespace XD
         {
             MessageBox(NULL, "Window Registration Failed!", "Error!",
                        MB_ICONEXCLAMATION | MB_OK);
-            return XD_Result::Fail();
+            return X::Fail();
         }
 
         m_hwnd = CreateWindowEx
         (
             WS_EX_CLIENTEDGE,
             XD_WINDOW_CLASS_NAME,
-            m_config.m_windowName.c_str(),
+            m_config.m_widgetName.c_str(),
             WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT,
             CW_USEDEFAULT,
@@ -61,48 +62,54 @@ namespace XD
         {
             MessageBox(NULL, "Window Creation Failed!", "Error!",
                        MB_ICONEXCLAMATION | MB_OK);
-            return XD_Result::Fail();
+            return X::Fail();
         }
 
         ShowWindow(m_hwnd, SW_SHOW);
         UpdateWindow(m_hwnd);
 
-        mLOG("Created window with title: " << m_config.m_windowName);
+        mLOG("Created window with title: " << m_config.m_widgetName);
 
-        return XD_Result::Success();
+        return X::Success();
     }
 
-    XD_Result XD_WindowsWindow_Widget::fTerminate()
+    X
+    XD_WindowsWidget::fTerminateX()
     {
-        if(m_hwnd == NULL) return XD_Result::Fail();
+        if(m_hwnd == NULL) return X::Fail();
 
         DestroyWindow(m_hwnd);
         m_hwnd = NULL;
 
-        return XD_Result::Success();
+        return X::Success();
     }
 
-    void XD_WindowsWindow_Widget::fUpdate()
+    X
+    XD_WindowsWidget::fUpdateX()
     {
-        fProcessEvents();
+        X_Call(fProcessEventsX(), "Can't process window events");
+        return X::Success();
     }
 
-    void* XD_WindowsWindow_Widget::fGetWindowRawPtr()
+    void*
+    XD_WindowsWidget::fGetWidgetRawPtr()
     {
         return &m_hwnd;
     }
 
-    bool XD_WindowsWindow_Widget::fIsValid()
+    bool
+    XD_WindowsWidget::fIsValid()
     {
         return m_hwnd != 0;
     }
 
-    LRESULT XD_WindowsWindow_Widget::fHandleMessage_Internal(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
+    LRESULT
+    XD_WindowsWidget::fHandleMessage_Internal(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
     {
         switch (_msg)
         {
         case WM_CLOSE:
-            m_onWindowWantsToClose.fInvoke(this);
+            m_onWidgetWantsToClose.fInvoke(this);
             return 0;
         case WM_DESTROY:
             PostQuitMessage(NULL);
@@ -112,7 +119,8 @@ namespace XD
         return DefWindowProc(_hwnd, _msg, _wParam, _lParam);
     }
 
-    void XD_WindowsWindow_Widget::fProcessEvents()
+    X
+    XD_WindowsWidget::fProcessEventsX()
     {
         mXD_ASSERT(m_hwnd != 0);
 
@@ -123,15 +131,18 @@ namespace XD
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+        return X::Success();
     }
 
-    LRESULT XD_WindowsWindow_Widget::fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
+    LRESULT
+    XD_WindowsWidget::fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
     {
-        XD_WindowsWindow_Widget* windowInstance = nullptr;
+        XD_WindowsWidget* windowInstance = nullptr;
 
         if (_msg == WM_NCCREATE)
         {
-            windowInstance = static_cast<XD_WindowsWindow_Widget*>(reinterpret_cast<CREATESTRUCT*>(_lParam)->lpCreateParams);
+            windowInstance = static_cast<XD_WindowsWidget*>(reinterpret_cast<CREATESTRUCT*>(_lParam)->lpCreateParams);
 
             SetLastError(0);
             if (!SetWindowLongPtr(_hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(windowInstance)))
@@ -141,7 +152,7 @@ namespace XD
         }
         else
         {
-            windowInstance = reinterpret_cast<XD_WindowsWindow_Widget*>(GetWindowLongPtr(_hwnd, GWLP_USERDATA));
+            windowInstance = reinterpret_cast<XD_WindowsWidget*>(GetWindowLongPtr(_hwnd, GWLP_USERDATA));
         }
 
         return windowInstance->fHandleMessage_Internal(_hwnd, _msg, _wParam, _lParam);

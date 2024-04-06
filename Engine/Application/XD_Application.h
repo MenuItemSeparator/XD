@@ -1,18 +1,10 @@
 #pragma once
 
 #include "XDApplication_Minimal.h"
-#include "XD_Window_Widget.h"
+#include "XD_Widget.h"
 
 namespace XD
 {
-
-    enum class XD_ApplicationTerminationReason_Enum
-    {
-        Unknown = 0,
-        ClosedByUser,
-        COUNT
-    };
-
     class XD_ENGINE_API XD_ApplicationConfig final
     {
     public:
@@ -24,9 +16,9 @@ namespace XD
     class XD_ENGINE_API XD_Application_Interface
     {
     public:
-        virtual XD_Result fInitialize() = 0;
-        virtual void fForceTerminate() = 0;
-        virtual XD_ApplicationTerminationReason_Enum fLoop() = 0;
+        virtual X fInitializeX() = 0;
+        virtual X fForceTerminateX() = 0;
+        virtual X fLoopX() = 0;
 
         virtual ~XD_Application_Interface() = default;
     };
@@ -36,7 +28,7 @@ namespace XD
         class XD_ApplicationContext
         {
         public:
-            bool m_requestedTermination : 1;
+            bl m_requestedTermination : 1;
         };
 
     public:
@@ -46,18 +38,18 @@ namespace XD
         XD_Application& operator=(const XD_Application&) = delete;
         virtual ~XD_Application() = default;
 
-        virtual XD_Result fInitialize() override;
-        virtual void fForceTerminate() override;
-        virtual XD_ApplicationTerminationReason_Enum fLoop() override;
+        virtual X fInitializeX() override;
+        virtual X fForceTerminateX() override;
+        virtual X fLoopX() override;
 
     private:
         XD_ApplicationConfig m_config;
         XD_ApplicationContext m_context;
-        SPtr<XD_Window_Widget> m_window;
+        SPtr<XD_Widget> m_window;
 
-        bool fWantsToTerminate() const;
-        XD_Result fTerminateSubsystems();
-        void fTerminateWindow(XD_Window_Widget* _window);
+        bl fWantsToTerminate() const;
+        X fTerminateSubsystemsX();
+        void fTerminateWidget(XD_Widget* _widget);
     };
 
 }

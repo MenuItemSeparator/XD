@@ -1,5 +1,4 @@
 #include "Application/XD_Application.h"
-#include <Common/XD_Library.h>
 
 int main()
 {
@@ -7,22 +6,10 @@ int main()
     applicationConfig.m_displayName = "XD";
 
     XD::XD_Application application{applicationConfig};
-    if(!application.fInitialize())
-    {
-        mLOG("Invalid application initialization");
-        return 1;
-    }
+    X_Call(application.fInitializeX(), "Application initialization error");
 
     mLOG("Main loop started");
-    XD::XD_ApplicationTerminationReason_Enum terminationReason = application.fLoop();
+    X_Call(application.fLoopX(), "Application loop error");
 
-    switch (terminationReason)
-    {
-    case XD::XD_ApplicationTerminationReason_Enum::ClosedByUser:
-        mLOG(applicationConfig.m_displayName << " was closed by user");
-        return 0;
-    default:
-        mLOG(applicationConfig.m_displayName << " has unknown reason of termination");
-        return 1;
-    }
+    return 0;
 }
