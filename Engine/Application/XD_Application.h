@@ -1,7 +1,7 @@
 #pragma once
 
 #include "XDApplication_Minimal.h"
-#include "XD_Widget.h"
+#include "Platform/XDApplication_PlatformSelector.h"
 
 namespace XD
 {

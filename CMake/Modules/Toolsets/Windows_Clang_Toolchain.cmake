@@ -8,6 +8,7 @@ ELSE()
 ENDIF()
 
 set(CMAKE_CXX_COMPILER_ID "Clang")
+add_compile_options("-fno-rtti" "-fno-exceptions")
 
 set(CMAKE_C_COMPILER "C:/LLVM/bin/clang.exe")
 set(CMAKE_RC_COMPILER "C:/LLVM/bin/clang++.exe")

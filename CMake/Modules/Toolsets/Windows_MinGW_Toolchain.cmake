@@ -5,6 +5,7 @@ ELSE()
 ENDIF()
 
 set(CMAKE_CXX_COMPILER_ID "GNU")
+add_compile_options("-fno-rtti" "-fno-exceptions")
 
 set(CMAKE_C_COMPILER "C:/MinGW/bin/gcc.exe")
 set(CMAKE_CXX_COMPILER "C:/MinGW/bin/g++.exe")

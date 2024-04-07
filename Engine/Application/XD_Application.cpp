@@ -29,7 +29,7 @@ namespace XD
         XD_WidgetConfig windowConfig{};
         windowConfig.m_widgetName = m_config.m_displayName;
 
-        m_window = XD_Widget::fCreatePlatformWidget(windowConfig);
+        m_window = std::make_shared<XD_Widget>(windowConfig);
         m_window->fOnWidgetWantsToCloseX().fBind(*this, &XD_Application::fTerminateWidgetX);
 
         X_Call(m_window->fInitializeX(), "Can't initialize window");

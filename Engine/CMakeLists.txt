@@ -48,7 +48,6 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
         target_compile_definitions(XDEngine PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
 endif()
 
-
 if(DEFINED XD_ENGINE_BUILD_TESTS)
 	message("Started to build engine tests")
 	add_subdirectory(Tests)
