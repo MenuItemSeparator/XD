@@ -30,17 +30,17 @@ namespace XD
         windowConfig.m_widgetName = m_config.m_displayName;
 
         m_window = XD_Widget::fCreatePlatformWidget(windowConfig);
-        m_window->fOnWidgetWantsToClose().fBind(*this, &XD_Application::fTerminateWidget);
+        m_window->fOnWidgetWantsToCloseX().fBind(*this, &XD_Application::fTerminateWidgetX);
 
         X_Call(m_window->fInitializeX(), "Can't initialize window");
-        return X::Success();
+        return X::fSuccess();
     }
 
     X
     XD_Application::fForceTerminateX()
     {
         m_context.m_requestedTermination = true;
-        return X::Success();
+        return X::fSuccess();
     }
 
     bl
@@ -65,21 +65,22 @@ namespace XD
 
         X_Call(fTerminateSubsystemsX(), "Error while terminating application subsystems");
 
-        return X::Success();
+        return X::fSuccess();
     }
 
     X
     XD_Application::fTerminateSubsystemsX()
     {
-        return X::Success();
+        return X::fSuccess();
     }
 
-
-    void XD_Application::fTerminateWidget(XD_Widget* _widget)
+    X
+    XD_Application::fTerminateWidgetX(XD_Widget* _widget)
     {
         mLOG("Window " << _widget->fGetWidgetTitleName() << " was terminated");
 
-        X_Call_Void(_widget->fTerminateX(), "Can't terminate widget with title " << _widget->fGetWidgetTitleName());
+        X_Call(_widget->fTerminateX(), "Can't terminate widget with title " << _widget->fGetWidgetTitleName());
         m_context.m_requestedTermination = true;
+        return X::fSuccess();
     }
 }

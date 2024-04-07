@@ -11,6 +11,6 @@ namespace XD
     XD_Engine::fInitializeX()
     {
         m_libraries.push_back(std::make_shared<XD_Library>("SAMPLE_MATH.dll"));
-        return X::Success();
+        return X::fSuccess();
     }
 }

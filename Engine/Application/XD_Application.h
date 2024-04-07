@@ -49,7 +49,7 @@ namespace XD
 
         bl fWantsToTerminate() const;
         X fTerminateSubsystemsX();
-        void fTerminateWidget(XD_Widget* _widget);
+        X fTerminateWidgetX(XD_Widget* _widget);
     };
 
 }

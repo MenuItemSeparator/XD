@@ -39,7 +39,7 @@ XD_WindowsWidget::XD_WindowsWidget(const XD_WidgetConfig& _config) :
         {
             MessageBox(NULL, "Window Registration Failed!", "Error!",
                        MB_ICONEXCLAMATION | MB_OK);
-            return X::Fail();
+            return X::fFail();
         }
 
         m_hwnd = CreateWindowEx
@@ -62,33 +62,33 @@ XD_WindowsWidget::XD_WindowsWidget(const XD_WidgetConfig& _config) :
         {
             MessageBox(NULL, "Window Creation Failed!", "Error!",
                        MB_ICONEXCLAMATION | MB_OK);
-            return X::Fail();
+            return X::fFail();
         }
 
         ShowWindow(m_hwnd, SW_SHOW);
         UpdateWindow(m_hwnd);
 
         mLOG("Created window with title: " << m_config.m_widgetName);
-
-        return X::Success();
+        
+        return X::fSuccess();
     }
 
     X
     XD_WindowsWidget::fTerminateX()
     {
-        if(m_hwnd == NULL) return X::Fail();
+        if(m_hwnd == NULL) return X::fFail();
 
         DestroyWindow(m_hwnd);
         m_hwnd = NULL;
-
-        return X::Success();
+        
+        return X::fSuccess();
     }
 
     X
     XD_WindowsWidget::fUpdateX()
     {
         X_Call(fProcessEventsX(), "Can't process window events");
-        return X::Success();
+        return X::fSuccess();
     }
 
     void*
@@ -109,7 +109,7 @@ XD_WindowsWidget::XD_WindowsWidget(const XD_WidgetConfig& _config) :
         switch (_msg)
         {
         case WM_CLOSE:
-            m_onWidgetWantsToClose.fInvoke(this);
+            X_Call(m_onWidgetWantsToCloseX.fInvoke(this), "Error while terminating window with title " << m_config.m_widgetName);
             return 0;
         case WM_DESTROY:
             PostQuitMessage(NULL);
@@ -131,8 +131,8 @@ XD_WindowsWidget::XD_WindowsWidget(const XD_WidgetConfig& _config) :
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-
-        return X::Success();
+        
+        return X::fSuccess();
     }
 
     LRESULT

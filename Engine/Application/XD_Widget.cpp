@@ -17,7 +17,7 @@ namespace XD
     XD_Widget::XD_Widget(const XD_WidgetConfig &_config) :
         m_config(_config),
         m_onWidgetResized(),
-        m_onWidgetWantsToClose()
+        m_onWidgetWantsToCloseX()
     {}
 
     SPtr<XD_Widget>

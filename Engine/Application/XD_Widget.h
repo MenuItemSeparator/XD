@@ -11,8 +11,8 @@ class XD_ENGINE_API XD_WidgetConfig final
         XD_WidgetConfig();
     };
 
-    using tOnWidgetResizedDelegate = XD_MulticastDelegate<X(u4, u4)>;
-    using tOnWidgetWantsToClose = XD_MulticastDelegate<void(class XD_Widget*)>;
+    using tOnWidgetResizedDelegate = XD_Delegate<X(u4, u4)>;
+    using tOnWidgetWantsToClose = XD_Delegate<X(class XD_Widget*)>;
 
     class XD_ENGINE_API XD_Widget_Interface
     {
@@ -38,13 +38,13 @@ class XD_ENGINE_API XD_WidgetConfig final
         const std::string& fGetWidgetTitleName() const { return m_config.m_widgetName; }
 
         tOnWidgetResizedDelegate& fOnWidgetResized() { return m_onWidgetResized; }
-        tOnWidgetWantsToClose& fOnWidgetWantsToClose() { return m_onWidgetWantsToClose; }
+        tOnWidgetWantsToClose& fOnWidgetWantsToCloseX() { return m_onWidgetWantsToCloseX; }
 
         static SPtr<XD_Widget> fCreatePlatformWidget(const XD_WidgetConfig& _config);
 
     protected:
         tOnWidgetResizedDelegate m_onWidgetResized;
-        tOnWidgetWantsToClose m_onWidgetWantsToClose;
+        tOnWidgetWantsToClose m_onWidgetWantsToCloseX;
 
         XD_WidgetConfig m_config;
     };

@@ -33,24 +33,37 @@ namespace XD
     {
     public:
         X() = delete;
+
         X(i8 _r) : m_result(_r) {}
+
+        static X fSuccess() { return X{A_A}; }
+        static X fFail() { return X{X_X}; }
+
         ~X()
         {
+#ifdef dXD_DEBUG
             if(m_result != XD_RESULT_DISABLED)
             {
                 mXD_ASSERTM(false, "Unhandled X result");
             }
+#endif
         }
 
-        static X Success() { return X{A_A}; }
-        static X Fail() { return X{X_X}; }
-
-        bl fCheck() { i8 tmp = m_result; m_result = XD_RESULT_DISABLED; return tmp >= 0; }
+        bl fCheck()
+        {
+#ifdef dXD_DEBUG
+            i8 tmp = m_result;
+            m_result = XD_RESULT_DISABLED;
+            return tmp >= 0;
+#else
+            return m_result >= 0;
+#endif
+        }
         operator i8() const { return m_result; }
     private:
         i8 m_result;
-
     };
+
 } // ns
 
 class Z
