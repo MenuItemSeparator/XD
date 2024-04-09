@@ -5,6 +5,7 @@
     #define NOWINBASEINTERLOCK
     #include <Windows.h>
     #include "Windows/XD_WindowsWidget.h"
+    #include "Windows/XD_WindowsApplication.h"
 #else
     //Unknown platform
 #endif

@@ -24,7 +24,7 @@ list(APPEND XD_ENGINE_SRC
     ${XD_GRAPHICS_SRC}
     ${XD_APPLICATION_SRC}
     ${XD_COMMON_SRC})
-message(${XD_COMMON_SRC})
+
 list(APPEND XD_ENGINE_HEADERS
     ${XD_SOURCE_HEADERS}
     ${XD_GRAPHICS_HEADERS}
@@ -48,7 +48,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
         target_compile_definitions(XDEngine PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
 endif()
 
-if(DEFINED XD_ENGINE_BUILD_TESTS)
+if(XD_ENGINE_BUILD_TESTS)
 	message("Started to build engine tests")
 	add_subdirectory(Tests)
 endif()

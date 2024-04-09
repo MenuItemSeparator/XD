@@ -35,7 +35,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 endif()
 
 
-if(DEFINED XD_FRAMEWORK_BUILD_TESTS)
+if(XD_FRAMEWORK_BUILD_TESTS)
     message("Started to build framework tests")
     add_subdirectory(Tests)
 endif()

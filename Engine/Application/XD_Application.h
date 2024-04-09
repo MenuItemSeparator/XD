@@ -1,7 +1,5 @@
 #pragma once
-
 #include "XDApplication_Minimal.h"
-#include "Platform/XDApplication_PlatformSelector.h"
 
 namespace XD
 {
@@ -16,64 +14,35 @@ namespace XD
     class XD_ENGINE_API XD_Application_Interface
     {
     public:
-        virtual X fInitializeX() = 0;
-        virtual X fForceTerminateX() = 0;
-        virtual X fLoopX() = 0;
+        virtual X fvInitializeX() = 0;
+        virtual X fvTerminateX() = 0;
 
         virtual ~XD_Application_Interface() = default;
     };
 
-    class XD_ENGINE_API XD_Application : public XD_Application_Interface
+    class XD_ENGINE_API XD_ApplicationContext
     {
-        class XD_ApplicationContext
-        {
-        public:
-            bl m_requestedTermination : 1;
-        };
-
     public:
-        XD_Application();
-        XD_Application(const XD_ApplicationConfig& _config);
-        XD_Application(const XD_Application&) = delete;
-        XD_Application& operator=(const XD_Application&) = delete;
-        virtual ~XD_Application() = default;
+        bl m_requestedTermination : 1;
+    };
 
-        virtual X fInitializeX() override;
-        virtual X fForceTerminateX() override;
-        virtual X fLoopX() override;
+    class XD_Application_Base : public XD_Application_Interface
+    {
+    public:
+        XD_Application_Base(const XD_Application_Base&) = delete;
+        XD_Application_Base& operator=(const XD_Application_Base&) = delete;
 
-    private:
+        X fLoopX() { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
+
+    protected:
         XD_ApplicationConfig m_config;
         XD_ApplicationContext m_context;
-        SPtr<XD_Widget> m_window;
 
-        bl fWantsToTerminate() const;
-        X fTerminateSubsystemsX();
-        X fTerminateWidgetX(XD_Widget* _widget);
-    };
-/*
-    class XD_I
-    {
-    public:
-        virtual void fvStart();
-        virtual void fvEnd();
+        XD_Application_Base(const XD_ApplicationConfig& _config);
+
+        bl fWantsToTerminate() const { mXD_NOT_IMPLEMENTED(); return false; }
+        X fTerminateSubsystemsX() { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
+        X fTerminateWidgetX(class XD_Widget* _widget) { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
     };
 
-    class XD_A_
-    {
-        void Foo() {/*Rize Error*/}
-        void Bar() {/*Rize Error*/}
-    };
-    // Platform
-
-#if (1)
-    class XD_A : public XD_A_
-    {
-        void Foo() {/*Ok*/}
-        void Bar() {/*Ok*/}
-
-        void fStart() {}
-    };
-#endif
-*/
 }
