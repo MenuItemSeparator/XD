@@ -8,5 +8,3 @@
 #else
     //Unknown platform
 #endif
-
-

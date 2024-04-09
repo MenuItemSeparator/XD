@@ -51,5 +51,29 @@ namespace XD
         X fTerminateSubsystemsX();
         X fTerminateWidgetX(XD_Widget* _widget);
     };
+/*
+    class XD_I
+    {
+    public:
+        virtual void fvStart();
+        virtual void fvEnd();
+    };
 
+    class XD_A_
+    {
+        void Foo() {/*Rize Error*/}
+        void Bar() {/*Rize Error*/}
+    };
+    // Platform
+
+#if (1)
+    class XD_A : public XD_A_
+    {
+        void Foo() {/*Ok*/}
+        void Bar() {/*Ok*/}
+
+        void fStart() {}
+    };
+#endif
+*/
 }
