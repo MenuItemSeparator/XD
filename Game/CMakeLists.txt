@@ -14,6 +14,7 @@ include(${XD_GAME_SOURCE_DIRECTORY}/CMakeLists.txt)
 list(APPEND XD_GAME_HEADERS ${XD_ROOT}/Shared)
 
 add_executable(XDGame ${XD_GAME_SRC})
+select_exe_entry_point(XDGame)
 
 #Headers
 target_include_directories(XDGame PRIVATE ${XD_GAME_HEADERS})

@@ -1,11 +1,10 @@
 #pragma once
-
-#include "GameMinimal.h"
+#include "Game_Minimal.h"
 
 class Game
 {
 public:
     Game() {}
     XD::X fRunX();
-    static int main();
+    static int EntryPoint();
 };

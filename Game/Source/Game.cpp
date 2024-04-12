@@ -5,8 +5,14 @@ XD::X Game::fRunX()
     return XD::A_A;
 }
 
-int Game::main()
+int Game::EntryPoint()
 {
-    Game game;
-    return game.fRunX();
+    Game game{};
+    X_Call(game.fRunX(), "Error while running game");
+    return XD::X::fSuccess();
+}
+
+int EntryPoint(int argc, char** argv)
+{
+    return 0;
 }
