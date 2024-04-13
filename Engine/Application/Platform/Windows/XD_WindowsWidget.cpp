@@ -9,16 +9,14 @@ namespace XD
 {
 
     XD_Widget::XD_Widget(const XD_WidgetConfig& _config) :
-        m_hwnd(NULL),
-        m_config(_config),
-        m_onWidgetResizedX(),
-        m_onWidgetWantsToCloseX()
+        XD_Widget_Base(_config),
+        m_hwnd(NULL)
     {
 
     }
 
     X
-    XD_Widget::fInitializeX()
+    XD_Widget::fvInitializeX()
     {
         WNDCLASSEX wc{};
         MSG msg{};
@@ -76,7 +74,7 @@ namespace XD
     }
 
     X
-    XD_Widget::fTerminateX()
+    XD_Widget::fvTerminateX()
     {
         if(m_hwnd == NULL) return X::fFail();
 

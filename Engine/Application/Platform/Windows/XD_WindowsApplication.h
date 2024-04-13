@@ -1,5 +1,6 @@
 #pragma once
 #include "XDEngine_Minimal.h"
+#include "XD_WindowsWidget.h"
 #include "../../XD_Application.h"
 
 namespace XD

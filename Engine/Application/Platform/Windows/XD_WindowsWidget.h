@@ -7,15 +7,14 @@
 
 namespace XD
 {
-    class XD_ENGINE_API XD_Widget
+    class XD_ENGINE_API XD_Widget : public XD_Widget_Base
     {
     public:
         XD_Widget(const XD_WidgetConfig& _config);
-        XD_Widget(const XD_Widget&) = delete;
-        XD_Widget& operator=(const XD_Widget&) = delete;
 
-        X fInitializeX();
-        X fTerminateX();
+        virtual X fvInitializeX() override;
+        virtual X fvTerminateX() override;
+
         X fUpdateX();
         void* fGetWidgetRawPtr();
         bool fIsValid();
@@ -29,9 +28,6 @@ namespace XD
 
     private:
         HWND m_hwnd{};
-        XD_WidgetConfig m_config;
-        tOnWidgetResizedDelegate m_onWidgetResizedX;
-        tOnWidgetWantsToClose m_onWidgetWantsToCloseX;
 
         X fProcessEventsX();
         static LRESULT fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);

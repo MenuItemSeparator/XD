@@ -19,7 +19,7 @@ namespace XD
         m_window = std::make_shared<XD_Widget>(windowConfig);
         m_window->fOnWidgetWantsToCloseX().fBind(*this, &XD_Application::fTerminateWidgetX);
 
-        X_Call(m_window->fInitializeX(), "Can't initialize window");
+        X_Call(m_window->fvInitializeX(), "Can't initialize window");
         return X::fSuccess();
     }
 
@@ -66,7 +66,7 @@ namespace XD
     {
         mLOG("Window " << _widget->fGetWidgetTitleName() << " was terminated");
 
-        X_Call(_widget->fTerminateX(), "Can't terminate widget with title " << _widget->fGetWidgetTitleName());
+        X_Call(_widget->fvTerminateX(), "Can't terminate widget with title " << _widget->fGetWidgetTitleName());
         m_context.m_requestedTermination = true;
         return X::fSuccess();
     }
