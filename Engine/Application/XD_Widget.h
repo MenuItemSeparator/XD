@@ -27,7 +27,6 @@ namespace XD
     class XD_ENGINE_API XD_Widget_Base : public XD_Widget_Interface
     {
     public:
-        XD_Widget_Base(const XD_WidgetConfig& _config);
         XD_Widget_Base(const XD_Widget_Base&) = delete;
         XD_Widget_Base& operator=(const XD_Widget_Base&) = delete;
 
@@ -44,5 +43,7 @@ namespace XD
         XD_WidgetConfig m_config;
         tOnWidgetResizedDelegate m_onWidgetResizedX;
         tOnWidgetWantsToClose m_onWidgetWantsToCloseX;
+
+        XD_Widget_Base(const XD_WidgetConfig& _config);
     };
 }

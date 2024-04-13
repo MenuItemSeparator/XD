@@ -1,5 +1,6 @@
 #include "Main.h"
 #include "Application/Platform/XDApplication_PlatformSelector.h"
+#include "Common/Platform/XDCommon_PlatformSelector.h"
 #include "Common/XD_Utility.h"
 
 int

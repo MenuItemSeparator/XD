@@ -10,7 +10,8 @@ namespace XD
     X
     XD_Engine::fInitializeX()
     {
-        m_libraries.push_back(std::make_shared<XD_Library>("SAMPLE_MATH.dll"));
+        m_libraries.push_back(std::make_shared<XD_Library>());
+        X_Call(m_libraries.back()->fLoadLibraryX("SAMPLE_MATH.dll"), "Can't load sample math lib");
         return X::fSuccess();
     }
 }

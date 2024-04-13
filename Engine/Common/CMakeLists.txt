@@ -1,10 +1,6 @@
 set(XD_ENGINE_COMMON_DIRECTORY ${XD_ENGINE_ROOT_DIRECTORY}/Common)
 
-set(XD_COMMON_SRC "")
-
-if(WIN32)
-    list(APPEND XD_COMMON_SRC ${XD_ENGINE_COMMON_DIRECTORY}/Platform/Windows/XD_LibraryWindows_Implementation.cpp)
-endif()
+set(XD_COMMON_SRC ${XD_ENGINE_COMMON_DIRECTORY}/Platform/XDCommon_PlatformSelector.cpp)
 
 set(XD_COMMON_HEADERS
     ${XD_ENGINE_COMMON_DIRECTORY}

@@ -3,21 +3,31 @@
 
 namespace XD
 {
-    class XD_ENGINE_API XD_Library final
+    class XD_ENGINE_API XD_FuncProc_Base
     {
-        class XD_Library_Impl;
     public:
-        XD_Library();
-        XD_Library(const std::string& _libraryName);
-        ~XD_Library();
+        template <typename T, typename = std::enable_if_t<std::is_function_v<T>>>
+        operator T *() const
+        {
+            mXD_NOT_IMPLEMENTED();
+            return nullptr;
+        }
+    protected:
+        XD_FuncProc_Base() = default;
+    };
 
-        void fLoadXDLibrary(const std::string& _libraryName);
-        XD_Module_Interface* fGetLibraryModule();
-        void fUnloadXDLibrary();
-        bool fIsLoaded() const;
+    class XD_ENGINE_API XD_Library_Base
+    {
+    public:
+        XD_Library_Base(const XD_Library_Base&) = delete;
+        XD_Library_Base& operator=(const XD_Library_Base&) = delete;
 
-    private:
-        UPtr<XD_Library_Impl> m_libraryImplementation;
+        X fLoadLibraryX(const std::string& _libraryName) { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
+        X fUnloadLibraryX() { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
+        bl fIsLoaded() const { mXD_NOT_IMPLEMENTED(); return false; }
+
+    protected:
+        XD_Library_Base() = default;
     };
 
     typedef XD::XD_Module_Interface*(*tCreateModule)();
