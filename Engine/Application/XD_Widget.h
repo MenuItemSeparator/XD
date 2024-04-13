@@ -7,6 +7,7 @@ namespace XD
     {
     public:
         std::string m_widgetName;
+        Vector2u m_widgetStartSize;
 
         XD_WidgetConfig();
     };

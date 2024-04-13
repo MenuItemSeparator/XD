@@ -10,6 +10,7 @@ namespace XD
     using u4 = uint32_t;
     using u8 = uint64_t;
     using f4 = float;
+    using f8 = double;
     using bl = bool;
 
     template<typename T>

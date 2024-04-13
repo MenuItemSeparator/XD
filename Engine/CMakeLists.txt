@@ -39,7 +39,7 @@ endif()
 
 #Headers
 target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
-target_include_directories(XDEngine PUBLIC ${XD_ENGINE_ROOT_DIRECTORY})
+target_include_directories(XDEngine PUBLIC ${XD_ENGINE_ROOT_DIRECTORY} ${XD_ROOT}/Shared)
 
 #Definitions
 target_compile_definitions(XDEngine PRIVATE -DXD_EXPORTING=1)
@@ -49,7 +49,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 endif()
 
 if(XD_ENGINE_BUILD_TESTS)
-	message("Started to build engine tests")
+        message("Started to build engine tests")
 	add_subdirectory(Tests)
 endif()
 

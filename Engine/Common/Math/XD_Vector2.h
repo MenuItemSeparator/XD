@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include "XDMath_Common.h"
 #include "../XD_Types.h"
 
 namespace XD
@@ -59,6 +60,31 @@ namespace XD
     Vector2<T> operator-(const Vector2<T>& _lVector, const Vector2<T>& _rVector)
     {
         return Vector2<T>{_lVector.m_x - _rVector.m_x, _lVector.m_y - _rVector.m_y};
+    }
+
+    template<typename T>
+    Vector2<T> operator*(const Vector2<T>& _vector, const f4 _scalar)
+    {
+        return Vector2<T>{_vector.m_x * _scalar, _vector.m_y * _scalar};
+    }
+
+    template<typename T>
+    Vector2<T> operator/(const Vector2<T>& _vector, const f4 _scalar)
+    {
+        return Vector2<T>{_vector.m_x / _scalar, _vector.m_y / _scalar};
+    }
+
+    template<typename T>
+    bool operator==(const Vector2<T>& _lvector, const Vector2<T>& _rvector)
+    {
+        return fIsNearlyEqual(_lvector.m_x, _rvector.m_x) &&
+               fIsNearlyEqual(_lvector.m_y, _rvector.m_y);
+    }
+
+    template<typename T>
+    bool operator!=(const Vector2<T>& _lvector, const Vector2<T>& _rvector)
+    {
+        return !(_lvector == _rvector);
     }
 
     using Vector2f = Vector2<f4>;

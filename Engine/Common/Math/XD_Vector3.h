@@ -76,6 +76,20 @@ namespace XD
         return Vector3<T>{_lVector.m_x - _rVector.m_x, _lVector.m_y - _rVector.m_y, _lVector.m_z - _rVector.m_z};
     }
 
+    template<typename T>
+    bool operator==(const Vector3<T>& _lvector, const Vector3<T>& _rvector)
+    {
+        return fIsNearlyEqual(_lvector.m_x, _rvector.m_x) &&
+               fIsNearlyEqual(_lvector.m_y, _rvector.m_y) &&
+               fIsNearlyEqual(_lvector.m_z, _rvector.m_z);
+    }
+
+    template<typename T>
+    bool operator!=(const Vector3<T>& _lvector, const Vector3<T>& _rvector)
+    {
+        return !(_lvector == _rvector);
+    }
+
     using Vector3f = Vector3<f4>;
     using Vector3i = Vector3<i8>;
     using Vector3u = Vector3<u8>;
