@@ -2,7 +2,8 @@
 #include "Application/Platform/XDApplication_PlatformSelector.h"
 #include "Common/XD_Utility.h"
 
-int main(int argc, char** argv)
+int
+main(int argc, char** argv)
 {
     XD::XD_ApplicationConfig applicationConfig{};
     applicationConfig.m_displayName = "XD";

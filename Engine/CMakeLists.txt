@@ -45,7 +45,7 @@ target_include_directories(XDEngine PUBLIC ${XD_ENGINE_ROOT_DIRECTORY} ${XD_ROOT
 target_compile_definitions(XDEngine PRIVATE -DXD_EXPORTING=1)
 
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-        target_compile_definitions(XDEngine PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
+        target_compile_definitions(XDEngine PUBLIC -DXD_BUILD_TYPE_DEBUG=1)
 endif()
 
 if(XD_ENGINE_BUILD_TESTS)

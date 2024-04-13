@@ -1,9 +1,9 @@
 include(FindPackageHandleStandardArgs)
 
-find_library(XD_FRAMEWORK_LIBRARY XDFramework HINTS "${CMAKE_PREFIX_PATH}/XDFramework")
+find_library(XD_FRAMEWORK_LIBRARY XDFramework HINTS "${CMAKE_BINARY_DIR}/Framework")
 find_path(XD_FRAMEWORK_MAIN_HEADER_DIR NAMES "XDFramework.h" PATHS "${XD_ROOT_SOURCE_PATH}/Framework")
 
-if (XDFramework_FOUND)
+if (NOT ${XD_FRAMEWORK_LIBRARY} STREQUAL "XD_FRAMEWORK_LIBRARY-NOTFOUND")
     message("===| FOUND XD FRAMEWORK LIB |===")
 endif()
 

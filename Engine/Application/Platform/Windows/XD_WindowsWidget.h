@@ -17,7 +17,7 @@ namespace XD
 
         X fUpdateX();
         void* fGetWidgetRawPtr();
-        bool fIsValid();
+        bl fIsValid();
 
         const std::string& fGetWidgetTitleName() const { return m_config.m_widgetName; }
 

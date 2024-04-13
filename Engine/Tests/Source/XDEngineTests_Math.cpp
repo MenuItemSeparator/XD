@@ -1,11 +1,11 @@
 #include "XDTest_Minimal.h"
+#include "XDEngine_Minimal.h"
 #include "Common/XD_Utility.h"
-#include "Common/XD_Math.h"
-#include <iostream>
 
 namespace XD
 {
-    Emote Test_Abs()
+    X
+    Test_Abs()
     {
         i4 iv1 = 3;
         i4 iv2 = -3;
@@ -16,7 +16,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_IsNearlyEqual()
+    X
+    Test_IsNearlyEqual()
     {
         f4 fv1 = 4.0f;
         f4 fv2 = 12.0f;
@@ -35,7 +36,8 @@ namespace XD
 
     //vec2
 
-    Emote Test_CreateDefaultVector2()
+    X
+    Test_CreateDefaultVector2()
     {
         Vector2f vec{};
         mXD_IS_TRUE(fIsNearlyZero(vec.m_x), "X value of vector2 is not zero by default");
@@ -43,7 +45,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_EqualityVector2()
+    X
+    Test_EqualityVector2()
     {
         Vector2f vec1{1.567f, 12750.87f};
         Vector2f vec2{123.5211f, 1720.3f};
@@ -52,7 +55,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_ArithmeticVector2()
+    X
+    Test_ArithmeticVector2()
     {
         Vector2f vec1{12.0f, -10.0f};
         Vector2f vec2{2.0f, 2.0f};
@@ -64,7 +68,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_NormalizeVector2()
+    X
+    Test_NormalizeVector2()
     {
         Vector2f vec1{123.0f, 63.0f};
         mXD_IS_FALSE(fIsNearlyEqual(vec1.fMagnitude(), 1.0f), "Non 1-length vector has 1 length magnitude");
@@ -72,7 +77,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_DotVector2()
+    X
+    Test_DotVector2()
     {
         Vector2f vec1{1.2f, 3.6f};
         Vector2f vec2{12.1f, 0.6f};
@@ -82,7 +88,8 @@ namespace XD
 
     //vec3
 
-    Emote Test_CreateDefaultVector3()
+    X
+    Test_CreateDefaultVector3()
     {
         Vector3f vec{};
         mXD_IS_TRUE(fIsNearlyZero(vec.m_x), "X value of vector3 is not zero by default");
@@ -90,7 +97,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_EqualityVector3()
+    X
+    Test_EqualityVector3()
     {
         Vector3f vec1{1.567f, 12750.87f, 124.0f};
         Vector3f vec2{123.5211f, 1720.3f, 86547.2f};
@@ -99,7 +107,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_ArithmeticVector3()
+    X
+    Test_ArithmeticVector3()
     {
         Vector3f vec1{12.0f, -10.0f, 5.0f};
         Vector3f vec2{2.0f, 2.0f, 2.0f};
@@ -111,7 +120,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_NormalizeVector3()
+    X
+    Test_NormalizeVector3()
     {
         Vector3f vec1{123.0f, 63.0f, -12.0f};
         mXD_IS_FALSE(fIsNearlyEqual(vec1.fMagnitude(), 1.0f), "Non 1-length vector has 1 length magnitude");
@@ -119,7 +129,8 @@ namespace XD
         return A_A;
     }
 
-    Emote Test_DotVector3()
+    X
+    Test_DotVector3()
     {
         Vector3f vec1{1.2f, 3.6f, 12.3f};
         Vector3f vec2{12.1f, 0.6f, 9.1f};
@@ -129,20 +140,20 @@ namespace XD
 }
 
 
-int main(int argc, char** argv)
+int
+main(int argc, char** argv)
 {
-   int returnValue = 0;
-   returnValue += XD::Test_Abs();
-   returnValue += XD::Test_IsNearlyEqual();
-   returnValue += XD::Test_CreateDefaultVector2();
-   returnValue += XD::Test_EqualityVector2();
-   returnValue += XD::Test_ArithmeticVector2();
-   returnValue += XD::Test_NormalizeVector2();
-   returnValue += XD::Test_DotVector2();
-   returnValue += XD::Test_CreateDefaultVector3();
-   returnValue += XD::Test_EqualityVector3();
-   returnValue += XD::Test_ArithmeticVector3();
-   returnValue += XD::Test_NormalizeVector3();
-   returnValue += XD::Test_DotVector3();
-   return returnValue;
+   X_Call(XD::Test_Abs(), "Abs test failed");
+   X_Call(XD::Test_IsNearlyEqual(), "IsNearly equal test failed");
+   X_Call(XD::Test_CreateDefaultVector2(), "Create vec 2 test failed");
+   X_Call(XD::Test_EqualityVector2(), "Vec 2 equality test failed");
+   X_Call(XD::Test_ArithmeticVector2(), "Vec 2 arithmetic test failed");
+   X_Call(XD::Test_NormalizeVector2(), "Vec 2 normalize test failed");
+   X_Call(XD::Test_DotVector2(), "Vec 2 dot test failed");
+   X_Call(XD::Test_CreateDefaultVector3(), "Vec 3 creation test failed");
+   X_Call(XD::Test_EqualityVector3(), "Vec 3 equality test failed");
+   X_Call(XD::Test_ArithmeticVector3(), "Vec 3 arithmetic test failed");
+   X_Call(XD::Test_NormalizeVector3(), "Vec 3 normalize test failed");
+   X_Call(XD::Test_DotVector3(), "Vec 3 dot test failed");
+   return XD::A_A;
 }

@@ -6,5 +6,5 @@ class Game
 public:
     Game() {}
     XD::X fRunX();
-    static int EntryPoint();
+    static XD::i4 EntryPoint();
 };

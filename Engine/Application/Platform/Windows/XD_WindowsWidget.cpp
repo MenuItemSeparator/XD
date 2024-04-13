@@ -97,7 +97,7 @@ namespace XD
         return &m_hwnd;
     }
 
-    bool
+    bl
     XD_Widget::fIsValid()
     {
         return m_hwnd != 0;
