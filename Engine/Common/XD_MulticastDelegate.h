@@ -25,7 +25,8 @@ namespace XD
         void* m_callable;
 
         template <typename Ret, typename... Args>
-        static void fDisconnectFunction(void* delegate, void* callable)
+        static void
+        fDisconnectFunction(void* delegate, void* callable)
         {
             static_cast<XD_MulticastDelegate<Ret(Args...)>*>(delegate)->fUnbind(static_cast<XD_Callable<Ret(Args...)>*>(callable));
         }
@@ -46,7 +47,8 @@ namespace XD
         XD_MulticastDelegate() = default;
 
         template<typename T>
-        XD_Connection fBind(T& instance, tFnPtr<T> fnPtr)
+        XD_Connection
+        fBind(T& instance, tFnPtr<T> fnPtr)
         {
             XD_Delegate<Ret(Args...)> delegate{};
             m_delegates.push_back(std::move(delegate));
@@ -55,7 +57,8 @@ namespace XD
         }
 
         template<typename T>
-        XD_Connection fBind(T& instance, tConstFnPtr<T> fnPtr)
+        XD_Connection
+        fBind(T& instance, tConstFnPtr<T> fnPtr)
         {
             XD_Delegate<Ret(Args...)> delegate{};
             m_delegates.push_back(std::move(delegate));
@@ -63,7 +66,8 @@ namespace XD
             return XD_Connection{this, m_delegates.back().m_callable.get()};
         }
 
-        void operator()(Args... args)
+        void
+        operator()(Args... args)
         {
             for (XD_Delegate<Ret(Args...)>& delegate : m_delegates)
             {
@@ -71,7 +75,8 @@ namespace XD
             }
         }
 
-        void fInvoke(Args... args)
+        void
+        fInvoke(Args... args)
         {
             for (XD_Delegate<Ret(Args...)>& delegate : m_delegates)
             {
@@ -79,14 +84,16 @@ namespace XD
             }
         }
 
-        bool fIsValid() const { return !m_delegates.empty(); }
+        bl
+        fIsValid() const { return !m_delegates.empty(); }
 
     private:
         using tDelegate = XD_Delegate<Ret(Args...)>;
 
         std::vector<tDelegate> m_delegates;
 
-        void fUnbind(XD_Callable<Ret(Args...)>* callable)
+        void
+        fUnbind(XD_Callable<Ret(Args...)>* callable)
         {
             auto end = m_delegates.end();
             for (auto it = m_delegates.begin(); it != end; ++it)

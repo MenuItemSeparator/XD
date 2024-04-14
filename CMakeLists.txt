@@ -16,6 +16,7 @@ select_toolchain()
 
 project(XD LANGUAGES CXX)
 
+add_subdirectory(${XD_ROOT_SOURCE_PATH}/Thirdparty)
 add_subdirectory(${XD_ROOT_SOURCE_PATH}/Engine)
 add_subdirectory(${XD_ROOT_SOURCE_PATH}/Framework)
 add_subdirectory(${XD_ROOT_SOURCE_PATH}/Game)

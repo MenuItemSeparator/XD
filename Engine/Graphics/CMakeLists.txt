@@ -1,6 +1,8 @@
 set(XD_ENGINE_GRAPHICS_DIRECTORY ${XD_ENGINE_ROOT_DIRECTORY}/Graphics)
 
-set(XD_GRAPHICS_SRC "")
+set(XD_GRAPHICS_SRC
+Graphics/XD_GraphicsApi.cpp
+Graphics/XD_BufferLayout.cpp)
 
 set(XD_GRAPHICS_HEADERS
     ${XD_ENGINE_GRAPHICS_DIRECTORY}

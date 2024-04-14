@@ -29,6 +29,4 @@ namespace XD
     protected:
         XD_Library_Base() = default;
     };
-
-    typedef XD::XD_Module_Interface*(*tCreateModule)();
 }

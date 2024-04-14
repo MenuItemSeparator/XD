@@ -37,13 +37,15 @@ namespace XD
         ~XD_Delegate() = default;
 
         template<typename T>
-        void fBind(T& instance, tFnPtr<T> ptrToFn)
+        void
+        fBind(T& instance, tFnPtr<T> ptrToFn)
         {
             m_callable = std::make_unique<XD_MemFunCallable<T, Ret(Args...)>>(instance, ptrToFn);
         }
 
         template<typename T>
-        void fBind(T& instance, tConstFnPtr<T> ptrToFn)
+        void
+        fBind(T& instance, tConstFnPtr<T> ptrToFn)
         {
             m_callable = std::make_unique<XD_ConstMemFunCallable<T, Ret(Args...)>>(instance, ptrToFn);
         }
@@ -81,13 +83,15 @@ namespace XD
         ~XD_Delegate() = default;
 
         template<typename T>
-        void fBind(T& instance, tFnPtr<T> ptrToFn)
+        void
+        fBind(T& instance, tFnPtr<T> ptrToFn)
         {
             m_callable = std::make_unique<XD_MemFunCallable<T, XD::X(Args...)>>(instance, ptrToFn);
         }
 
         template<typename T>
-        void fBind(T& instance, tConstFnPtr<T> ptrToFn)
+        void
+        fBind(T& instance, tConstFnPtr<T> ptrToFn)
         {
             m_callable = std::make_unique<XD_ConstMemFunCallable<T, XD::X(Args...)>>(instance, ptrToFn);
         }

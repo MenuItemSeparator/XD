@@ -1,6 +1,6 @@
 #pragma once
 #include <cmath>
-#include "../XD_Types.h"
+#include "XDMath_Common.h"
 
 namespace XD
 {
@@ -16,28 +16,32 @@ namespace XD
         Vector3() = default;
         Vector3(T _x, T _y, T _z) : m_x(_x), m_y(_y), m_z(_z) {}
 
-        float fDot(const Vector3<T>& _vector) const;
-        float fMagnitude() const;
+        f4 fDot(const Vector3<T>& _vector) const;
+        f4 fMagnitude() const;
         Vector3<T> fGetNormalized() const;
     };
 
     template<typename T>
-    inline float Vector3<T>::fDot(const Vector3<T>& vector) const
+    dFORCEINLINE
+    f4
+    Vector3<T>::fDot(const Vector3<T>& vector) const
     {
         return m_x * vector.m_x + m_y * vector.m_y + m_z * vector.m_z;
     }
 
     template<typename T>
-    inline float Vector3<T>::fMagnitude() const
+    f4
+    Vector3<T>::fMagnitude() const
     {
-        const float x = static_cast<f4>(m_x);
-        const float y = static_cast<f4>(m_y);
-        const float z = static_cast<f4>(m_z);
+        const f4 x = static_cast<f4>(m_x);
+        const f4 y = static_cast<f4>(m_y);
+        const f4 z = static_cast<f4>(m_z);
         return std::sqrt(x * x + y * y + z * z);
     }
 
     template<typename T>
-    Vector3<T> Vector3<T>::fGetNormalized() const
+    Vector3<T>
+    Vector3<T>::fGetNormalized() const
     {
         const float length = fMagnitude();
 
@@ -53,31 +57,36 @@ namespace XD
     }
 
     template<typename T>
-    Vector3<T> operator+(const Vector3<T>& _lVector, const Vector3<T>& _rVector)
+    dFORCEINLINE Vector3<T>
+    operator+(const Vector3<T>& _lVector, const Vector3<T>& _rVector)
     {
         return Vector3<T>{_lVector.m_x + _rVector.m_x, _lVector.m_y + _rVector.m_y, _lVector.m_z + _rVector.m_z};
     }
 
     template<typename T>
-    Vector3<T> operator*(const Vector3<T>& _vector, const f4 _scalar)
+    dFORCEINLINE Vector3<T>
+    operator*(const Vector3<T>& _vector, const f4 _scalar)
     {
         return Vector3<T>{_vector.m_x * _scalar, _vector.m_y * _scalar, _vector.m_z * _scalar};
     }
 
     template<typename T>
-    Vector3<T> operator/(const Vector3<T>& _vector, const f4 _scalar)
+    dFORCEINLINE Vector3<T>
+    operator/(const Vector3<T>& _vector, const f4 _scalar)
     {
         return Vector3<T>{_vector.m_x / _scalar, _vector.m_y / _scalar, _vector.m_z / _scalar};
     }
 
     template<typename T>
-    Vector3<T> operator-(const Vector3<T>& _lVector, const Vector3<T>& _rVector)
+    dFORCEINLINE Vector3<T>
+    operator-(const Vector3<T>& _lVector, const Vector3<T>& _rVector)
     {
         return Vector3<T>{_lVector.m_x - _rVector.m_x, _lVector.m_y - _rVector.m_y, _lVector.m_z - _rVector.m_z};
     }
 
     template<typename T>
-    bool operator==(const Vector3<T>& _lvector, const Vector3<T>& _rvector)
+    dFORCEINLINE bl
+    operator==(const Vector3<T>& _lvector, const Vector3<T>& _rvector)
     {
         return fIsNearlyEqual(_lvector.m_x, _rvector.m_x) &&
                fIsNearlyEqual(_lvector.m_y, _rvector.m_y) &&
@@ -85,7 +94,8 @@ namespace XD
     }
 
     template<typename T>
-    bool operator!=(const Vector3<T>& _lvector, const Vector3<T>& _rvector)
+    dFORCEINLINE bl
+    operator!=(const Vector3<T>& _lvector, const Vector3<T>& _rvector)
     {
         return !(_lvector == _rvector);
     }

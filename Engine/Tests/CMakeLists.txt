@@ -21,6 +21,7 @@ endmacro()
 
 setup_test_module(XDEngineTests_Math ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_Math.cpp)
 setup_test_module(XDEngineTests_Widget ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_Widget.cpp)
+setup_test_module(XDEngineTests_BufferLayout ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_BufferLayout.cpp)
 
 add_custom_command(TARGET XDEngineTests_Math POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/../XDEngine.dll" "${CMAKE_CURRENT_BINARY_DIR}/")
 install(TARGETS XDEngine DESTINATION ${CMAKE_INSTALL_PREFIX}/XDEngine/Tests)

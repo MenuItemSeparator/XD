@@ -1,7 +1,6 @@
 #pragma once
 #include <cmath>
 #include "XDMath_Common.h"
-#include "../XD_Types.h"
 
 namespace XD
 {
@@ -23,23 +22,26 @@ namespace XD
     };
 
     template<typename T>
-    inline float Vector2<T>::fDot(const Vector2<T>& _vector) const
+    dFORCEINLINE float
+    Vector2<T>::fDot(const Vector2<T>& _vector) const
     {
         return m_x * _vector.m_x + m_y * _vector.m_y;
     }
 
     template<typename T>
-    inline float Vector2<T>::fMagnitude() const
+    f4
+    Vector2<T>::fMagnitude() const
     {
-        const float x = static_cast<f4>(m_x);
-        const float y = static_cast<f4>(m_y);
+        const f4 x = static_cast<f4>(m_x);
+        const f4 y = static_cast<f4>(m_y);
         return std::sqrt(x * x + y * y);
     }
 
     template<typename T>
-    Vector2<T> Vector2<T>::fGetNormalized() const
+    Vector2<T>
+    Vector2<T>::fGetNormalized() const
     {
-        const float length = fMagnitude();
+        const f4 length = fMagnitude();
         if (length <= 0.0f)
         {
             return Vector2<T>{};
@@ -51,38 +53,44 @@ namespace XD
     }
 
     template<typename T>
-    Vector2<T> operator+(const Vector2<T>& _lVector, const Vector2<T>& _rVector)
+    dFORCEINLINE Vector2<T>
+    operator+(const Vector2<T>& _lVector, const Vector2<T>& _rVector)
     {
         return Vector2<T>{_lVector.m_x + _rVector.m_x, _lVector.m_y + _rVector.m_y};
     }
 
     template<typename T>
-    Vector2<T> operator-(const Vector2<T>& _lVector, const Vector2<T>& _rVector)
+    dFORCEINLINE Vector2<T>
+    operator-(const Vector2<T>& _lVector, const Vector2<T>& _rVector)
     {
         return Vector2<T>{_lVector.m_x - _rVector.m_x, _lVector.m_y - _rVector.m_y};
     }
 
     template<typename T>
-    Vector2<T> operator*(const Vector2<T>& _vector, const f4 _scalar)
+    dFORCEINLINE Vector2<T>
+    operator*(const Vector2<T>& _vector, const f4 _scalar)
     {
         return Vector2<T>{_vector.m_x * _scalar, _vector.m_y * _scalar};
     }
 
     template<typename T>
-    Vector2<T> operator/(const Vector2<T>& _vector, const f4 _scalar)
+    dFORCEINLINE Vector2<T>
+    operator/(const Vector2<T>& _vector, const f4 _scalar)
     {
         return Vector2<T>{_vector.m_x / _scalar, _vector.m_y / _scalar};
     }
 
     template<typename T>
-    bool operator==(const Vector2<T>& _lvector, const Vector2<T>& _rvector)
+    dFORCEINLINE bl
+    operator==(const Vector2<T>& _lvector, const Vector2<T>& _rvector)
     {
         return fIsNearlyEqual(_lvector.m_x, _rvector.m_x) &&
                fIsNearlyEqual(_lvector.m_y, _rvector.m_y);
     }
 
     template<typename T>
-    bool operator!=(const Vector2<T>& _lvector, const Vector2<T>& _rvector)
+    dFORCEINLINE bl
+    operator!=(const Vector2<T>& _lvector, const Vector2<T>& _rvector)
     {
         return !(_lvector == _rvector);
     }

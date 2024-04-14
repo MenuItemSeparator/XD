@@ -24,7 +24,7 @@ namespace XD
     const i4 XD_RESULT_FAIL = -1;
     const i4 XD_RESULT_DISABLED = INT_MAX;
 
-    enum Emote
+    enum eEmote
     {
         A_A = XD_RESULT_SUCCESS,
         X_X = XD_RESULT_FAIL
