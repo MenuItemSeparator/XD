@@ -45,6 +45,15 @@ namespace XD
         return X::fSuccess();
     }
 
+    XD_FuncProc XD_Library::fGetProcAddress(const char* _procName)
+    {
+        mXD_ASSERT(m_isLibraryLoaded);
+        FARPROC procPtr = GetProcAddress(m_libraryHandle, _procName);
+        mXD_ASSERT(procPtr != nullptr);
+
+        return XD_FuncProc{ reinterpret_cast<void*>(procPtr) };
+    }
+
     X
     XD_Library::fUnloadLibraryX()
     {

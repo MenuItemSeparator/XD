@@ -26,6 +26,7 @@ namespace XD
         ~XD_Library();
 
         X fLoadLibraryX(const std::string& _libraryName);
+        XD_FuncProc fGetProcAddress(const char* _procName);
         X fUnloadLibraryX();
         bl fIsLoaded() const;
 

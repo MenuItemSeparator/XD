@@ -2,10 +2,14 @@
 #include "Application/Platform/XDApplication_PlatformSelector.h"
 #include "Common/Platform/XDCommon_PlatformSelector.h"
 #include "Common/XD_Utility.h"
+#include "Graphics/GraphicsApi/XD_GraphicsApi_Interface.h"
 
 int
 main(int argc, char** argv)
 {
+    XD::XD_GraphicsApi_Interface* opengl = new XD::XD_OpenGLGraphicsApi();
+    mLOG(opengl->fHelloWorld(22));
+
     XD::XD_ApplicationConfig applicationConfig{};
     applicationConfig.m_displayName = "XD";
 
