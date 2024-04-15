@@ -11,10 +11,10 @@ namespace XD
         OpenGL
     };
 
-    class XD_ENGINE_API XD_LowLevelGraphicsApi
+    class XD_ENGINE_API XD_Renderer
     {
     public:
-        XD_LowLevelGraphicsApi() = default;
+        XD_Renderer() = default;
         X fSwitchGraphicsApi(eGraphicsApiType _apiType);
 
     private:
