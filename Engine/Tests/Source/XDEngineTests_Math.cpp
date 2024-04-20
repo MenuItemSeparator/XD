@@ -171,6 +171,39 @@ namespace XD
         mXD_IS_TRUE((vec1 / 2.0f == Vector4f{6.0f, -5.0f, 2.5f, 0.5f}), "Division of two vectors returned not expected values");
         return A_A;
     }
+
+    X
+    Test_Matrix4Construction()
+    {
+        {
+            Matrix4f matrixf{};
+            mXD_IS_TRUE(
+                fIsNearlyEqual(matrixf[0].m_x, 1.0f) &&
+                fIsNearlyEqual(matrixf[1].m_y, 1.0f) &&
+                fIsNearlyEqual(matrixf[2].m_z, 1.0f) &&
+                fIsNearlyEqual(matrixf[3].m_w, 1.0f), "Matrix initialized with wrong values");
+        }
+
+        {
+            Matrix4f matrixf{1.0f};
+            mXD_IS_TRUE(
+                    fIsNearlyEqual(matrixf[0].m_x, 1.0f) &&
+                    fIsNearlyEqual(matrixf[1].m_y, 1.0f) &&
+                    fIsNearlyEqual(matrixf[2].m_z, 1.0f) &&
+                    fIsNearlyEqual(matrixf[3].m_w, 1.0f), "Matrix initialized with wrong values");
+        }
+
+        {
+            Matrix4f matrixf{{2.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 3.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 4.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 5.0f}};
+            mXD_IS_TRUE(
+                    fIsNearlyEqual(matrixf[0].m_x, 2.0f) &&
+                    fIsNearlyEqual(matrixf[1].m_y, 3.0f) &&
+                    fIsNearlyEqual(matrixf[2].m_z, 4.0f) &&
+                    fIsNearlyEqual(matrixf[3].m_w, 5.0f), "Matrix initialized with wrong values");
+        }
+
+        return A_A;
+    }
 }
 
 
@@ -192,5 +225,6 @@ main(int argc, char** argv)
    X_Call(XD::Test_CreateDefaultVector3(), "Vec 4 creation test failed");
    X_Call(XD::Test_EqualityVector3(), "Vec 4 equality test failed");
    X_Call(XD::Test_ArithmeticVector3(), "Vec 4 arithmetic test failed");
+   X_Call(XD::Test_Matrix4Construction(), "Mat4 construction test failed");
    return XD::A_A;
 }

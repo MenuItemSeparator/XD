@@ -3,7 +3,7 @@
 
 namespace XD
 {
-    class XD_ENGINE_API XD_GraphicsApi_Interface
+class XD_ENGINE_API XD_GraphicsApi
     {
         using tInitializeProcPtr = X(*)(void*);
         using tShutdownProcPtr = X(*)(void*);
@@ -15,10 +15,10 @@ namespace XD
         X fInitializeX();
         X fShutdownX();
 
-        XD_GraphicsApi_Interface() = default;
-        XD_GraphicsApi_Interface(const XD_GraphicsApi_Interface&) = delete;
-        XD_GraphicsApi_Interface& operator=(const XD_GraphicsApi_Interface&) = delete;
-        virtual ~XD_GraphicsApi_Interface() = default;
+        XD_GraphicsApi() = default;
+        XD_GraphicsApi(const XD_GraphicsApi&) = delete;
+        XD_GraphicsApi& operator=(const XD_GraphicsApi&) = delete;
+        virtual ~XD_GraphicsApi() = default;
     protected:
         template<typename T>
         void fBindFunctions_Internal();
@@ -34,7 +34,7 @@ namespace XD
 
     template<typename T>
     void
-    XD_GraphicsApi_Interface::fBindFunctions_Internal()
+    XD_GraphicsApi::fBindFunctions_Internal()
     {
         mXD_CheckMemberFunction(fInitializeX, X(T::*)());
         m_initializeProcPtr = &fInitialize_Base<T>;

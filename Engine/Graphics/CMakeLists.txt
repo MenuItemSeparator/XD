@@ -4,7 +4,7 @@ set(XD_GRAPHICS_SRC
 #OpenGL
 Graphics/GraphicsApi/OpenGL/XD_OpenGLGraphicsApi.cpp
 
-Graphics/XD_GraphicsApi_Interface.cpp
+Graphics/XD_GraphicsApi.cpp
 Graphics/XD_Renderer.cpp
 Graphics/XD_Shader.cpp
 Graphics/XD_BufferLayout.cpp)

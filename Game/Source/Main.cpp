@@ -7,7 +7,7 @@
 int
 main(int argc, char** argv)
 {
-    XD::XD_GraphicsApi_Interface* api = new XD::XD_OpenGLGraphicsApi();
+    XD::XD_GraphicsApi* api = new XD::XD_OpenGLGraphicsApi();
     X_Call(api->fInitializeX(), "DELETE ME");
     X_Call(api->fShutdownX(), "DELETE ME");
 
