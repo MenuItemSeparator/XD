@@ -49,4 +49,12 @@ namespace XD
         X_Call(m_setVector4ProcPtr(this, _name, _value), "Invalid shader set vec4 proc");
         return A_A;
     }
+
+    X
+    XD_Shader::fSetMatrix4fX(const char *_name, const Matrix4f &_value)
+    {
+        mXD_ASSERT(m_setMatrix4ProcPtr);
+        X_Call(m_setMatrix4ProcPtr(this, _name, _value), "Invalid shader set mat4 proc");
+        return A_A;
+    }
 }

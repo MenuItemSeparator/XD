@@ -2,14 +2,12 @@
 #include "Application/Platform/XDApplication_PlatformSelector.h"
 #include "Common/Platform/XDCommon_PlatformSelector.h"
 #include "Common/XD_Utility.h"
-#include "Graphics/GraphicsApi/OpenGL/XD_OpenGLGraphicsApi.h"
+#include "glad.h"
 
 int
 main(int argc, char** argv)
 {
-    XD::XD_GraphicsApi* api = new XD::XD_OpenGLGraphicsApi();
-    X_Call(api->fInitializeX(), "DELETE ME");
-    X_Call(api->fShutdownX(), "DELETE ME");
+    if(!gladLoadGLLoader()
 
     XD::XD_ApplicationConfig applicationConfig{};
     applicationConfig.m_displayName = "XD";

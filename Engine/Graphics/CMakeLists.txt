@@ -3,6 +3,7 @@ set(XD_ENGINE_GRAPHICS_DIRECTORY ${XD_ENGINE_ROOT_DIRECTORY}/Graphics)
 set(XD_GRAPHICS_SRC
 #OpenGL
 Graphics/GraphicsApi/OpenGL/XD_OpenGLGraphicsApi.cpp
+Graphics/GraphicsApi/OpenGL/XD_OpenGLShader.cpp
 
 Graphics/XD_GraphicsApi.cpp
 Graphics/XD_Renderer.cpp
