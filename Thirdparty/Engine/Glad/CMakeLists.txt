@@ -7,9 +7,8 @@ set(GLAD_SRC_DIR ${GLAD_ROOT_DIR}/src)
 set(GLAD_INCLUDE_DIR ${GLAD_ROOT_DIR}/include)
 
 set(GLAD_SOURCES ${GLAD_SRC_DIR}/glad.c)
+add_library(GLAD STATIC ${GLAD_SOURCES})
 
-add_library(GLAD ${GLAD_SOURCES})
-
-target_include_directories(GLAD PRIVATE ${GLAD_INCLUDE_DIR})
+target_include_directories(GLAD PUBLIC ${GLAD_INCLUDE_DIR})
 
 install(TARGETS GLAD DESTINATION "${CMAKE_INSTALL_PREFIX}/Thirdparty")
