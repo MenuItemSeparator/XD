@@ -1,5 +1,6 @@
 #pragma once
 #include "XDEngine.h"
+#include "XDEngine_PlatformSelector.h"
 #include "XD_Log.h"
 
 #ifdef dXD_DEBUG
@@ -39,3 +40,4 @@
     #define mXD_CreateMemberFunctionChecker(FNNAME);
     #define mXD_CheckMemberFunction(FNNAME, FNPROTOTYPE);
 #endif
+
