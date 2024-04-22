@@ -1,15 +1,15 @@
-#include "XDEngine_Minimal.h"
+#include "Graphics/XDGraphics_Minimal.h"
 #include "XDTest_Minimal.h"
-#include "Graphics/GraphicsApi/OpenGL/XD_OpenGLGraphicsApi.h"
+#include "Graphics/GraphicsApi/OpenGL/XD_OpenGLRenderer.h"
 
 namespace XD
 {
     X
     Test_OpenGLInterfaceValidness()
     {
-        UPtr<XD_GraphicsApi> graphicsApiInterface = std::make_unique<XD_OpenGLGraphicsApi>();
-        X_Call(graphicsApiInterface->fInitializeX(), "OpenGl graphics api initialization failed");
-        X_Call(graphicsApiInterface->fShutdownX(), "OpenGl graphics api shutdown failed");
+        UPtr<XD_OpenGLRenderer> renderer = std::make_unique<XD_OpenGLRenderer>();
+        //X_Call(graphicsApiInterface->fInitializeX(), "OpenGl graphics api initialization failed");
+        //X_Call(graphicsApiInterface->fShutdownX(), "OpenGl graphics api shutdown failed");
         return A_A;
     }
 

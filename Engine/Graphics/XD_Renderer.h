@@ -1,24 +1,23 @@
 #pragma once
-#include "XDEngine_Minimal.h"
+#include "XDGraphics_Minimal.h"
 #include "Common/Platform/XDCommon_PlatformSelector.h"
-#include "XD_Library.h"
 
 namespace XD
 {
-    enum class eGraphicsApiType
-    {
-        None,
-        OpenGL
-    };
-
+    //Пока виртуальные, потом девиртуализирую самые часто используемые функции
     class XD_ENGINE_API XD_Renderer
     {
     public:
+        virtual ~XD_Renderer() = default;
+        eRendererType GetRendererType() const { return m_rendererType; }
+
+        virtual X fvInitializeX() = 0;
+        virtual X fvShutdownX() = 0;
+
+    protected:
         XD_Renderer() = default;
-        X fSwitchGraphicsApi(eGraphicsApiType _apiType);
 
     private:
-        XD_Library m_library;
-        eGraphicsApiType m_apiType;
+        eRendererType m_rendererType;
     };
 }
