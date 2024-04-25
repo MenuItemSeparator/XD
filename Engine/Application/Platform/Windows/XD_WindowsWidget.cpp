@@ -23,7 +23,7 @@ namespace XD
         HMODULE hInstance = GetModuleHandle(NULL);
 
         wc.cbSize        = sizeof(WNDCLASSEX);
-        wc.style         = 0;
+        wc.style         = CS_OWNDC;
         wc.lpfnWndProc   = fHandleMessage;
         wc.cbClsExtra    = 0;
         wc.cbWndExtra    = 0;
@@ -69,6 +69,41 @@ namespace XD
         UpdateWindow(m_hwnd);
 
         mLOG("Created window with title: " << m_config.m_widgetName);
+
+        PIXELFORMATDESCRIPTOR pfd =
+        {
+            sizeof(PIXELFORMATDESCRIPTOR),
+            1,
+            PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    // Flags
+            PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
+            32,                   // Colordepth of the framebuffer.
+            0, 0, 0, 0, 0, 0,
+            0,
+            0,
+            0,
+            0, 0, 0, 0,
+            24,                   // Number of bits for the depthbuffer
+            8,                    // Number of bits for the stencilbuffer
+            0,                    // Number of Aux buffers in the framebuffer.
+            PFD_MAIN_PLANE,
+            0,
+            0, 0, 0
+        };
+
+        HDC dc = GetDC(m_hwnd);
+        i4 pixelFormatNum = ChoosePixelFormat(dc, &pfd);
+
+        if(!pixelFormatNum)
+        {
+            mLOG("Unable to choose pixel format");
+            return X::fFail();
+        }
+
+        if(!SetPixelFormat(dc, pixelFormatNum, &pfd))
+        {
+            mLOG("Can't set pixel format to hdc");
+            return X::fFail();
+        }
 
         return X::fSuccess();
     }

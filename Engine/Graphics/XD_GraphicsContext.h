@@ -1,5 +1,6 @@
 #pragma once
 #include "XDGraphics_Minimal.h"
+#include "XD_Renderer.h"
 
 namespace XD
 {

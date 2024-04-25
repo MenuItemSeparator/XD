@@ -2,6 +2,8 @@
 
 #define NOWINBASEINTERLOCK
 #include <Windows.h>
+#include <wingdi.h>
+
 #include "XDEngine_Minimal.h"
 #include "../../XD_Widget.h"
 

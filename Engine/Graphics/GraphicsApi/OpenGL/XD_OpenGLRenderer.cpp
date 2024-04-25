@@ -7,6 +7,8 @@ void* NullLoaderProcPtr(const char *name)
     return nullptr;
 }
 
+typedef HGLRC (tWGLCreateContextProcPtr)(HDC);
+
 namespace XD
 {
     XD_OpenGLRenderer::XD_OpenGLRenderer() :
@@ -16,6 +18,9 @@ namespace XD
     X
     XD_OpenGLRenderer::fvInitializeX()
     {
+
+        X_Call(m_library.fLoadLibraryX("opengl32.dll"), "Error while loading openGL lib");
+        tWGLCreateContextProcPtr* contextCreationProc = m_library.fGetProcAddress("wglCreateContext");
 
         //delete me as soon as possible
         if(false)
@@ -28,13 +33,6 @@ namespace XD
                 return -1;
             }
 
-            typedef HGLRC (tWGLCreateContextProcPtr)(HDC);
-
-            XD::XD_Library lib{};
-            X_Call(lib.fLoadLibraryX("opengl32.dll"), "");
-
-            tWGLCreateContextProcPtr* f = lib.fGetProcAddress("wglCreateContext");
-            mLOG(f);
         }
 
         mLOG("OpenGL renderer initialized successfully");

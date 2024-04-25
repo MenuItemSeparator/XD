@@ -21,6 +21,7 @@ namespace XD
             return X_X;
         }
 
+        X_Call(m_renderer->fvInitializeX(), "Can't initialize target renderer");
         return A_A;
     }
     
