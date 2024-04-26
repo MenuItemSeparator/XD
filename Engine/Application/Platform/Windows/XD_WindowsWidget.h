@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include <wingdi.h>
 
-#include "XDEngine_Minimal.h"
+#include "XD_Engine_Minimal.h"
 #include "../../XD_Widget.h"
 
 namespace XD

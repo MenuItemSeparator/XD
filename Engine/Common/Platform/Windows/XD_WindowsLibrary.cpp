@@ -2,12 +2,6 @@
 
 namespace XD
 {
-    XD_FuncProc::XD_FuncProc(void* _procPtr) :
-        m_procPtr(reinterpret_cast<FARPROC>(_procPtr))
-    {
-
-    }
-
     XD_Library::XD_Library() :
         XD_Library_Base(),
         m_libraryName(),
@@ -45,7 +39,7 @@ namespace XD
         return X::fSuccess();
     }
 
-    XD_FuncProc XD_Library::fGetProcAddress(const char* _procName)
+    XD_FuncProc XD_Library::fvGetProcAddress(const char* _procName)
     {
         mXD_ASSERT(m_isLibraryLoaded);
         FARPROC procPtr = GetProcAddress(m_libraryHandle, _procName);

@@ -20,7 +20,7 @@ namespace XD
     {
 
         X_Call(m_library.fLoadLibraryX("opengl32.dll"), "Error while loading openGL lib");
-        tWGLCreateContextProcPtr* contextCreationProc = m_library.fGetProcAddress("wglCreateContext");
+        tWGLCreateContextProcPtr* contextCreationProc = m_library.fvGetProcAddress("wglCreateContext");
 
         //delete me as soon as possible
         if(false)

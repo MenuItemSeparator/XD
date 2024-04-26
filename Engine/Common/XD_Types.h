@@ -1,7 +1,6 @@
 #pragma once
-
 #include <memory>
-#include "XDEngine.h"
+#include "XD_Engine_Definitions.h"
 
 namespace XD
 {

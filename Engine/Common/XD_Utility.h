@@ -1,6 +1,6 @@
 #pragma once
-#include "XDEngine.h"
-#include "XDEngine_PlatformSelector.h"
+#include "XD_Engine_Definitions.h"
+#include "XD_Engine_PlatformSelector.h"
 #include "XD_Log.h"
 
 #ifdef dXD_DEBUG

@@ -1,19 +1,22 @@
 #pragma once
-#include "XDEngine_Minimal.h"
+#include "XD_Engine_Minimal.h"
 
 namespace XD
 {
-    class XD_ENGINE_API XD_FuncProc_Base
+    class XD_ENGINE_API XD_FuncProc final
     {
     public:
+        XD_FuncProc(void* _procPtr) :
+            m_procPtr(_procPtr)
+        {}
+
         template <typename T, typename = std::enable_if_t<std::is_function_v<T>>>
         operator T *() const
         {
-            mXD_NOT_IMPLEMENTED();
-            return nullptr;
+            return reinterpret_cast<T *>(m_procPtr);
         }
-    protected:
-        XD_FuncProc_Base() = default;
+    private:
+        void* m_procPtr;
     };
 
     class XD_ENGINE_API XD_Library_Base

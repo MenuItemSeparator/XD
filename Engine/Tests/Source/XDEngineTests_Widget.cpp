@@ -1,6 +1,6 @@
-#include "XDEngine_Minimal.h"
+#include "XD_Engine_Minimal.h"
 #include "XDTest_Minimal.h"
-#include "Application/Platform/XDApplication_PlatformSelector.h"
+#include "Application/Platform/XD_Application_PlatformSelector.h"
 #include "Application/XD_Widget.h"
 
 namespace XD

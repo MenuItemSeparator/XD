@@ -1,4 +1,4 @@
-#include "XD_OpenGLPlatform.h"
+#include "XD_OpenGL_PlatformSelector.h"
 
 namespace XD {
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "XDEngine_Minimal.h"
-#include "Common/Platform/XDCommon_PlatformSelector.h"
+#include "XD_Engine_Minimal.h"
+#include "Common/Platform/XD_Common_PlatformSelector.h"
 #include "Common/XD_Library.h"
 
 namespace XD
