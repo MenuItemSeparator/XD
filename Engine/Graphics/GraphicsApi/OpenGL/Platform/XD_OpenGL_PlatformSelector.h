@@ -1,11 +1,13 @@
 #pragma once
+#include "XD_Engine_PlatformSelector.h"
 
-namespace XD
-{
-    class XD_OpenGLPlatform
-    {
-    public:
-        XD_OpenGLPlatform();
-    };
+#ifdef dXD_PLATFORM_WINDOWS
+    #include <Windows.h>
+    #include <wingdi.h>
 
-}
+
+    typedef HGLRC (tWGLCreateContextProcPtr)(HDC);
+    typedef PROC (tGLGetProcAddress)(LPCSTR);
+#else
+//Unknown platform
+#endif

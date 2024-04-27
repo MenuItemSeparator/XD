@@ -1,7 +1,7 @@
 #include "XD_OpenGL_PlatformSelector.h"
 
-namespace XD {
+#ifdef dXD_PLATFORM_WINDOWS
 
-XD_OpenGLPlatform::XD_OpenGLPlatform() {}
-
-} // namespace XD
+#else
+//Unknown platform
+#endif

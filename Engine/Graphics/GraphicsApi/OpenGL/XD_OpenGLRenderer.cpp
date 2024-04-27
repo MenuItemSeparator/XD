@@ -1,4 +1,5 @@
 #include "XD_OpenGLRenderer.h"
+#include "Platform/XD_OpenGL_PlatformSelector.h"
 #include "glad.h"
 
 //delete me
@@ -6,8 +7,6 @@ void* NullLoaderProcPtr(const char *name)
 {
     return nullptr;
 }
-
-typedef HGLRC (tWGLCreateContextProcPtr)(HDC);
 
 namespace XD
 {
