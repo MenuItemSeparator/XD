@@ -1,21 +1,21 @@
-#include "XD_GraphicsContext.h"
-#include "GraphicsApi/OpenGL/XD_OpenGLRenderer.h"
+#include "XD_GraphicsSystem.h"
+
 
 namespace XD
 {
-    XD_GraphicsContext::XD_GraphicsContext() :
+    XD_GraphicsSystem::XD_GraphicsSystem() :
         m_renderer()
     {
 
     }
 
     X
-    XD_GraphicsContext::fInitializeX(const XD_GraphicsConfig& _config)
+    XD_GraphicsSystem::fInitializeX(const XD_GraphicsConfig& _config)
     {
         switch(_config.m_rendererType)
         {
         case eRendererType::OpenGL:
-            m_renderer = XD_OpenGLRenderer::CreateRenderer(); break;
+            return A_A;
         default:
             mLOG("Unknown type of renderer")
             return X_X;
@@ -26,7 +26,7 @@ namespace XD
     }
     
     X
-    XD_GraphicsContext::fShutdownX()
+    XD_GraphicsSystem::fShutdownX()
     {
         return A_A;
     }

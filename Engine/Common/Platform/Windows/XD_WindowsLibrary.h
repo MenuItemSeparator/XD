@@ -17,7 +17,7 @@ namespace XD
         X fUnloadLibraryX();
         bl fIsLoaded() const;
 
-    private:
+    protected:
         std::string m_libraryName;
         HMODULE m_libraryHandle;
         bl m_isLibraryLoaded;

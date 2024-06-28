@@ -1,5 +1,5 @@
 #pragma once
-#include "XDGraphics_Minimal.h"
+#include "XD_Graphics_Minimal.h"
 #include "Common/Platform/XD_Common_PlatformSelector.h"
 
 namespace XD

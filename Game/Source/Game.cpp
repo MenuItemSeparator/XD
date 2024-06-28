@@ -1,15 +1,14 @@
-#include "glad.h"
 #include "Game.h"
-#include "Graphics/XD_GraphicsContext.h"
+#include "Graphics/XD_GraphicsSystem.h"
 
 int Game::fStartup(int argc, const char **argv)
 {
     XD::XD_GraphicsConfig graphicsConfig{};
     graphicsConfig.m_rendererType = XD::eRendererType::OpenGL;
 
-    XD::XD_GraphicsContext graphicsContext{};
-    X_Call(graphicsContext.fInitializeX(graphicsConfig),"");
-    X_Call(graphicsContext.fShutdownX(), "");
+    XD::XD_GraphicsSystem graphicsSystem{};
+    X_Call(graphicsSystem.fInitializeX(graphicsConfig),"");
+    X_Call(graphicsSystem.fShutdownX(), "");
 
     XD::XD_ApplicationConfig applicationConfig{};
     applicationConfig.m_displayName = "XD";

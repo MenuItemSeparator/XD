@@ -12,6 +12,8 @@
             entryPointClass.FuncName(argc, argv); \
             return 0; \
         }
+#else
+    //Unknown platofrm
 #endif
 
 

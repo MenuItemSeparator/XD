@@ -32,7 +32,7 @@ namespace XD
         HWND m_hwnd{};
 
         X fProcessEventsX();
-        static LRESULT fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
+        static LRESULT __stdcall fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
     };
 
 }
