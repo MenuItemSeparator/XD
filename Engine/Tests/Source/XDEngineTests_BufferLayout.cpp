@@ -1,5 +1,5 @@
 #include "XD_Engine_Minimal.h"
-#include "XDTest_Minimal.h"
+#include "XD_Test_Minimal.h"
 #include "Graphics/XD_BufferLayout.h"
 
 namespace XD

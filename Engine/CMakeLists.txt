@@ -42,8 +42,12 @@ target_include_directories(XDEngine PRIVATE ${XD_ENGINE_HEADERS})
 target_include_directories(XDEngine PUBLIC ${XD_ENGINE_ROOT_DIRECTORY} ${XD_ROOT}/Shared)
 
 find_package(GLAD REQUIRED)
+find_package(OpenGL REQUIRED)
+
 target_include_directories(XDEngine PUBLIC ${GLAD_INCLUDE_DIR})
-target_link_libraries(XDEngine PUBLIC GLAD)
+target_link_libraries(XDEngine PUBLIC GLAD ${OPENGL_LIBRARY})
+
+
 
 #Definitions
 target_compile_definitions(XDEngine PUBLIC -DXD_EXPORTING=1)

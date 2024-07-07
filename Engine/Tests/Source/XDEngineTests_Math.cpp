@@ -1,4 +1,4 @@
-#include "XDTest_Minimal.h"
+#include "XD_Test_Minimal.h"
 #include "XD_Engine_Minimal.h"
 #include "Common/XD_Utility.h"
 

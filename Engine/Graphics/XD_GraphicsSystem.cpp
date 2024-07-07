@@ -1,5 +1,5 @@
 #include "XD_GraphicsSystem.h"
-
+#include "./GraphicsApi/OpenGL/XD_OpenGLRenderer.h"
 
 namespace XD
 {
@@ -15,7 +15,7 @@ namespace XD
         switch(_config.m_rendererType)
         {
         case eRendererType::OpenGL:
-            return A_A;
+            m_renderer = XD_OpenGLRenderer::CreateRenderer();
         default:
             mLOG("Unknown type of renderer")
             return X_X;

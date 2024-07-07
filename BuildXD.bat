@@ -40,7 +40,7 @@ echo "===| Started cmake configuration |==="
 echo "====================================="
 
 cmake.exe %root%/%source_directory% ^
--DCMAKE_PREFIX_PATH="%root%/%install_directory%" ^
+-DCMAKE_PREFIX_PATH="%root%/XD" ^
 -DCMAKE_INSTALL_PREFIX= "%root%/%install_directory%" ^
 -DCMAKE_MAKE_PROGRAM=%cmake_generator_path% ^
 -DCMAKE_GENERATOR=%cmake_generator% ^
@@ -60,5 +60,6 @@ if %cmake_generator% == "Visual Studio 17 2022" (
 echo "===================================="
 echo "===| Started build installation |==="
 echo "===================================="
+echo "Installing to " %root%/%install_directory%
 
-cmake.exe --install . --prefix %root%/%install_directory%
+cmake.exe --install . --prefix %root%\\%install_directory%

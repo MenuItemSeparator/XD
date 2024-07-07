@@ -1,21 +1,16 @@
 ﻿{
   "configurations": [
     {
-      "name": "x64-Debug",
+      "name": "x64-Clang-Debug",
       "generator": "Ninja",
       "configurationType": "Debug",
-      "inheritEnvironments": [ "clang_cl_x86" ],
-      "buildRoot": "D:/Projects/CPP/XD_Project/XD_Build",
-      "installRoot": "${projectDir}\\..\\XD_Install",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "variables": [
-        {
-          "name": "CMAKE_MAKE_PROGRAM",
-          "value": "C:/Ninja/ninja.exe",
-          "type": "FILEPATH"
-        }
-      ]
+      "inheritEnvironments": [ "clang_cl_x64_x64" ],
+      "variables": []
     }
   ]
 }
