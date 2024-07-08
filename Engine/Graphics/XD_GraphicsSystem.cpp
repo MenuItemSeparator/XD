@@ -16,6 +16,7 @@ namespace XD
         {
         case eRendererType::OpenGL:
             m_renderer = XD_OpenGLRenderer::CreateRenderer();
+            break;
         default:
             mLOG("Unknown type of renderer")
             return X_X;
