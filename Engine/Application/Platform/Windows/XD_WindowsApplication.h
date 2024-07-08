@@ -1,6 +1,7 @@
 #pragma once
 #include "XD_Engine_Minimal.h"
 #include "XD_WindowsWidget.h"
+#include "Graphics/XD_GraphicsSystem.h"
 #include "../../XD_Application.h"
 
 namespace XD
@@ -17,6 +18,7 @@ namespace XD
 
     private:
         SPtr<XD_Widget> m_window;
+        SPtr<XD_GraphicsSystem> m_graphicsSystem;
 
         bl fWantsToTerminate() const;
         X fTerminateSubsystemsX();

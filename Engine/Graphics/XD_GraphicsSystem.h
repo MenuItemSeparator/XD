@@ -12,6 +12,7 @@ class XD_ENGINE_API XD_GraphicsSystem final
         XD_GraphicsSystem& operator=(const XD_GraphicsSystem&) = delete;
 
         X fInitializeX(const XD_GraphicsConfig& _config);
+        X fSetCurrentContextX(SPtr<XD_Widget> _widget);
         X fShutdownX();
 
     private:

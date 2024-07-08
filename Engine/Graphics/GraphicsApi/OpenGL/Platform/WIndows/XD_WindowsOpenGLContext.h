@@ -1,11 +1,9 @@
 #pragma once
-#include <Windows.h>
-#include <wingdi.h>
+#include "XD_WindowsOpenGLFuncPtr.h"
 #include "../../XD_OpenGLContext.h"
 
 namespace XD
 {
-    typedef HGLRC(tWGLCreateContextProcPtr)(HDC);
 
     class XD_OpenGLSwapChain : public XD_OpenGLSwapChain_Base
     {
@@ -26,20 +24,16 @@ namespace XD
     {
     public:
         XD_OpenGLContext();
+        ~XD_OpenGLContext();
 
-        X fCreateX(u4 _width, u4 _height, u4 _flags) { mXD_NOT_IMPLEMENTED(); return X_X; }
-        X fDestroyX() { mXD_NOT_IMPLEMENTED(); return X_X; }
+        virtual X fvCreateX(XD_Library* _library, void* _hwnd) override;
+        virtual X fvDestroyX(XD_Library* _library) override;
 
-        XD_OpenGLSwapChain* fCreateSwapChain(void* _nwnd) { mXD_NOT_IMPLEMENTED(); return nullptr; }
-        X fDestroySwapChainX(XD_OpenGLSwapChain*  _swapChain) { mXD_NOT_IMPLEMENTED(); return X_X; }
-        X fSwapX(XD_OpenGLSwapChain* _swapChain = nullptr) { mXD_NOT_IMPLEMENTED(); return X_X; }
-        X fMakeCurrentX(XD_OpenGLSwapChain* _swapChain = nullptr) { mXD_NOT_IMPLEMENTED(); return X_X; }
+        virtual XD_OpenGLSwapChain* fvCreateSwapChain(void* _nwnd) override;
+        virtual X fvDestroySwapChainX(XD_OpenGLSwapChain*  _swapChain) override;
 
     private:
-        PIXELFORMATDESCRIPTOR m_pfd;
         XD_OpenGLSwapChain* m_currentSwapChain;
-        XD_Library m_openGLDll;
         HGLRC m_context;
-        HDC m_hdc;
     };
 }

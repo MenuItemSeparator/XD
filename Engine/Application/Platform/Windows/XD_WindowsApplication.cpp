@@ -20,6 +20,15 @@ namespace XD
         m_window->fOnWidgetWantsToCloseX().fBind(*this, &XD_Application::fTerminateWidgetX);
 
         X_Call(m_window->fvInitializeX(), "Can't initialize window");
+
+        m_graphicsSystem = std::make_shared<XD_GraphicsSystem>();
+
+        XD::XD_GraphicsConfig graphicsConfig{};
+        graphicsConfig.m_rendererType = XD::eRendererType::OpenGL;
+
+        X_Call(m_graphicsSystem->fInitializeX(graphicsConfig), "Failed when initializing graphics system");
+        X_Call(m_graphicsSystem->fSetCurrentContextX(m_window), "Failed when setting current context");
+
         return X::fSuccess();
     }
 
@@ -58,6 +67,7 @@ namespace XD
     X
     XD_Application::fTerminateSubsystemsX()
     {
+        X_Call(m_graphicsSystem->fShutdownX(), "Error while terminating graphics system");
         return X::fSuccess();
     }
 

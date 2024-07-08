@@ -3,13 +3,6 @@
 
 int Game::fStartup(int argc, const char **argv)
 {
-    XD::XD_GraphicsConfig graphicsConfig{};
-    graphicsConfig.m_rendererType = XD::eRendererType::OpenGL;
-
-    XD::XD_GraphicsSystem graphicsSystem{};
-    X_Call(graphicsSystem.fInitializeX(graphicsConfig),"");
-    X_Call(graphicsSystem.fShutdownX(), "");
-
     XD::XD_ApplicationConfig applicationConfig{};
     applicationConfig.m_displayName = "XD";
 

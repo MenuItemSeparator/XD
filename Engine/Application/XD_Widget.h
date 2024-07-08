@@ -21,6 +21,8 @@ namespace XD
         virtual X fvInitializeX() = 0;
         virtual X fvTerminateX() = 0;
 
+        virtual void* fvGetWidgetRawPtr() = 0;
+
         virtual ~XD_Widget_Interface() = default;
     };
 
@@ -31,7 +33,6 @@ namespace XD
         XD_Widget_Base& operator=(const XD_Widget_Base&) = delete;
 
         X fUpdateX() { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
-        void* fGetWidgetRawPtr() { mXD_NOT_IMPLEMENTED(); return nullptr; }
         bool fIsValid() { mXD_NOT_IMPLEMENTED(); return false; }
 
         const std::string& fGetWidgetTitleName() const { mXD_NOT_IMPLEMENTED(); return m_config.m_widgetName; }

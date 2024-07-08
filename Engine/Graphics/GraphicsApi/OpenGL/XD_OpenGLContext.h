@@ -10,8 +10,8 @@ namespace XD
     public:
         virtual ~XD_OpenGLSwapChain_Base() = default;
 
-        X fMakeCurrentX() { mXD_NOT_IMPLEMENTED(); return X_X; }
-        X fSwapBuffersX() { mXD_NOT_IMPLEMENTED(); return X_X; }
+        virtual X fvMakeCurrentX() = 0;
+        virtual X fvSwapBuffersX() = 0;
 
     protected:
         XD_OpenGLSwapChain_Base() = default;
@@ -20,15 +20,15 @@ namespace XD
     class XD_ENGINE_API XD_OpenGLContext_Base
     {
     public:
+        XD_OpenGLContext_Base(const XD_OpenGLContext_Base&) = delete;
+        XD_OpenGLContext_Base& operator=(const XD_OpenGLContext_Base&) = delete;
         virtual ~XD_OpenGLContext_Base() = default;
 
-        X fCreateX(u4 _width, u4 _height, u4 _flags) { mXD_NOT_IMPLEMENTED(); return X_X; }
-        X fDestroyX() { mXD_NOT_IMPLEMENTED(); return X_X; }
+        virtual X fvCreateX(XD_Library* _library, void* _hwnd) = 0;
+        virtual X fvDestroyX(XD_Library* _library) = 0;
 
-        XD_OpenGLSwapChain* fCreateSwapChain(void* _nwnd) { mXD_NOT_IMPLEMENTED(); return nullptr; }
-        X fDestroySwapChainX(XD_OpenGLSwapChain*  _swapChain) { mXD_NOT_IMPLEMENTED(); return X_X; }
-        X fSwapX(XD_OpenGLSwapChain* _swapChain = nullptr) { mXD_NOT_IMPLEMENTED(); return X_X; }
-        X fMakeCurrentX(XD_OpenGLSwapChain* _swapChain = nullptr) { mXD_NOT_IMPLEMENTED(); return X_X; }
+        virtual XD_OpenGLSwapChain* fvCreateSwapChain(void* _nwnd) = 0;
+        virtual X fvDestroySwapChainX(XD_OpenGLSwapChain*  _swapChain) = 0;
 
     protected:
         XD_OpenGLContext_Base() = default;

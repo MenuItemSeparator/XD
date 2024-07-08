@@ -1,5 +1,5 @@
 #include "XD_GraphicsSystem.h"
-#include "./GraphicsApi/OpenGL/XD_OpenGLRenderer.h"
+#include "./GraphicsApi/OpenGL/Platform/XD_OpenGL_PlatformSelector.h"
 
 namespace XD
 {
@@ -15,7 +15,7 @@ namespace XD
         switch(_config.m_rendererType)
         {
         case eRendererType::OpenGL:
-            m_renderer = XD_OpenGLRenderer::CreateRenderer();
+            m_renderer = std::make_unique<XD_OpenGLRenderer>();
             break;
         default:
             mLOG("Unknown type of renderer")
@@ -25,7 +25,13 @@ namespace XD
         X_Call(m_renderer->fvInitializeX(), "Can't initialize target renderer");
         return A_A;
     }
-    
+
+    X XD_GraphicsSystem::fSetCurrentContextX(SPtr<XD_Widget> _widget)
+    {
+        X_Call(m_renderer->fvSetCurrentContextX(_widget), "Failed when setting context to renderer");
+        return A_A;
+    }
+
     X
     XD_GraphicsSystem::fShutdownX()
     {

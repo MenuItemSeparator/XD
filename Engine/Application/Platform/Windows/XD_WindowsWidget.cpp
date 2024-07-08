@@ -127,7 +127,7 @@ namespace XD
     }
 
     void*
-    XD_Widget::fGetWidgetRawPtr()
+    XD_Widget::fvGetWidgetRawPtr()
     {
         return &m_hwnd;
     }
