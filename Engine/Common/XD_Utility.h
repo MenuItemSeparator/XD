@@ -3,6 +3,8 @@
 #include "XD_Engine_PlatformSelector.h"
 #include "XD_Log.h"
 
+#define dXD_ATOW(text) L#text
+
 #ifdef dXD_DEBUG
     #define X_Call(func, error_msg) \
         if (!func.fCheck()) \

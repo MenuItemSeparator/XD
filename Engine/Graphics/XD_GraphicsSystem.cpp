@@ -26,12 +26,6 @@ namespace XD
         return A_A;
     }
 
-    X XD_GraphicsSystem::fSetCurrentContextX(SPtr<XD_Window> _window)
-    {
-        X_Call(m_renderer->fvSetCurrentContextX(_window), "Failed when setting context to renderer");
-        return A_A;
-    }
-
     X
     XD_GraphicsSystem::fShutdownX()
     {

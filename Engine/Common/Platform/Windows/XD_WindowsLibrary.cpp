@@ -26,7 +26,7 @@ namespace XD
             return X::fFail();
         }
 
-        m_libraryHandle = LoadLibrary(_libraryName.c_str());
+        m_libraryHandle = LoadLibraryA(_libraryName.c_str());
 
         if(m_libraryHandle == NULL)
         {
@@ -39,7 +39,8 @@ namespace XD
         return X::fSuccess();
     }
 
-    XD_FuncProc XD_Library::fvGetProcAddress(const char* _procName)
+    XD_FuncProc 
+    XD_Library::fvGetProcAddress(const char* _procName)
     {
         mXD_ASSERT(m_isLibraryLoaded);
         FARPROC procPtr = GetProcAddress(m_libraryHandle, _procName);
@@ -71,6 +72,16 @@ namespace XD
     XD_Library::fIsLoaded() const
     {
         return m_isLibraryLoaded;
+    }
+
+    XD_FuncProc 
+    XD_WGL_Library::fvGetProcAddress(const char *_procName)
+    {
+        mXD_ASSERT(m_isLibraryLoaded);
+        FARPROC procPtr = wglGetProcAddress(_procName);
+        mXD_ASSERT(procPtr != nullptr);
+
+        return XD_FuncProc{ reinterpret_cast<void*>(procPtr) };
     }
 
 }

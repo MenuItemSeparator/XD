@@ -1,4 +1,5 @@
 #include "./XD_WindowsWindow.h"
+#include "XD_WindowsWindow.h"
 
 namespace
 {
@@ -32,21 +33,21 @@ namespace XD
         wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
         wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
         wc.lpszMenuName  = NULL;
-        wc.lpszClassName = XD_WINDOW_CLASS_NAME;
+        wc.lpszClassName = m_config.m_windowName.c_str();
         wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
 
         if(!RegisterClassEx(&wc))
         {
-            MessageBox(NULL, "Window Registration Failed!", "Error!",
-                       MB_ICONEXCLAMATION | MB_OK);
+            mLOG("Window class registration failed!");
+            MessageBoxA(NULL, "Window Registration Failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
             return X::fFail();
         }
 
-        m_hwnd = CreateWindowExA
+        m_hwnd = CreateWindowEx
             (
                 WS_EX_CLIENTEDGE,
-                XD_WINDOW_CLASS_NAME,
-                m_config.m_widgetName.c_str(),
+                m_config.m_windowName.c_str(),
+                m_config.m_windowName.c_str(),
                 WS_OVERLAPPEDWINDOW,
                 CW_USEDEFAULT,
                 CW_USEDEFAULT,
@@ -60,6 +61,7 @@ namespace XD
 
         if(m_hwnd == NULL)
         {
+            mLOG("Window Creation Failed!");
             MessageBoxA(NULL, "Window Creation Failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
             return X::fFail();
         }
@@ -67,42 +69,27 @@ namespace XD
         ShowWindow(m_hwnd, SW_SHOW);
         UpdateWindow(m_hwnd);
 
-        mLOG("Created window with title: " << m_config.m_widgetName);
+        mLOG("Created window with title: " << m_config.m_windowName);
 
-        PIXELFORMATDESCRIPTOR pfd =
-        {
-            sizeof(PIXELFORMATDESCRIPTOR),
-            1,
-            PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    // Flags
-            PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
-            32,                   // Colordepth of the framebuffer.
-            0, 0, 0, 0, 0, 0,
-            0,
-            0,
-            0,
-            0, 0, 0, 0,
-            24,                   // Number of bits for the depthbuffer
-            8,                    // Number of bits for the stencilbuffer
-            0,                    // Number of Aux buffers in the framebuffer.
-            PFD_MAIN_PLANE,
-            0,
-            0, 0, 0
-        };
-
-        HDC dc = GetDC(m_hwnd);
-        i4 pixelFormatNum = ChoosePixelFormat(dc, &pfd);
-
-        if(!pixelFormatNum)
-        {
-            mLOG("Unable to choose pixel format");
-            return X::fFail();
-        }
-
-        if(!SetPixelFormat(dc, pixelFormatNum, &pfd))
-        {
-            mLOG("Can't set pixel format to hdc");
-            return X::fFail();
-        }
+        // PIXELFORMATDESCRIPTOR pfd =
+        // {
+        //     sizeof(PIXELFORMATDESCRIPTOR),
+        //     1,
+        //     PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    // Flags
+        //     PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
+        //     32,                   // Colordepth of the framebuffer.
+        //     0, 0, 0, 0, 0, 0,
+        //     0,
+        //     0,
+        //     0,
+        //     0, 0, 0, 0,
+        //     24,                   // Number of bits for the depthbuffer
+        //     8,                    // Number of bits for the stencilbuffer
+        //     0,                    // Number of Aux buffers in the framebuffer.
+        //     PFD_MAIN_PLANE,
+        //     0,
+        //     0, 0, 0
+        // };
 
         return X::fSuccess();
     }
@@ -111,6 +98,8 @@ namespace XD
     XD_Window::fvTerminateX()
     {
         if(m_hwnd == NULL) return X::fFail();
+
+        mLOG("Window with title: " << m_config.m_windowName << " was terminated");
 
         DestroyWindow(m_hwnd);
         m_hwnd = NULL;
@@ -143,7 +132,7 @@ namespace XD
         switch (_msg)
         {
         case WM_CLOSE:
-            X_Call(m_onWidgetWantsToCloseX.fInvoke(this), "Error while terminating window with title " << m_config.m_widgetName);
+            X_Call(m_onWindowWantsToCloseX.fInvoke(this), "Error while terminating window with title " << m_config.m_windowName);
             return 0;
         case WM_DESTROY:
             PostQuitMessage(NULL);
@@ -153,8 +142,27 @@ namespace XD
         return DefWindowProc(_hwnd, _msg, _wParam, _lParam);
     }
 
-    X
-    XD_Window::fProcessEventsX()
+    i4 XD_Window::SetPixelFormatToWindow(const PIXELFORMATDESCRIPTOR &_pfd) const
+    {
+        HDC dc = GetDC(m_hwnd);
+        i4 pixelFormat = ChoosePixelFormat(dc, &_pfd);
+
+        if(!pixelFormat)
+        {
+            mXD_ASSERTM(false, "Failed to find a suitable pixel format")
+            return 0;
+        }
+
+        if(!SetPixelFormat(dc, pixelFormat, &_pfd))
+        {
+            mXD_ASSERTM(false, "Failed to set pixel format")
+            return 0;
+        }
+
+        return pixelFormat;
+    }
+
+    X XD_Window::fProcessEventsX()
     {
         mXD_ASSERT(m_hwnd != 0);
 

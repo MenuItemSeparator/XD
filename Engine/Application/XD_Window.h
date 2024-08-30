@@ -6,7 +6,7 @@ namespace XD
     class XD_ENGINE_API XD_WindowConfig final
     {
     public:
-        std::string m_widgetName;
+        std::string m_windowName;
         Vector2u m_widgetStartSize;
 
         XD_WindowConfig();
@@ -19,11 +19,13 @@ namespace XD
     {
     public:
         virtual X fvInitializeX() = 0;
-        virtual X fvTerminateX() = 0;
 
         virtual void* fvGetWindowRawPtr() = 0;
 
         virtual ~XD_Window_Interface() = default;
+
+    protected:
+        virtual X fvTerminateX() = 0;
     };
 
     class XD_ENGINE_API XD_Window_Base : public XD_Window_Interface
@@ -35,15 +37,15 @@ namespace XD
         X fUpdateX() { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
         bool fIsValid() { mXD_NOT_IMPLEMENTED(); return false; }
 
-        const std::string& fGetWidgetTitleName() const { mXD_NOT_IMPLEMENTED(); return m_config.m_widgetName; }
+        const std::string& fGetWidgetTitleName() const { mXD_NOT_IMPLEMENTED(); return m_config.m_windowName; }
 
-        tOnWindowResizedDelegate& fOnWidgetResized() { mXD_NOT_IMPLEMENTED(); return m_onWidgetResizedX; }
-        tOnWindowWantsToClose& fOnWidgetWantsToCloseX() { mXD_NOT_IMPLEMENTED(); return m_onWidgetWantsToCloseX; }
+        tOnWindowResizedDelegate& fOnWindowResized() { mXD_NOT_IMPLEMENTED(); return m_onWindowResizedX; }
+        tOnWindowWantsToClose& fOnWindowWantsToCloseX() { mXD_NOT_IMPLEMENTED(); return m_onWindowWantsToCloseX; }
 
     protected:
         XD_WindowConfig m_config;
-        tOnWindowResizedDelegate m_onWidgetResizedX;
-        tOnWindowWantsToClose m_onWidgetWantsToCloseX;
+        tOnWindowResizedDelegate m_onWindowResizedX;
+        tOnWindowWantsToClose m_onWindowWantsToCloseX;
 
         XD_Window_Base(const XD_WindowConfig& _config);
     };

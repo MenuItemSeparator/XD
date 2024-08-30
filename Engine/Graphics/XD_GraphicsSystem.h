@@ -4,7 +4,7 @@
 
 namespace XD
 {
-class XD_ENGINE_API XD_GraphicsSystem final
+    class XD_ENGINE_API XD_GraphicsSystem final
     {
     public:
         XD_GraphicsSystem();
@@ -12,7 +12,7 @@ class XD_ENGINE_API XD_GraphicsSystem final
         XD_GraphicsSystem& operator=(const XD_GraphicsSystem&) = delete;
 
         X fInitializeX(const XD_GraphicsConfig& _config);
-        X fSetCurrentContextX(SPtr<XD_Window> _window);
+        XD_Renderer* fGetRenderer() { return m_renderer.get(); }
         X fShutdownX();
 
     private:

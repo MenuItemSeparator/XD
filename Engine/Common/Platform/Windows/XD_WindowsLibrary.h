@@ -1,5 +1,7 @@
 #pragma once
 #include <libloaderapi.h>
+#include <Windows.h>
+#include <wingdi.h>
 #include "XD_Engine_Minimal.h"
 #include "../../XD_Library.h"
 
@@ -21,6 +23,12 @@ namespace XD
         std::string m_libraryName;
         HMODULE m_libraryHandle;
         bl m_isLibraryLoaded;
+    };
+
+    class XD_ENGINE_API XD_WGL_Library : public XD_Library
+    {
+    public:
+        virtual XD_FuncProc fvGetProcAddress(const char* _procName) override;
     };
 
 }

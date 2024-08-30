@@ -7,9 +7,82 @@ namespace XD
         m_displayName("Nameless application")
     {}
 
-    XD_Application_Base::XD_Application_Base(const XD_ApplicationConfig &_config) :
+
+    XD_Application::XD_Application(const XD_ApplicationConfig& _config) :
+        m_window(nullptr),
+        m_graphicsSystem(nullptr),
         m_config(_config),
-        m_context()
+        m_requestedTermination(false)
     {}
+
+    X
+    XD_Application::fvInitializeX()
+    {
+        XD::XD_GraphicsConfig graphicsConfig{};
+        graphicsConfig.m_rendererType = XD::eRendererType::OpenGL;
+
+        m_graphicsSystem = std::make_shared<XD_GraphicsSystem>();
+        X_Call(m_graphicsSystem->fInitializeX(graphicsConfig), "Failed when initializing graphics system");
+
+        XD_WindowConfig windowConfig{};
+        windowConfig.m_windowName = m_config.m_displayName;
+
+        mXD_ASSERT(m_graphicsSystem->fGetRenderer())
+        m_window = m_graphicsSystem->fGetRenderer()->fvCreateWindow(windowConfig);
+        m_window->fOnWindowWantsToCloseX().fBind(*this, &XD_Application::fTerminateWindowX);
+
+        X_Call(m_window->fvInitializeX(), "Can't initialize window");
+
+        return X::fSuccess();
+    }
+
+    X
+    XD_Application::fvTerminateX()
+    {
+        m_requestedTermination = true;
+        return X::fSuccess();
+    }
+
+    bl
+    XD_Application::fWantsToTerminate() const
+    {
+        return m_requestedTermination;
+    }
+
+    X
+    XD_Application::fLoopX()
+    {
+        mXD_ASSERT(m_window);
+
+        mLOG("Game loop start");
+
+        while(!fWantsToTerminate())
+        {
+            X_Call(m_window->fUpdateX(), "Widget update error");
+        }
+
+        mLOG("Requested application termination");
+
+        X_Call(fTerminateSubsystemsX(), "Error while terminating application subsystems");
+
+        return X::fSuccess();
+    }
+
+    X
+    XD_Application::fTerminateSubsystemsX()
+    {
+        X_Call(m_graphicsSystem->fShutdownX(), "Error while terminating graphics system");
+        return X::fSuccess();
+    }
+
+    X
+    XD_Application::fTerminateWindowX(XD_Window* _window)
+    {
+        mLOG("Window " << _window->fGetWidgetTitleName() << " was terminated");
+
+        X_Call(m_graphicsSystem->fGetRenderer()->fvTerminateWindowX(_window), "Can't terminate widget with title " << _window->fGetWidgetTitleName());
+        m_requestedTermination = true;
+        return X::fSuccess();
+    }
 
 }

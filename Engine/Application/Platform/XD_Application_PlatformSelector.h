@@ -5,7 +5,6 @@
     #include <Windows.h>
     #include <wingdi.h>
     #include "Windows/XD_WindowsWindow.h"
-    #include "Windows/XD_WindowsApplication.h"
 #else
     //Unknown platform
 #endif

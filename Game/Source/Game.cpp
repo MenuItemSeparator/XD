@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "Graphics/XD_GraphicsSystem.h"
+#include "Application/XD_Application.h"
 
 int Game::fStartup(int argc, const char **argv)
 {
