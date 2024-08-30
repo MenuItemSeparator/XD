@@ -1,6 +1,6 @@
 #pragma once
 #include "XD_Graphics_Minimal.h"
-#include "Application/XD_Widget.h"
+#include "Application/XD_Window.h"
 #include "Common/Platform/XD_Common_PlatformSelector.h"
 
 namespace XD
@@ -13,7 +13,7 @@ namespace XD
         eRendererType GetRendererType() const { return m_rendererType; }
 
         virtual X fvInitializeX() = 0;
-        virtual X fvSetCurrentContextX(SPtr<XD_Widget> _widget) = 0;
+        virtual X fvSetCurrentContextX(SPtr<XD_Window> _window) = 0;
         virtual X fvShutdownX() = 0;
 
     protected:

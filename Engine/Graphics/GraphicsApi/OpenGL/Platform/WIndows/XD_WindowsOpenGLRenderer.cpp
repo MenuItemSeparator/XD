@@ -21,9 +21,9 @@ namespace XD
     }
 
     X 
-    XD_OpenGLRenderer::fvSetCurrentContextX(SPtr<XD_Widget> _widget)
+    XD_OpenGLRenderer::fvSetCurrentContextX(SPtr<XD_Window> _window)
     {
-        X_Call(m_context->fvCreateX(&m_openGLDll, _widget->fvGetWidgetRawPtr()), "Fail when creating openGL context");
+        X_Call(m_context->fvCreateX(&m_openGLDll, _window->fvGetWindowRawPtr()), "Fail when creating openGL context");
         return A_A;
     }
 

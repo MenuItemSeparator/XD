@@ -20,7 +20,7 @@ macro(setup_test_module target_name test_source)
 endmacro()
 
 setup_test_module(XDEngineTests_Math ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_Math.cpp)
-setup_test_module(XDEngineTests_Widget ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_Widget.cpp)
+setup_test_module(XDEngineTests_Widget ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_Window.cpp)
 setup_test_module(XDEngineTests_BufferLayout ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_BufferLayout.cpp)
 setup_test_module(XDEngineTests_GraphicsApi ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_GraphicsApi.cpp)
 

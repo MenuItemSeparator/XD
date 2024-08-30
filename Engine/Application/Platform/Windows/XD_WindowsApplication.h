@@ -1,6 +1,6 @@
 #pragma once
 #include "XD_Engine_Minimal.h"
-#include "XD_WindowsWidget.h"
+#include "./XD_WindowsWindow.h"
 #include "Graphics/XD_GraphicsSystem.h"
 #include "../../XD_Application.h"
 
@@ -17,12 +17,12 @@ namespace XD
         X fLoopX();
 
     private:
-        SPtr<XD_Widget> m_window;
+        SPtr<XD_Window> m_window;
         SPtr<XD_GraphicsSystem> m_graphicsSystem;
 
         bl fWantsToTerminate() const;
         X fTerminateSubsystemsX();
-        X fTerminateWidgetX(XD_Widget* _widget);
+        X fTerminateWidgetX(XD_Window* _widget);
     };
 }
 

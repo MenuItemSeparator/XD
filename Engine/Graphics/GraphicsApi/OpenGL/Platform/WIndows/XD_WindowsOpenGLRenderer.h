@@ -3,6 +3,7 @@
 #include "Graphics/XD_Renderer.h"
 #include "XD_WindowsOpenGLContext.h"
 #include "Application/Platform/XD_Application_PlatformSelector.h"
+#include "Common/Platform/XD_Common_PlatformSelector.h"
 #include "Common/XD_Library.h"
 
 namespace XD
@@ -13,7 +14,7 @@ namespace XD
         XD_OpenGLRenderer();
         
         virtual X fvInitializeX() override;
-        virtual X fvSetCurrentContextX(SPtr<XD_Widget> _widget) override;
+        virtual X fvSetCurrentContextX(SPtr<XD_Window> _window) override;
         virtual X fvShutdownX() override;
 
     private:

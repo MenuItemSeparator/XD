@@ -42,7 +42,7 @@ namespace XD
 
         bl fWantsToTerminate() const { mXD_NOT_IMPLEMENTED(); return false; }
         X fTerminateSubsystemsX() { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
-        X fTerminateWidgetX(class XD_Widget* _widget) { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
+        X fTerminateWidgetX(class XD_Window* _window) { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
     };
 
 }

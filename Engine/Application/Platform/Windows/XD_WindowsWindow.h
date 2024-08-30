@@ -5,26 +5,26 @@
 #include <wingdi.h>
 
 #include "XD_Engine_Minimal.h"
-#include "../../XD_Widget.h"
+#include "../../XD_Window.h"
 
 namespace XD
 {
-    class XD_ENGINE_API XD_Widget : public XD_Widget_Base
+    class XD_ENGINE_API XD_Window : public XD_Window_Base
     {
     public:
-        XD_Widget(const XD_WidgetConfig& _config);
+        XD_Window(const XD_WindowConfig& _config);
 
         virtual X fvInitializeX() override;
         virtual X fvTerminateX() override;
 
         X fUpdateX();
-        virtual void* fvGetWidgetRawPtr() override;
+        virtual void* fvGetWindowRawPtr() override;
         bl fIsValid();
 
         const std::string& fGetWidgetTitleName() const { return m_config.m_widgetName; }
 
-        tOnWidgetResizedDelegate& fOnWidgetResized() { return m_onWidgetResizedX; }
-        tOnWidgetWantsToClose& fOnWidgetWantsToCloseX() { return m_onWidgetWantsToCloseX; }
+        tOnWindowResizedDelegate& fOnWidgetResized() { return m_onWidgetResizedX; }
+        tOnWindowWantsToClose& fOnWidgetWantsToCloseX() { return m_onWidgetWantsToCloseX; }
 
         LRESULT fHandleMessage_Internal(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
 

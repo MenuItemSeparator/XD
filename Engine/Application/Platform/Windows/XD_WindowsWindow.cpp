@@ -1,4 +1,4 @@
-#include "XD_WindowsWidget.h"
+#include "./XD_WindowsWindow.h"
 
 namespace
 {
@@ -8,15 +8,15 @@ namespace
 namespace XD
 {
 
-    XD_Widget::XD_Widget(const XD_WidgetConfig& _config) :
-        XD_Widget_Base(_config),
+    XD_Window::XD_Window(const XD_WindowConfig& _config) :
+        XD_Window_Base(_config),
         m_hwnd(NULL)
     {
 
     }
 
     X
-    XD_Widget::fvInitializeX()
+    XD_Window::fvInitializeX()
     {
         WNDCLASSEX wc{};
         MSG msg{};
@@ -42,7 +42,7 @@ namespace XD
             return X::fFail();
         }
 
-        m_hwnd = CreateWindowEx
+        m_hwnd = CreateWindowExA
             (
                 WS_EX_CLIENTEDGE,
                 XD_WINDOW_CLASS_NAME,
@@ -60,8 +60,7 @@ namespace XD
 
         if(m_hwnd == NULL)
         {
-            MessageBox(NULL, "Window Creation Failed!", "Error!",
-                       MB_ICONEXCLAMATION | MB_OK);
+            MessageBoxA(NULL, "Window Creation Failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
             return X::fFail();
         }
 
@@ -109,7 +108,7 @@ namespace XD
     }
 
     X
-    XD_Widget::fvTerminateX()
+    XD_Window::fvTerminateX()
     {
         if(m_hwnd == NULL) return X::fFail();
 
@@ -120,26 +119,26 @@ namespace XD
     }
 
     X
-    XD_Widget::fUpdateX()
+    XD_Window::fUpdateX()
     {
         X_Call(fProcessEventsX(), "Can't process window events");
         return X::fSuccess();
     }
 
     void*
-    XD_Widget::fvGetWidgetRawPtr()
+    XD_Window::fvGetWindowRawPtr()
     {
         return &m_hwnd;
     }
 
     bl
-    XD_Widget::fIsValid()
+    XD_Window::fIsValid()
     {
         return m_hwnd != 0;
     }
 
     LRESULT
-    XD_Widget::fHandleMessage_Internal(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
+    XD_Window::fHandleMessage_Internal(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
     {
         switch (_msg)
         {
@@ -155,7 +154,7 @@ namespace XD
     }
 
     X
-    XD_Widget::fProcessEventsX()
+    XD_Window::fProcessEventsX()
     {
         mXD_ASSERT(m_hwnd != 0);
 
@@ -171,13 +170,13 @@ namespace XD
     }
 
     LRESULT
-    XD_Widget::fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
+    XD_Window::fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
     {
-        XD_Widget* windowInstance = nullptr;
+        XD_Window* windowInstance = nullptr;
 
         if (_msg == WM_NCCREATE)
         {
-            windowInstance = static_cast<XD_Widget*>(reinterpret_cast<CREATESTRUCT*>(_lParam)->lpCreateParams);
+            windowInstance = static_cast<XD_Window*>(reinterpret_cast<CREATESTRUCT*>(_lParam)->lpCreateParams);
 
             SetLastError(0);
             if (!SetWindowLongPtr(_hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(windowInstance)))
@@ -187,7 +186,7 @@ namespace XD
         }
         else
         {
-            windowInstance = reinterpret_cast<XD_Widget*>(GetWindowLongPtr(_hwnd, GWLP_USERDATA));
+            windowInstance = reinterpret_cast<XD_Window*>(GetWindowLongPtr(_hwnd, GWLP_USERDATA));
         }
 
         return windowInstance->fHandleMessage_Internal(_hwnd, _msg, _wParam, _lParam);

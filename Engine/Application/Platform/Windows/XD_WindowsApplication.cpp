@@ -1,4 +1,4 @@
-#include "XD_WindowsApplication.h"
+#include "./XD_WindowsApplication.h"
 
 namespace XD
 {
@@ -13,10 +13,10 @@ namespace XD
     X
     XD_Application::fvInitializeX()
     {
-        XD_WidgetConfig windowConfig{};
+        XD_WindowConfig windowConfig{};
         windowConfig.m_widgetName = m_config.m_displayName;
 
-        m_window = std::make_shared<XD_Widget>(windowConfig);
+        m_window = std::make_shared<XD_Window>(windowConfig);
         m_window->fOnWidgetWantsToCloseX().fBind(*this, &XD_Application::fTerminateWidgetX);
 
         X_Call(m_window->fvInitializeX(), "Can't initialize window");
@@ -72,11 +72,11 @@ namespace XD
     }
 
     X
-    XD_Application::fTerminateWidgetX(XD_Widget* _widget)
+    XD_Application::fTerminateWidgetX(XD_Window* _window)
     {
-        mLOG("Window " << _widget->fGetWidgetTitleName() << " was terminated");
+        mLOG("Window " << _window->fGetWidgetTitleName() << " was terminated");
 
-        X_Call(_widget->fvTerminateX(), "Can't terminate widget with title " << _widget->fGetWidgetTitleName());
+        X_Call(_window->fvTerminateX(), "Can't terminate widget with title " << _window->fGetWidgetTitleName());
         m_context.m_requestedTermination = true;
         return X::fSuccess();
     }

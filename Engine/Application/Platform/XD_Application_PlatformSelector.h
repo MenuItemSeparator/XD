@@ -4,7 +4,7 @@
 #ifdef dXD_PLATFORM_WINDOWS
     #include <Windows.h>
     #include <wingdi.h>
-    #include "Windows/XD_WindowsWidget.h"
+    #include "Windows/XD_WindowsWindow.h"
     #include "Windows/XD_WindowsApplication.h"
 #else
     //Unknown platform
