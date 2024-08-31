@@ -142,7 +142,8 @@ namespace XD
         return DefWindowProc(_hwnd, _msg, _wParam, _lParam);
     }
 
-    i4 XD_Window::SetPixelFormatToWindow(const PIXELFORMATDESCRIPTOR &_pfd) const
+    i4 
+    XD_Window::fSetPixelFormatToWindow(const PIXELFORMATDESCRIPTOR &_pfd) const
     {
         HDC dc = GetDC(m_hwnd);
         i4 pixelFormat = ChoosePixelFormat(dc, &_pfd);
@@ -162,7 +163,8 @@ namespace XD
         return pixelFormat;
     }
 
-    X XD_Window::fProcessEventsX()
+    X 
+    XD_Window::fProcessEventsX()
     {
         mXD_ASSERT(m_hwnd != 0);
 

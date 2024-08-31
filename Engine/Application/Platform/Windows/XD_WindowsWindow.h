@@ -11,14 +11,15 @@ namespace XD
 {
     class XD_ENGINE_API XD_Window : public XD_Window_Base
     {
-        friend class XD_Renderer;
     public:
         XD_Window(const XD_WindowConfig& _config);
-        virtual X fvInitializeX() override;
 
         X fUpdateX();
         virtual void* fvGetWindowRawPtr() override;
         bl fIsValid();
+
+        virtual X fvInitializeX() override;
+        virtual X fvTerminateX() override;
 
         const std::string& fGetWidgetTitleName() const { return m_config.m_windowName; }
 
@@ -29,8 +30,8 @@ namespace XD
 
 // WIN ONLY
 
-        HWND GetHWND() const { return m_hwnd; }
-        i4 SetPixelFormatToWindow(const PIXELFORMATDESCRIPTOR& _pfd) const;
+        HWND fGetHWND() const { return m_hwnd; }
+        i4 fSetPixelFormatToWindow(const PIXELFORMATDESCRIPTOR& _pfd) const;
 
 // WIN ONLY END
 
@@ -40,7 +41,6 @@ namespace XD
         X fProcessEventsX();
         static LRESULT __stdcall fHandleMessage(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
 
-        virtual X fvTerminateX() override;
     };
 
 }

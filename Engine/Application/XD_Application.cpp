@@ -31,8 +31,6 @@ namespace XD
         m_window = m_graphicsSystem->fGetRenderer()->fvCreateWindow(windowConfig);
         m_window->fOnWindowWantsToCloseX().fBind(*this, &XD_Application::fTerminateWindowX);
 
-        X_Call(m_window->fvInitializeX(), "Can't initialize window");
-
         return X::fSuccess();
     }
 

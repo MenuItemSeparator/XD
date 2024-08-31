@@ -19,13 +19,11 @@ namespace XD
     {
     public:
         virtual X fvInitializeX() = 0;
+        virtual X fvTerminateX() = 0;
 
         virtual void* fvGetWindowRawPtr() = 0;
 
         virtual ~XD_Window_Interface() = default;
-
-    protected:
-        virtual X fvTerminateX() = 0;
     };
 
     class XD_ENGINE_API XD_Window_Base : public XD_Window_Interface
