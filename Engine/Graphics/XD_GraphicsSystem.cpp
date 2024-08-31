@@ -29,6 +29,23 @@ namespace XD
     X
     XD_GraphicsSystem::fShutdownX()
     {
+        if(!m_renderer) return A_A;
+        
+        X_Call(m_renderer->fvShutdownX(), "Error while shutdown renderer");
+        return A_A;
+    }
+
+    X 
+    XD_GraphicsSystem::fBeginFrameX()
+    {
+        X_Call(m_renderer->fvBeginFrameX(), "Error while begin frame in renderer");
+        return A_A;
+    }
+
+    X 
+    XD_GraphicsSystem::fEndFrameX()
+    {
+        X_Call(m_renderer->fvEndFrameX(), "Error while end frame in renderer");
         return A_A;
     }
 }

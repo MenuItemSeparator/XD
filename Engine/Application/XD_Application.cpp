@@ -56,7 +56,10 @@ namespace XD
 
         while(!fWantsToTerminate())
         {
-            X_Call(m_window->fUpdateX(), "Widget update error");
+            X_Call(m_graphicsSystem->fBeginFrameX(), "Error while begin frame in graphics subsystem");
+            X_Call(m_graphicsSystem->fEndFrameX(), "Error while end frame in graphics subsystem");
+
+            X_Call(m_window->fUpdateX(), "Window update error");
         }
 
         mLOG("Requested application termination");

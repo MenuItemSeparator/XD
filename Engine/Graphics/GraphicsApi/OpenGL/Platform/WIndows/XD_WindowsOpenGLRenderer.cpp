@@ -1,27 +1,8 @@
 #include "XD_WindowsOpenGLRenderer.h"
-#include "glad/glad.h"
 
-namespace
+namespace XD
 {
-    #define WGL_CONTEXT_MAJOR_VERSION_ARB             0x2091
-    #define WGL_CONTEXT_MINOR_VERSION_ARB             0x2092
-    #define WGL_CONTEXT_PROFILE_MASK_ARB              0x9126
-
-    #define WGL_CONTEXT_CORE_PROFILE_BIT_ARB          0x00000001
-
-    #define WGL_DRAW_TO_WINDOW_ARB                    0x2001
-    #define WGL_ACCELERATION_ARB                      0x2003
-    #define WGL_SUPPORT_OPENGL_ARB                    0x2010
-    #define WGL_DOUBLE_BUFFER_ARB                     0x2011
-    #define WGL_PIXEL_TYPE_ARB                        0x2013
-    #define WGL_COLOR_BITS_ARB                        0x2014
-    #define WGL_DEPTH_BITS_ARB                        0x2022
-    #define WGL_STENCIL_BITS_ARB                      0x2023
-
-    #define WGL_FULL_ACCELERATION_ARB                 0x2027
-    #define WGL_TYPE_RGBA_ARB                         0x202B
-
-    XD::i4 gPixelFormatAttribs[] = 
+    static i4 gPixelFormatAttribs[] = 
     {
         WGL_DRAW_TO_WINDOW_ARB,     GL_TRUE,
         WGL_SUPPORT_OPENGL_ARB,     GL_TRUE,
@@ -34,26 +15,19 @@ namespace
         0
     };
 
-    XD::i4 gGLAttribList[] = 
+    static i4 gGLAttribList[] = 
     {
         WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
         WGL_CONTEXT_MINOR_VERSION_ARB, 3,
         WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
         0,
     };
-}
-
-namespace XD
-{
-    static tWGLCreateContextAttribsARB* gWGLCreateContextAttribsARBProc;
-    static tWGLChoosePixelFormatARB* gWGLChoosePixelFormatARBProc;
 
     
     XD_OpenGLContext::XD_OpenGLContext() : 
         m_hwnd(NULL),
         m_context(NULL)
     {
-
     }
 
     XD_OpenGLContext::~XD_OpenGLContext()
@@ -84,7 +58,7 @@ namespace XD
         HGLRC currentContext = wglGetCurrentContext();
         if(currentContext == m_context)
         {
-            fvUnbindX();
+            X_Call(fvUnbindX(), "Error while unbinding gl context");
         }
 
         wglDeleteContext(m_context);
@@ -115,6 +89,15 @@ namespace XD
         return A_A;
     }
 
+    X 
+    XD_OpenGLContext::fvSwapBuffersX()
+    {
+        HDC dc = GetDC(m_hwnd);
+        bl result = SwapBuffers(dc);
+        ReleaseDC(m_hwnd, dc);
+        return result ? A_A : X_X;
+    }
+
     XD_OpenGLRenderer::XD_OpenGLRenderer() :
         m_context(nullptr),
         m_openGLDll()
@@ -125,7 +108,7 @@ namespace XD
     XD_OpenGLRenderer::fvInitializeX()
     {
         X_Call(m_openGLDll.fLoadLibraryX("opengl32.dll"), "Error while loading openGL lib");
-        X_Call(fLoadExtensionsFuncPtrX(), "Error while loading OpenGL extensions");
+        X_Call(fExtractInitialProcsFromDummyContext(), "Error while loading OpenGL initial proc ptrs");
 
         mLOG("OpenGL renderer initialized successfully");
         return A_A;
@@ -161,6 +144,9 @@ namespace XD
 
         m_context = std::make_shared<XD_OpenGLContext>();
         m_context->fCreateX(realWindow->fGetHWND(), gGLAttribList).fCheck();
+        m_context->fvBindX().fCheck();
+
+        fLoadOpenGLExtensionProcPtrX(m_openGLDll).fCheck();
 
         ReleaseDC(realWindow->fGetHWND(), hdc);
         return realWindow;
@@ -175,7 +161,7 @@ namespace XD
     }
 
     X 
-    XD_OpenGLRenderer::fLoadExtensionsFuncPtrX()
+    XD_OpenGLRenderer::fExtractInitialProcsFromDummyContext()
     {
         XD_WindowConfig dummyConfig{};
         dummyConfig.m_windowName = "DummyWindow";
@@ -216,11 +202,7 @@ namespace XD
             return X_X;
         }
 
-        gWGLCreateContextAttribsARBProc = m_openGLDll.fvGetProcAddress("wglCreateContextAttribsARB");
-        mXD_ASSERT(gWGLCreateContextAttribsARBProc);
-
-        gWGLChoosePixelFormatARBProc = m_openGLDll.fvGetProcAddress("wglChoosePixelFormatARB");
-        mXD_ASSERT(gWGLChoosePixelFormatARBProc);
+        X_Call(fLoadOpenGLInitialProcPtrX(), "Error while loading initial openGL proc ptrs");
 
         wglMakeCurrent(dummyDC, NULL);
         wglDeleteContext(dummyContext);
@@ -233,6 +215,19 @@ namespace XD
     XD_OpenGLRenderer::fvShutdownX()
     {
         X_Call(m_openGLDll.fUnloadLibraryX(), "Can't unload open gl library");
+        return A_A;
+    }
+
+    X XD_OpenGLRenderer::fvBeginFrameX()
+    {
+        gSetClearColorProc(1.0f, 0.6f, 0.2f, 1.0f);
+        gClearProc(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        return A_A;
+    }
+
+    X XD_OpenGLRenderer::fvEndFrameX()
+    {
+        X_Call(m_context->fvSwapBuffersX(), "Error while swapping buffers");
         return A_A;
     }
 

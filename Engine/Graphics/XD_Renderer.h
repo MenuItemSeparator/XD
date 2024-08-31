@@ -18,6 +18,9 @@ namespace XD
         virtual X fvTerminateWindowX(XD_Window* _window) = 0;
         virtual X fvShutdownX() = 0;
 
+        virtual X fvBeginFrameX() = 0;
+        virtual X fvEndFrameX() = 0;
+
     protected:
         XD_Renderer() = default;
 

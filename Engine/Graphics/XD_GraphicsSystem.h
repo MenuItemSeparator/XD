@@ -15,6 +15,9 @@ namespace XD
         XD_Renderer* fGetRenderer() { return m_renderer.get(); }
         X fShutdownX();
 
+        X fBeginFrameX();
+        X fEndFrameX();
+
     private:
         UPtr<class XD_Renderer> m_renderer;
     };

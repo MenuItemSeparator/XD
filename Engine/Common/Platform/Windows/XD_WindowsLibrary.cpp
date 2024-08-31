@@ -74,14 +74,4 @@ namespace XD
         return m_isLibraryLoaded;
     }
 
-    XD_FuncProc 
-    XD_WGL_Library::fvGetProcAddress(const char *_procName)
-    {
-        mXD_ASSERT(m_isLibraryLoaded);
-        FARPROC procPtr = wglGetProcAddress(_procName);
-        mXD_ASSERT(procPtr != nullptr);
-
-        return XD_FuncProc{ reinterpret_cast<void*>(procPtr) };
-    }
-
 }

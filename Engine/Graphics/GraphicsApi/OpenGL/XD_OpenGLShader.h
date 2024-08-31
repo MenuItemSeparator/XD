@@ -9,13 +9,13 @@ namespace XD
     public:
         XD_OpenGLShader();
 
-        X fUseX();
-        X fSetFloatX(const char* _name, f4 _value);
-        X fSetIntegerX(const char* _name, i8 _value);
-        X fSetVector2fX(const char* _name, const Vector2f& _value);
-        X fSetVector3fX(const char* _name, const Vector3f& _value);
-        X fSetVector4fX(const char* _name, const Vector4f& _value);
-        X fSetMatrix4X(const char* _name, const Matrix4f& _matrix);
+        virtual X fvUseX() override;
+        virtual X fvSetFloatX(const char* _name, f4 _value) override;
+        virtual X fvSetIntegerX(const char* _name, i8 _value) override;
+        virtual X fvSetVector2fX(const char* _name, const Vector2f& _value) override;
+        virtual X fvSetVector3fX(const char* _name, const Vector3f& _value) override;
+        virtual X fvSetVector4fX(const char* _name, const Vector4f& _value) override;
+        virtual X fvSetMatrix4fX(const char* _name, const Matrix4f& _matrix) override;
     };
 }
 

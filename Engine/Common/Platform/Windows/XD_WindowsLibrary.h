@@ -24,11 +24,4 @@ namespace XD
         HMODULE m_libraryHandle;
         bl m_isLibraryLoaded;
     };
-
-    class XD_ENGINE_API XD_WGL_Library : public XD_Library
-    {
-    public:
-        virtual XD_FuncProc fvGetProcAddress(const char* _procName) override;
-    };
-
 }
