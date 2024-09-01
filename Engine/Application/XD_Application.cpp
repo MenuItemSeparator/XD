@@ -18,18 +18,20 @@ namespace XD
     X
     XD_Application::fvInitializeX()
     {
+        XD_WindowConfig windowConfig{};
+        windowConfig.m_windowName = m_config.m_displayName;
+        m_window = std::make_shared<XD_Window>(windowConfig);
+        X_Call(m_window->fvInitializeX(), "Can't initialize window");
+        m_window->fOnWindowWantsToCloseX().fBind(*this, &XD_Application::fTerminateWindowX);
+
         XD::XD_GraphicsConfig graphicsConfig{};
         graphicsConfig.m_rendererType = XD::eRendererType::OpenGL;
+        graphicsConfig.m_hwnd = m_window->fvGetWindowRawPtr();
 
         m_graphicsSystem = std::make_shared<XD_GraphicsSystem>();
         X_Call(m_graphicsSystem->fInitializeX(graphicsConfig), "Failed when initializing graphics system");
 
-        XD_WindowConfig windowConfig{};
-        windowConfig.m_windowName = m_config.m_displayName;
-
         mXD_ASSERT(m_graphicsSystem->fGetRenderer())
-        m_window = m_graphicsSystem->fGetRenderer()->fvCreateWindow(windowConfig);
-        m_window->fOnWindowWantsToCloseX().fBind(*this, &XD_Application::fTerminateWindowX);
 
         return X::fSuccess();
     }
@@ -81,7 +83,7 @@ namespace XD
     {
         mLOG("Window " << _window->fGetWidgetTitleName() << " was terminated");
 
-        X_Call(m_graphicsSystem->fGetRenderer()->fvTerminateWindowX(_window), "Can't terminate widget with title " << _window->fGetWidgetTitleName());
+        X_Call(m_window->fvTerminateX(), "Can't terminate window with title " << _window->fGetWidgetTitleName());
         m_requestedTermination = true;
         return X::fSuccess();
     }

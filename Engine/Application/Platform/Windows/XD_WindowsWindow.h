@@ -30,7 +30,6 @@ namespace XD
 
 // WIN ONLY
 
-        HWND fGetHWND() const { return m_hwnd; }
         i4 fSetPixelFormatToWindow(const PIXELFORMATDESCRIPTOR& _pfd) const;
 
 // WIN ONLY END

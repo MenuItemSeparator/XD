@@ -17,8 +17,8 @@ namespace XD
 
     static i4 gGLAttribList[] = 
     {
-        WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-        WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+        WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
+        WGL_CONTEXT_MINOR_VERSION_ARB, 6,
         WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
         0,
     };
@@ -41,15 +41,10 @@ namespace XD
         if(!_hwnd) return X_X;
 
         m_hwnd = _hwnd;
+        m_hdc = GetDC(m_hwnd);
+        m_context = gWGLCreateContextAttribsARBProc(m_hdc, NULL, _attribList);
 
-        HDC dc = GetDC(m_hwnd);
-
-        m_context = gWGLCreateContextAttribsARBProc(dc, NULL, _attribList);
-
-        if(!m_context) return X_X;
-
-        ReleaseDC(m_hwnd, dc);
-        return A_A;
+        return m_context ? A_A : X_X;
     }
 
     X 
@@ -70,9 +65,7 @@ namespace XD
     {
         if(!m_hwnd) return X_X;
         
-        HDC dc = GetDC(m_hwnd);
-        wglMakeCurrent(dc, m_context);
-        ReleaseDC(m_hwnd, dc);
+        wglMakeCurrent(m_hdc, m_context);
         
         return A_A;
     }
@@ -82,9 +75,7 @@ namespace XD
     {
         if(!m_hwnd) return X_X;
 
-        HDC dc = GetDC(m_hwnd);
-        wglMakeCurrent(dc, m_context);
-        ReleaseDC(m_hwnd, dc);
+        wglMakeCurrent(m_hdc, m_context);
 
         return A_A;
     }
@@ -92,82 +83,80 @@ namespace XD
     X 
     XD_OpenGLContext::fvSwapBuffersX()
     {
-        HDC dc = GetDC(m_hwnd);
-        bl result = SwapBuffers(dc);
-        ReleaseDC(m_hwnd, dc);
+        bl result = SwapBuffers(m_hdc);
         return result ? A_A : X_X;
     }
 
     XD_OpenGLRenderer::XD_OpenGLRenderer() :
         m_context(nullptr),
-        m_openGLDll()
+        m_openGLDll(),
+        m_pfd()
     {
     }
 
     X 
-    XD_OpenGLRenderer::fvInitializeX()
+    XD_OpenGLRenderer::fvInitializeX(void* _hwnd)
     {
+        HWND hwnd = reinterpret_cast<HWND>(_hwnd);
+
         X_Call(m_openGLDll.fLoadLibraryX("opengl32.dll"), "Error while loading openGL lib");
-        X_Call(fExtractInitialProcsFromDummyContext(), "Error while loading OpenGL initial proc ptrs");
+        X_Call(fExtractInitialProcsFromDummyContextX(), "Error while loading OpenGL initial proc ptrs");
+        X_Call(fCreateValidPixelFormatX(hwnd), "Error while creating valid pixel format");
+        X_Call(fLoadOpenGLExtensionProcPtrX(m_openGLDll), "Error while loading initial gl proc ptrs");
 
         mLOG("OpenGL renderer initialized successfully");
         return A_A;
     }
 
-    SPtr<XD_Window> 
-    XD_OpenGLRenderer::fvCreateWindow(const XD_WindowConfig &_config)
+    X 
+    XD_OpenGLRenderer::fExtractInitialProcsFromDummyContextX()
     {
-        SPtr<XD_Window> realWindow = fCreateWindow_Internal(_config);
-        realWindow->fvInitializeX().fCheck();
+        WNDCLASSEX wc{};
+        MSG msg{};
+        HMODULE hInstance = GetModuleHandle(NULL);
 
-        i4 pixelFormat = 0;
-        u4 numFormats = 0;
+        wc.cbSize        = sizeof(WNDCLASSEX);
+        wc.style         = CS_OWNDC;
+        wc.lpfnWndProc   = DefWindowProc;
+        wc.cbClsExtra    = 0;
+        wc.cbWndExtra    = 0;
+        wc.hInstance     = hInstance;
+        wc.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
+        wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+        wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
+        wc.lpszMenuName  = NULL;
+        wc.lpszClassName = "Dummy_WGL";
+        wc.hIconSm       = LoadIcon(NULL, IDI_APPLICATION);
 
-        HDC hdc = GetDC(realWindow->fGetHWND());
-        gWGLChoosePixelFormatARBProc(hdc, gPixelFormatAttribs, NULL, 1, &pixelFormat, &numFormats);
-
-        if(!numFormats)
+        if(!RegisterClassEx(&wc))
         {
-            mXD_ASSERTM(false, "Failed to choose opengl pixel format");
-            return nullptr;
+            mLOG("Dummy window class registration failed!");
+            MessageBoxA(NULL, "Window Registration Failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+            return X_X;
         }
 
+        HWND dummyHwnd = CreateWindowEx
+            (
+                WS_EX_CLIENTEDGE,
+                wc.lpszClassName,
+                "Dummy openGL window",
+                WS_OVERLAPPEDWINDOW,
+                CW_USEDEFAULT,
+                CW_USEDEFAULT,
+                640,
+                360,
+                NULL,
+                NULL,
+                hInstance,
+                this
+                );
 
-        PIXELFORMATDESCRIPTOR pfd{};
-        DescribePixelFormat(hdc, pixelFormat, sizeof(pfd), &pfd);
-
-        if(!SetPixelFormat(hdc, pixelFormat, &pfd))
+        if(dummyHwnd == NULL)
         {
-            mXD_ASSERTM(false, "Failed to set opengl pixel format");
-            return nullptr;
+            mLOG("Window Creation Failed!");
+            MessageBoxA(NULL, "Window Creation Failed!", "Error!", MB_ICONEXCLAMATION | MB_OK);
+            return X::fFail();
         }
-
-        m_context = std::make_shared<XD_OpenGLContext>();
-        m_context->fCreateX(realWindow->fGetHWND(), gGLAttribList).fCheck();
-        m_context->fvBindX().fCheck();
-
-        fLoadOpenGLExtensionProcPtrX(m_openGLDll).fCheck();
-
-        ReleaseDC(realWindow->fGetHWND(), hdc);
-        return realWindow;
-    }
-
-    X 
-    XD_OpenGLRenderer::fvTerminateWindowX(XD_Window* _window)
-    {
-        mXD_ASSERT(_window);
-        X_Call(fTerminateWindow_Internal(_window), "Can't terminate window");
-        return A_A;
-    }
-
-    X 
-    XD_OpenGLRenderer::fExtractInitialProcsFromDummyContext()
-    {
-        XD_WindowConfig dummyConfig{};
-        dummyConfig.m_windowName = "DummyWindow";
-
-        SPtr<XD_Window> dummyWindow = fCreateWindow_Internal(dummyConfig);
-        X_Call(dummyWindow->fvInitializeX(), "Can't initialize dummy window");
 
         PIXELFORMATDESCRIPTOR dummyPFD = {
             .nSize = sizeof(dummyPFD),
@@ -181,13 +170,21 @@ namespace XD
             .iLayerType = PFD_MAIN_PLANE,
         };
 
-        if(!dummyWindow->fSetPixelFormatToWindow(dummyPFD))
+        HDC dummyDC = GetDC(dummyHwnd);
+        i4 pixelFormat = ChoosePixelFormat(dummyDC, &dummyPFD);
+
+        if(!pixelFormat)
         {
-            mXD_ASSERTM(false, "Can't set pixel format to dummy window");
-            return X_X;
+            mXD_ASSERTM(false, "Failed to find a suitable pixel format")
+            return 0;
         }
 
-        HDC dummyDC = GetDC(dummyWindow->fGetHWND());
+        if(!SetPixelFormat(dummyDC, pixelFormat, &dummyPFD))
+        {
+            mXD_ASSERTM(false, "Failed to set pixel format")
+            return 0;
+        }
+
         HGLRC dummyContext = wglCreateContext(dummyDC);
 
         if (!dummyContext) 
@@ -206,8 +203,45 @@ namespace XD
 
         wglMakeCurrent(dummyDC, NULL);
         wglDeleteContext(dummyContext);
-        ReleaseDC(dummyWindow->fGetHWND(), dummyDC);
-        X_Call(fTerminateWindow_Internal(dummyWindow.get()), "Can't terminate dummy window.");
+        ReleaseDC(dummyHwnd, dummyDC);
+        DeleteDC(dummyDC);
+        DestroyWindow(dummyHwnd);
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fCreateValidPixelFormatX(HWND _hwnd)
+    {
+        i4 pixelFormat = 0;
+        u4 numFormats = 0;
+
+        HDC hdc = GetDC(_hwnd);
+        gWGLChoosePixelFormatARBProc(hdc, gPixelFormatAttribs, NULL, 1, &pixelFormat, &numFormats);
+
+        if(!numFormats)
+        {
+            mXD_ASSERTM(false, "Failed to choose opengl pixel format");
+            return X_X;
+        }
+
+        DescribePixelFormat(hdc, pixelFormat, sizeof(m_pfd), &m_pfd);
+
+        if(!pixelFormat)
+        {
+            mXD_ASSERTM(false, "Failed to find a suitable pixel format")
+            return 0;
+        }
+
+        if(!SetPixelFormat(hdc, pixelFormat, &m_pfd))
+        {
+            mXD_ASSERTM(false, "Failed to set pixel format")
+            return 0;
+        }
+
+        m_context = std::make_shared<XD_OpenGLContext>();
+        X_Call(m_context->fCreateX(_hwnd, gGLAttribList), "Can't create opengl context wrapper");
+        X_Call(m_context->fvBindX(), "Can't bind open gl context");
+
         return A_A;
     }
 

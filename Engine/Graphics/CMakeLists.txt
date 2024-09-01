@@ -5,7 +5,6 @@ set(XD_GRAPHICS_SRC
 Graphics/GraphicsApi/OpenGL/Platform/XD_OpenGL_PlatformSelector.cpp
 Graphics/GraphicsApi/OpenGL/XD_OpenGLShader.cpp
 
-Graphics/XD_Renderer.cpp
 Graphics/XD_GraphicsSystem.cpp
 Graphics/XD_BufferLayout.cpp)
 

@@ -71,26 +71,6 @@ namespace XD
 
         mLOG("Created window with title: " << m_config.m_windowName);
 
-        // PIXELFORMATDESCRIPTOR pfd =
-        // {
-        //     sizeof(PIXELFORMATDESCRIPTOR),
-        //     1,
-        //     PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    // Flags
-        //     PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
-        //     32,                   // Colordepth of the framebuffer.
-        //     0, 0, 0, 0, 0, 0,
-        //     0,
-        //     0,
-        //     0,
-        //     0, 0, 0, 0,
-        //     24,                   // Number of bits for the depthbuffer
-        //     8,                    // Number of bits for the stencilbuffer
-        //     0,                    // Number of Aux buffers in the framebuffer.
-        //     PFD_MAIN_PLANE,
-        //     0,
-        //     0, 0, 0
-        // };
-
         return X::fSuccess();
     }
 
@@ -101,6 +81,9 @@ namespace XD
 
         mLOG("Window with title: " << m_config.m_windowName << " was terminated");
 
+        HDC hdc = GetDC(m_hwnd);
+        ReleaseDC(m_hwnd, hdc);
+        DeleteDC(hdc);
         DestroyWindow(m_hwnd);
         m_hwnd = NULL;
 
@@ -117,7 +100,7 @@ namespace XD
     void*
     XD_Window::fvGetWindowRawPtr()
     {
-        return &m_hwnd;
+        return m_hwnd;
     }
 
     bl

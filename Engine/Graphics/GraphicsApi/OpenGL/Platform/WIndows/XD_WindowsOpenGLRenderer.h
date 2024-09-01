@@ -22,6 +22,7 @@ namespace XD
 
     private:
         HWND m_hwnd;
+        HDC m_hdc;
         HGLRC m_context;
     };
 
@@ -30,9 +31,7 @@ namespace XD
     public:
         XD_OpenGLRenderer();
         
-        virtual X fvInitializeX() override;
-        virtual SPtr<XD_Window> fvCreateWindow(const XD_WindowConfig& _config) override;
-        virtual X fvTerminateWindowX(XD_Window* _window) override;
+        virtual X fvInitializeX(void* _hwnd) override;
         virtual X fvShutdownX() override;
 
         virtual X fvBeginFrameX() override;
@@ -41,7 +40,9 @@ namespace XD
     private:
         SPtr<XD_OpenGLContext> m_context;
         XD_Library m_openGLDll;
+        PIXELFORMATDESCRIPTOR m_pfd;
 
-        X fExtractInitialProcsFromDummyContext();
+        X fExtractInitialProcsFromDummyContextX();
+        X fCreateValidPixelFormatX(HWND _hwnd);
     };
 }

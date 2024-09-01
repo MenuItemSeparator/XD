@@ -13,9 +13,7 @@ namespace XD
         virtual ~XD_Renderer() = default;
         eRendererType GetRendererType() const { return m_rendererType; }
 
-        virtual X fvInitializeX() = 0;
-        virtual SPtr<XD_Window> fvCreateWindow(const XD_WindowConfig& _config) = 0;
-        virtual X fvTerminateWindowX(XD_Window* _window) = 0;
+        virtual X fvInitializeX(void* _hwnd) = 0;
         virtual X fvShutdownX() = 0;
 
         virtual X fvBeginFrameX() = 0;
@@ -23,9 +21,6 @@ namespace XD
 
     protected:
         XD_Renderer() = default;
-
-        SPtr<XD_Window> fCreateWindow_Internal(const XD_WindowConfig& _config);
-        X fTerminateWindow_Internal(XD_Window* _window);
 
     private:
         eRendererType m_rendererType;
