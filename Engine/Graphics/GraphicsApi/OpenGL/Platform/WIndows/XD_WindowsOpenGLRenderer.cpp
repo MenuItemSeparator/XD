@@ -32,7 +32,7 @@ namespace XD
 
     XD_OpenGLContext::~XD_OpenGLContext()
     {
-        fvDestroyX().fCheck();
+        fDestroyX().fCheck();
     }
 
     X 
@@ -48,12 +48,12 @@ namespace XD
     }
 
     X 
-    XD_OpenGLContext::fvDestroyX()
+    XD_OpenGLContext::fDestroyX()
     {
         HGLRC currentContext = wglGetCurrentContext();
         if(currentContext == m_context)
         {
-            X_Call(fvUnbindX(), "Error while unbinding gl context");
+            X_Call(fUnbindX(), "Error while unbinding gl context");
         }
 
         wglDeleteContext(m_context);
@@ -61,7 +61,7 @@ namespace XD
     }
 
     X 
-    XD_OpenGLContext::fvBindX()
+    XD_OpenGLContext::fBindX()
     {
         if(!m_hwnd) return X_X;
         
@@ -71,7 +71,7 @@ namespace XD
     }
 
     X 
-    XD_OpenGLContext::fvUnbindX()
+    XD_OpenGLContext::fUnbindX()
     {
         if(!m_hwnd) return X_X;
 
@@ -81,10 +81,9 @@ namespace XD
     }
 
     X 
-    XD_OpenGLContext::fvSwapBuffersX()
+    XD_OpenGLContext::fSwapBuffersX()
     {
-        bl result = SwapBuffers(m_hdc);
-        return result ? A_A : X_X;
+        return SwapBuffers(m_hdc) ? A_A : X_X;
     }
 
     XD_OpenGLRenderer::XD_OpenGLRenderer() :
@@ -240,7 +239,7 @@ namespace XD
 
         m_context = std::make_shared<XD_OpenGLContext>();
         X_Call(m_context->fCreateX(_hwnd, gGLAttribList), "Can't create opengl context wrapper");
-        X_Call(m_context->fvBindX(), "Can't bind open gl context");
+        X_Call(m_context->fBindX(), "Can't bind open gl context");
 
         return A_A;
     }
@@ -261,7 +260,7 @@ namespace XD
 
     X XD_OpenGLRenderer::fvEndFrameX()
     {
-        X_Call(m_context->fvSwapBuffersX(), "Error while swapping buffers");
+        X_Call(m_context->fSwapBuffersX(), "Error while swapping buffers");
         return A_A;
     }
 

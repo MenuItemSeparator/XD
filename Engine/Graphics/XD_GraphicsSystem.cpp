@@ -18,7 +18,7 @@ namespace XD
             m_renderer = std::make_unique<XD_OpenGLRenderer>();
             break;
         default:
-            mLOG("Unknown type of renderer")
+            mXD_ASSERTM(false, "Unknown type of renderer")
             return X_X;
         }
 
@@ -29,7 +29,7 @@ namespace XD
     X
     XD_GraphicsSystem::fShutdownX()
     {
-        if(!m_renderer) return A_A;
+        if(!m_renderer) return X_X;
         
         X_Call(m_renderer->fvShutdownX(), "Error while shutdown renderer");
         return A_A;

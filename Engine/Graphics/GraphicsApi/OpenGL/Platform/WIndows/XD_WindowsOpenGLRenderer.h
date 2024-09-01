@@ -1,24 +1,23 @@
 #pragma once
 #include "XD_WindowsOpenGLFuncPtr.h"
 #include "Graphics/XD_Renderer.h"
-#include "Graphics/XD_Context.h"
 #include "Common/Platform/XD_Common_PlatformSelector.h"
 
 namespace XD
 {
-    class XD_ENGINE_API XD_OpenGLContext : public XD_Context_Base
+    class XD_ENGINE_API XD_OpenGLContext
     {
     public:
         XD_OpenGLContext();
         ~XD_OpenGLContext();
 
         X fCreateX(HWND _hwnd, const int *_attribList);
-        virtual X fvDestroyX() override;
+        X fDestroyX();
 
-        virtual X fvBindX() override;
-        virtual X fvUnbindX() override;
+        X fBindX();
+        X fUnbindX();
 
-        virtual X fvSwapBuffersX() override;
+        X fSwapBuffersX();
 
     private:
         HWND m_hwnd;

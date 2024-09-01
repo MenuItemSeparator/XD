@@ -12,7 +12,6 @@ namespace XD
         XD_GraphicsSystem& operator=(const XD_GraphicsSystem&) = delete;
 
         X fInitializeX(const XD_GraphicsConfig& _config);
-        XD_Renderer* fGetRenderer() { return m_renderer.get(); }
         X fShutdownX();
 
         X fBeginFrameX();

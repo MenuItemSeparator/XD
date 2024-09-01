@@ -31,8 +31,6 @@ namespace XD
         m_graphicsSystem = std::make_shared<XD_GraphicsSystem>();
         X_Call(m_graphicsSystem->fInitializeX(graphicsConfig), "Failed when initializing graphics system");
 
-        mXD_ASSERT(m_graphicsSystem->fGetRenderer())
-
         return X::fSuccess();
     }
 
