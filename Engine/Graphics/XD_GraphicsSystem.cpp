@@ -9,8 +9,12 @@ namespace XD
 
     }
 
-    X
-    XD_GraphicsSystem::fInitializeX(const XD_GraphicsConfig& _config)
+    XD_GraphicsSystem::~XD_GraphicsSystem()
+    {
+    }
+    
+
+    X XD_GraphicsSystem::fInitializeX(const XD_GraphicsConfig &_config)
     {
         switch(_config.m_rendererType)
         {

@@ -2,6 +2,7 @@
 #include "XD_WindowsOpenGLFuncPtr.h"
 #include "Graphics/XD_Renderer.h"
 #include "Common/Platform/XD_Common_PlatformSelector.h"
+#include "Graphics/XD_BufferLayout.h"
 
 namespace XD
 {
@@ -35,6 +36,21 @@ namespace XD
 
         virtual X fvBeginFrameX() override;
         virtual X fvEndFrameX() override;
+
+        virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) override;
+        virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) override;
+
+        virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, void* _data) override;
+        virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) override;
+
+        virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, void* _data, VertexBufferLayoutHandle _layoutHandle) override;
+        virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) override;
+        
+        virtual X fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath) override;
+        virtual X fvDestroyShaderX(ShaderHandle _handle) override;
+
+        virtual X fvCreateShaderProgramX(ShaderProgramHandle _programHandle, ShaderHandle _vsh, ShaderHandle _fsh) override;
+        virtual X fvDestroyShaderProgramX(ShaderProgramHandle _programHandle) override;
 
     private:
         SPtr<XD_OpenGLContext> m_context;

@@ -251,17 +251,78 @@ namespace XD
         return A_A;
     }
 
-    X XD_OpenGLRenderer::fvBeginFrameX()
+    X 
+    XD_OpenGLRenderer::fvBeginFrameX()
     {
         gSetClearColorProc(1.0f, 0.6f, 0.2f, 1.0f);
         gClearProc(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         return A_A;
     }
 
-    X XD_OpenGLRenderer::fvEndFrameX()
+    X 
+    XD_OpenGLRenderer::fvEndFrameX()
     {
         X_Call(m_context->fSwapBuffersX(), "Error while swapping buffers");
         return A_A;
     }
 
+    X 
+    XD_OpenGLRenderer::fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvCreateIBOX(IndexBufferObjectHandle _iboHandle, void * _data)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvDestroyIBOX(IndexBufferObjectHandle _iboHandle)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvCreateVBOX(VertexBufferObjectHandle _vboHandle, void * _data, VertexBufferLayoutHandle _layoutHandle)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvDestroyVBOX(VertexBufferObjectHandle _vboHandle)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvDestroyShaderX(ShaderHandle _handle)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvCreateShaderProgramX(ShaderProgramHandle _programHandle, ShaderHandle _vsh, ShaderHandle _fsh)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvDestroyShaderProgramX(ShaderProgramHandle _programHandle)
+    {
+        return A_A;
+    }
 }

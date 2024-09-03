@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <type_traits>
+#include <map>
+#include <unordered_set>
 
 //XDEngine
 #include "XD_Engine_Definitions.h"

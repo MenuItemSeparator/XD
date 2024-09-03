@@ -22,6 +22,7 @@ namespace XD
     const i4 XD_RESULT_SUCCESS = 0x0;
     const i4 XD_RESULT_FAIL = -1;
     const i4 XD_RESULT_DISABLED = INT_MAX;
+    const u8 XD_INVALID_HANDLE = UINT64_MAX;
 
     enum eEmote
     {

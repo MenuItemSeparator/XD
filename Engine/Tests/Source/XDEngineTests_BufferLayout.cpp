@@ -5,7 +5,7 @@
 namespace XD
 {
     X
-    Test_LayoutElementStatics()
+    Test_CreateAndDestroyHandle()
     {
         mXD_IS_TRUE(XD_LayoutElement::fGetComponentCount(eShaderDataType::Float) == 1, "Float component count invalid");
         mXD_IS_TRUE(XD_LayoutElement::fGetComponentCount(eShaderDataType::Float2) == 2, "Float2 component count invalid");
@@ -70,7 +70,7 @@ namespace XD
 int
 main(int argc, const char** argv)
 {
-    X_Call(XD::Test_LayoutElementStatics(), "Layout element statics test failed");
+    X_Call(XD::Test_CreateAndDestroyHandle(), "Layout element statics test failed");
     X_Call(XD::Test_BufferLayoutConstruction(), "Buffer layout construction test failed");
     return 0;
 }

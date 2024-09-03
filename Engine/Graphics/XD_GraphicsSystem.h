@@ -10,6 +10,7 @@ namespace XD
         XD_GraphicsSystem();
         XD_GraphicsSystem(const XD_GraphicsSystem&) = delete;
         XD_GraphicsSystem& operator=(const XD_GraphicsSystem&) = delete;
+        ~XD_GraphicsSystem();
 
         X fInitializeX(const XD_GraphicsConfig& _config);
         X fShutdownX();
