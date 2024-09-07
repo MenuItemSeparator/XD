@@ -23,7 +23,43 @@ namespace XD
         0,
     };
 
-    
+    X
+    XD_OpenGLVertexBuffer::fCreateX(Memory *_data, VertexBufferLayoutHandle _referenceHandle)
+    {
+        mXD_ASSERT(_data);
+        m_size = _data->m_byteSize;
+        m_layout = _referenceHandle;
+
+        OpenGLCheck(gGLGenBuffersProc(1, &m_id), "Can't gen vb buffer");
+        mXD_ASSERT(m_id);
+        OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, m_id), "Can't bind vb buffer");
+        OpenGLCheck(gGLBufferDataProc(GL_ARRAY_BUFFER, m_size, _data->m_data, _data->m_data ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW), "Error when buffer data to vb");
+        OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, 0), "Can't unbind vb buffer");
+        return A_A;
+    }
+
+    X
+    XD_OpenGLVertexBuffer::fUpdateX(u8 _offset, Memory *_data)
+    {
+        mXD_ASSERT(m_id);
+        mXD_ASSERT(_data);
+
+        OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, m_id), "Can't bind vb buffer");
+        OpenGLCheck(gGLBufferSubDataProc(GL_ARRAY_BUFFER, _offset, _data->m_byteSize, _data->m_data), "Error when buffer subdata to vb");
+        OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, 0), "Can't unbind vb buffer");
+
+        return A_A;
+    }
+
+    X
+    XD_OpenGLVertexBuffer::fDestroy()
+    {
+        OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, 0), "Can't unbind vb buffer");
+        OpenGLCheck(gGLDeleteBuffersProc(1, &m_id), "Can't delete vb buffer");
+
+        return A_A;
+    }
+
     XD_OpenGLContext::XD_OpenGLContext() : 
         m_hwnd(NULL),
         m_context(NULL)
@@ -254,8 +290,8 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvBeginFrameX()
     {
-        OpenGLCheck(gSetClearColorProc(1.0f, 0.6f, 0.2f, 1.0f));
-        OpenGLCheck(gClearProc(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+        OpenGLCheck(gSetClearColorProc(1.0f, 0.6f, 0.2f, 1.0f), "Can't set new clear color");
+        OpenGLCheck(gClearProc(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT), "Can't clear viewport");
         return A_A;
     }
 
@@ -325,4 +361,5 @@ namespace XD
     {
         return A_A;
     }
+
 }

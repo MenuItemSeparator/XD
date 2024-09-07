@@ -8,6 +8,13 @@ namespace XD
     tGLClear* gClearProc;
     tGLGetError* gGLGetErrorProc;
 
+    tGLGenBuffers* gGLGenBuffersProc;
+    tGLDeleteBuffers* gGLDeleteBuffersProc;
+    tGLBindBuffer* gGLBindBufferProc;
+    tGLBufferData* gGLBufferDataProc;
+    tGLBufferSubData* gGLBufferSubDataProc;
+
+
     X 
     fLoadOpenGLInitialProcPtrX()
     {
@@ -16,6 +23,21 @@ namespace XD
 
         gWGLChoosePixelFormatARBProc = (tWGLChoosePixelFormatARB*)wglGetProcAddress("wglChoosePixelFormatARB");
         mXD_ASSERT(gWGLChoosePixelFormatARBProc);
+
+        gGLGenBuffersProc = (tGLGenBuffers*)wglGetProcAddress("glGenBuffers");
+        mXD_ASSERT(gGLGenBuffersProc);
+
+        gGLDeleteBuffersProc = (tGLDeleteBuffers*)wglGetProcAddress("glDeleteBuffers");
+        mXD_ASSERT(gGLDeleteBuffersProc);
+
+        gGLBindBufferProc = (tGLBindBuffer*)wglGetProcAddress("glBindBuffer");
+        mXD_ASSERT(gGLBindBufferProc);
+
+        gGLBufferDataProc = (tGLBufferData*)wglGetProcAddress("glBufferData");
+        mXD_ASSERT(gGLBufferDataProc);
+
+        gGLBufferSubDataProc = (tGLBufferSubData*)wglGetProcAddress("glBufferSubData");
+        mXD_ASSERT(gGLBufferSubDataProc);
 
         return A_A;
     }

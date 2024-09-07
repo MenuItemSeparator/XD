@@ -2,10 +2,11 @@
 
 namespace XD
 {
-     void CheckOpenGLError(const std::string& filename, const std::uint_fast32_t line)
+    X 
+    fCheckOpenGLErrorX(const std::string& filename, const std::uint_fast32_t line)
     {
         GLenum error = gGLGetErrorProc();
-        if (error == GL_NO_ERROR) return;
+        if (error == GL_NO_ERROR) return A_A;
 
         switch (error)
         {
@@ -30,5 +31,7 @@ namespace XD
         default:
             mLOG("GL UNKNOWN_ERROR " << filename.c_str() << " " << line);
         }
+
+        return X_X;
     }
 }

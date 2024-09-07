@@ -13,20 +13,20 @@ namespace XD
     #define GL_OUT_OF_MEMORY 0x0505
     //Error codes End
 
-    using GLenum = unsigned int;
+    using GLenum = u8;
 
     typedef GLenum tGLGetError(void);
     extern XD_ENGINE_API tGLGetError* gGLGetErrorProc;
 
     #ifdef dXD_DEBUG
-        #define OpenGLCheck(expr) \
+        #define OpenGLCheck(expr, error_msg) \
             { \
                 expr; \
-                CheckOpenGLError(__FILE__, __LINE__); \
+                X_Call(fCheckOpenGLErrorX(__FILE__, __LINE__), error_msg); \
             }
     #else
-        #define OpenGLCheck(expr)  (expr)
+        #define OpenGLCheck(expr, error_msg)  (expr)
     #endif
 
-    void CheckOpenGLError(const std::string& filename, const std::uint_fast32_t line);
+    X fCheckOpenGLErrorX(const std::string& filename, const std::uint_fast32_t line);
 }

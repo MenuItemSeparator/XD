@@ -10,6 +10,9 @@ namespace XD
     //Core
     #define GL_FALSE 0
     #define GL_TRUE 1
+
+    #define GL_DYNAMIC_DRAW 0x88E8
+    #define GL_STATIC_DRAW 0x88E4
     //Core End
 
     //Extensions setup
@@ -49,8 +52,19 @@ namespace XD
     #define GL_POLYGON                        0x0009
     //Primitives End
 
+
+
+    //Buffers
+    #define GL_ARRAY_BUFFER 0x8892
+    //Buffers End
+
     //Types
-    using GLenum = unsigned int;
+    using GLenum = u8;
+    using GLuint = u8;
+    using GLfloat = f4;
+    using GLsizei = i8;
+    using GLsizeiptr = i8;
+    using GLintptr = intptr_t;
     //Types End
 
     typedef HGLRC WINAPI tWGLCreateContextAttribsARB(HDC hdc, HGLRC hShareContext, const int *attribList);
@@ -67,6 +81,21 @@ namespace XD
 
     typedef GLenum tGLGetError(void);
     extern XD_ENGINE_API tGLGetError* gGLGetErrorProc;
+
+    typedef void tGLGenBuffers(GLsizei n, GLuint* buffers);
+    extern XD_ENGINE_API tGLGenBuffers* gGLGenBuffersProc;
+
+    typedef void tGLDeleteBuffers(GLsizei n, const GLuint *buffers);
+    extern XD_ENGINE_API tGLDeleteBuffers* gGLDeleteBuffersProc;
+
+    typedef void tGLBindBuffer(GLenum target, GLuint buffer);
+    extern XD_ENGINE_API tGLBindBuffer* gGLBindBufferProc;
+
+    typedef void tGLBufferData(GLenum target, GLsizeiptr size, const void *data, GLenum usage);
+    extern XD_ENGINE_API tGLBufferData* gGLBufferDataProc;
+
+    typedef void tGLBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const void *data);
+    extern XD_ENGINE_API tGLBufferSubData* gGLBufferSubDataProc;
 
     X XD_ENGINE_API fLoadOpenGLInitialProcPtrX();
     X XD_ENGINE_API fLoadOpenGLExtensionProcPtrX(XD_Library& _library);

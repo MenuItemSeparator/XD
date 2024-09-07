@@ -7,7 +7,19 @@
 
 namespace XD
 {
-    class XD_ENGINE_API XD_OpenGLContext
+    class XD_ENGINE_API XD_OpenGLVertexBuffer final
+    {
+    public:
+        X fCreateX(Memory* _data, VertexBufferLayoutHandle _referenceHandle);
+        X fUpdateX(u8 _offset, Memory* _data);
+        X fDestroy();
+    private:
+        GLuint m_id;
+        VertexBufferLayoutHandle m_layout;
+        u8 m_size;
+    };
+
+    class XD_ENGINE_API XD_OpenGLContext final
     {
     public:
         XD_OpenGLContext();
