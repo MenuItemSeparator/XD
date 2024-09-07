@@ -40,11 +40,11 @@ namespace XD
         virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) override;
         virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) override;
 
-        virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, void* _data) override;
-        virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) override;
+        virtual X fvCreateIBOX(IndexBufferHandle _iboHandle, Memory* _data) override;
+        virtual X fvDestroyIBOX(IndexBufferHandle _iboHandle) override;
 
-        virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, void* _data, VertexBufferLayoutHandle _layoutHandle) override;
-        virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) override;
+        virtual X fvCreateVBOX(VertexBufferHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) override;
+        virtual X fvDestroyVBOX(VertexBufferHandle _vboHandle) override;
         
         virtual X fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath) override;
         virtual X fvDestroyShaderX(ShaderHandle _handle) override;
@@ -53,7 +53,7 @@ namespace XD
         virtual X fvDestroyShaderProgramX(ShaderProgramHandle _programHandle) override;
 
     private:
-        SPtr<XD_OpenGLContext> m_context;
+        tSptr<XD_OpenGLContext> m_context;
         XD_Library m_openGLDll;
         PIXELFORMATDESCRIPTOR m_pfd;
 

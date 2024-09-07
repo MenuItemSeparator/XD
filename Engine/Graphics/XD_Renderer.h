@@ -4,15 +4,29 @@
 #include "Common/Platform/XD_Common_PlatformSelector.h"
 #include "Application/Platform/XD_Application_PlatformSelector.h"
 #include "Graphics/XD_BufferLayout.h"
+#include "XD_HandleMap.h"
 
 namespace XD
 {
-    dXD_MAKE_HANDLE_STRUCT(VertexBufferLayoutHandle);
-    dXD_MAKE_HANDLE_STRUCT(VertexBufferObjectHandle);
-    dXD_MAKE_HANDLE_STRUCT(IndexBufferObjectHandle);
-    dXD_MAKE_HANDLE_STRUCT(ShaderHandle);
-    dXD_MAKE_HANDLE_STRUCT(ShaderProgramHandle);
+    const u8 VBO_MAX_COUNT = 1024;
+    dXD_MAKE_HANDLE_STRUCT(VertexBufferHandle);
+    using tVertexBufferHandleMap = XD_HandleMap<VertexBufferHandle, VBO_MAX_COUNT>;
 
+    const u8 VBLAYOUT_MAX_COUNT = 32;
+    dXD_MAKE_HANDLE_STRUCT(VertexBufferLayoutHandle);
+    using tVertexBufferLayoutHandleMap = XD_HandleMap<VertexBufferLayoutHandle, VBLAYOUT_MAX_COUNT>;
+
+    const u8 IBO_MAX_COUNT = 1024;
+    dXD_MAKE_HANDLE_STRUCT(IndexBufferHandle);
+    using tIndexBufferHandleMap = XD_HandleMap<IndexBufferHandle, IBO_MAX_COUNT>;
+
+    const u8 SHADER_MAX_COUNT = 1024;
+    dXD_MAKE_HANDLE_STRUCT(ShaderHandle);
+    using tShaderHandleMap = XD_HandleMap<ShaderHandle, SHADER_MAX_COUNT>;
+
+    const u8 SHADERPROG_MAX_COUNT = SHADER_MAX_COUNT / 512;
+    dXD_MAKE_HANDLE_STRUCT(ShaderProgramHandle);
+    using tShaderProgramHandleMap = XD_HandleMap<ShaderProgramHandle, SHADERPROG_MAX_COUNT>;
 
     //Пока виртуальные, потом девиртуализирую самые часто используемые функции
     class XD_ENGINE_API XD_Renderer
@@ -27,11 +41,11 @@ namespace XD
         virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) = 0;
         virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) = 0;
 
-        virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, void* _data) = 0;
-        virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) = 0;
+        virtual X fvCreateIBOX(IndexBufferHandle _iboHandle, Memory* _data) = 0;
+        virtual X fvDestroyIBOX(IndexBufferHandle _iboHandle) = 0;
 
-        virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, void* _data, VertexBufferLayoutHandle _layoutHandle) = 0;
-        virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) = 0;
+        virtual X fvCreateVBOX(VertexBufferHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) = 0;
+        virtual X fvDestroyVBOX(VertexBufferHandle _vboHandle) = 0;
 
         virtual X fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath) = 0;
         virtual X fvDestroyShaderX(ShaderHandle _handle) = 0;

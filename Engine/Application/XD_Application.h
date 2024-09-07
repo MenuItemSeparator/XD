@@ -33,8 +33,8 @@ namespace XD
         X fLoopX();
 
     private:
-        SPtr<XD_Window> m_window;
-        SPtr<XD_GraphicsSystem> m_graphicsSystem;
+        tSptr<XD_Window> m_window;
+        tSptr<XD_GraphicsSystem> m_graphicsSystem;
         
         XD_ApplicationConfig m_config;
         bl m_requestedTermination;

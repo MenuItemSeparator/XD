@@ -55,7 +55,7 @@ namespace XD
         Ret fInvoke(Args... args) { return m_callable->fInvoke(std::forward<Args>(args)...); }
 
     private:
-        UPtr<XD_Callable<Ret(Args...)>> m_callable;
+        tUptr<XD_Callable<Ret(Args...)>> m_callable;
     };
 
     template<typename... Args>
@@ -101,6 +101,6 @@ namespace XD
         XD::X fInvoke(Args... args) { X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
 
     private:
-        UPtr<XD_Callable<XD::X(Args...)>> m_callable;
+        tUptr<XD_Callable<XD::X(Args...)>> m_callable;
     };
 }

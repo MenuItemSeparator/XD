@@ -279,25 +279,25 @@ namespace XD
     }
 
     X 
-    XD_OpenGLRenderer::fvCreateIBOX(IndexBufferObjectHandle _iboHandle, void * _data)
+    XD_OpenGLRenderer::fvCreateIBOX(IndexBufferHandle _iboHandle, Memory* _data)
     {
         return A_A;
     }
 
     X 
-    XD_OpenGLRenderer::fvDestroyIBOX(IndexBufferObjectHandle _iboHandle)
+    XD_OpenGLRenderer::fvDestroyIBOX(IndexBufferHandle _iboHandle)
     {
         return A_A;
     }
 
     X 
-    XD_OpenGLRenderer::fvCreateVBOX(VertexBufferObjectHandle _vboHandle, void * _data, VertexBufferLayoutHandle _layoutHandle)
+    XD_OpenGLRenderer::fvCreateVBOX(VertexBufferHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle)
     {
         return A_A;
     }
 
     X 
-    XD_OpenGLRenderer::fvDestroyVBOX(VertexBufferObjectHandle _vboHandle)
+    XD_OpenGLRenderer::fvDestroyVBOX(VertexBufferHandle _vboHandle)
     {
         return A_A;
     }

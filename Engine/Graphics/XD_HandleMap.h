@@ -28,7 +28,8 @@ namespace XD
     }
 
     template <typename T, size_t MAX_SIZE>
-    inline T XD_HandleMap<T, MAX_SIZE>::fCreateHandle()
+    inline T 
+    XD_HandleMap<T, MAX_SIZE>::fCreateHandle()
     {
         T newHandle;
 
@@ -48,7 +49,8 @@ namespace XD
     }
 
     template <typename T, size_t MAX_SIZE>
-    inline X XD_HandleMap<T, MAX_SIZE>::fFreeHandleX(T _handle)
+    inline X 
+    XD_HandleMap<T, MAX_SIZE>::fFreeHandleX(T _handle)
     {
         mXD_ASSERTM(fIsValid(_handle), "Trying to free invalid handle");
 
@@ -59,7 +61,8 @@ namespace XD
     }
 
     template <typename T, size_t MAX_SIZE>
-    inline bl XD_HandleMap<T, MAX_SIZE>::fIsValid(T _handle)
+    inline bl 
+    XD_HandleMap<T, MAX_SIZE>::fIsValid(T _handle)
     {
         return m_activeHandles.find(_handle) != m_activeHandles.end();
     }
