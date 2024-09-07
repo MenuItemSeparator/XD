@@ -254,8 +254,8 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvBeginFrameX()
     {
-        gSetClearColorProc(1.0f, 0.6f, 0.2f, 1.0f);
-        gClearProc(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        OpenGLCheck(gSetClearColorProc(1.0f, 0.6f, 0.2f, 1.0f));
+        OpenGLCheck(gClearProc(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         return A_A;
     }
 

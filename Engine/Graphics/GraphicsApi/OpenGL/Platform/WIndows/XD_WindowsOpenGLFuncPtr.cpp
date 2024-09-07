@@ -6,6 +6,7 @@ namespace XD
     tWGLChoosePixelFormatARB* gWGLChoosePixelFormatARBProc;
     tGLSetClearColor* gSetClearColorProc;
     tGLClear* gClearProc;
+    tGLGetError* gGLGetErrorProc;
 
     X 
     fLoadOpenGLInitialProcPtrX()
@@ -22,6 +23,9 @@ namespace XD
     X 
     fLoadOpenGLExtensionProcPtrX(XD_Library& _library)
     {
+        gGLGetErrorProc = _library.fvGetProcAddress("glGetError");
+        mXD_ASSERT(gGLGetErrorProc);
+
         gSetClearColorProc = _library.fvGetProcAddress("glClearColor");
         mXD_ASSERT(gSetClearColorProc);
 

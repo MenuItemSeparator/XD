@@ -3,6 +3,7 @@
 #include "Graphics/XD_Renderer.h"
 #include "Common/Platform/XD_Common_PlatformSelector.h"
 #include "Graphics/XD_BufferLayout.h"
+#include "Graphics/GraphicsApi/OpenGL/XD_GLCheck.h"
 
 namespace XD
 {
