@@ -9,23 +9,23 @@
 namespace XD
 {
     const u8 VBO_MAX_COUNT = 1024;
-    dXD_MAKE_HANDLE_STRUCT(VertexBufferHandle);
+    mXD_MAKE_HANDLE_STRUCT(VertexBufferHandle);
     using tVertexBufferHandleMap = XD_HandleMap<VertexBufferHandle, VBO_MAX_COUNT>;
 
     const u8 VBLAYOUT_MAX_COUNT = 32;
-    dXD_MAKE_HANDLE_STRUCT(VertexBufferLayoutHandle);
+    mXD_MAKE_HANDLE_STRUCT(VertexBufferLayoutHandle);
     using tVertexBufferLayoutHandleMap = XD_HandleMap<VertexBufferLayoutHandle, VBLAYOUT_MAX_COUNT>;
 
     const u8 IBO_MAX_COUNT = 1024;
-    dXD_MAKE_HANDLE_STRUCT(IndexBufferHandle);
+    mXD_MAKE_HANDLE_STRUCT(IndexBufferHandle);
     using tIndexBufferHandleMap = XD_HandleMap<IndexBufferHandle, IBO_MAX_COUNT>;
 
     const u8 SHADER_MAX_COUNT = 1024;
-    dXD_MAKE_HANDLE_STRUCT(ShaderHandle);
+    mXD_MAKE_HANDLE_STRUCT(ShaderHandle);
     using tShaderHandleMap = XD_HandleMap<ShaderHandle, SHADER_MAX_COUNT>;
 
     const u8 SHADERPROG_MAX_COUNT = SHADER_MAX_COUNT / 512;
-    dXD_MAKE_HANDLE_STRUCT(ShaderProgramHandle);
+    mXD_MAKE_HANDLE_STRUCT(ShaderProgramHandle);
     using tShaderProgramHandleMap = XD_HandleMap<ShaderProgramHandle, SHADERPROG_MAX_COUNT>;
 
     //Пока виртуальные, потом девиртуализирую самые часто используемые функции

@@ -5,11 +5,11 @@
 
 #define dXD_ATOW(text) L#text
 
-#define dXD_MAKE_HANDLE_STRUCT(name) \
+#define mXD_MAKE_HANDLE_STRUCT(name) \
     struct name \
     { \
         XD::u8 m_handle; \
-        operator XD::u8&(){ return m_handle; } \
+        operator XD::u8(){ return m_handle; } \
     };\
 
 #ifdef dXD_DEBUG

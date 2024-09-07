@@ -12,8 +12,8 @@ namespace XD
         X fFreeHandleX(T _handle);
         bl fIsValid(T _handle);
     private:
-        std::unordered_set<T> m_activeHandles;
-        std::vector<T> m_freeHandles;
+        std::unordered_set<XD::u8> m_activeHandles;
+        std::vector<XD::u8> m_freeHandles;
         u8 m_handlePointer;
     };
 
@@ -31,7 +31,7 @@ namespace XD
     inline T 
     XD_HandleMap<T, MAX_SIZE>::fCreateHandle()
     {
-        T newHandle;
+        u8 newHandle;
 
         mXD_ASSERTM(m_handlePointer + 1 != MAX_SIZE, "Reached max capacity of handles");
 
@@ -42,10 +42,10 @@ namespace XD
         }
         else
         {
-            newHandle = T{m_handlePointer++};
+            newHandle = m_handlePointer++;
         }
 
-        return newHandle;
+        return T{newHandle};
     }
 
     template <typename T, size_t MAX_SIZE>
@@ -54,8 +54,8 @@ namespace XD
     {
         mXD_ASSERTM(fIsValid(_handle), "Trying to free invalid handle");
 
-        m_activeHandles.erase(_handle);
-        m_freeHandles.push_back(_handle);
+        m_activeHandles.erase(_handle.m_handle);
+        m_freeHandles.push_back(_handle.m_handle);
 
         return A_A;
     }
@@ -64,6 +64,6 @@ namespace XD
     inline bl 
     XD_HandleMap<T, MAX_SIZE>::fIsValid(T _handle)
     {
-        return m_activeHandles.find(_handle) != m_activeHandles.end();
+        return m_activeHandles.find(_handle.m_handle) != m_activeHandles.end();
     }
 }
