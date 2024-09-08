@@ -23,21 +23,22 @@ namespace XD
         0,
     };
 
-    static GLenum fShaderDataTypeToOpenGLType(eShaderDataType type)
+    static GLenum 
+    fShaderDataTypeToOpenGLType(eShaderDataType type)
 	{
 		switch (type)
 		{
-		case eShaderDataType::Float:    return GL_FLOAT;
-		case eShaderDataType::Float2:   return GL_FLOAT;
-		case eShaderDataType::Float3:   return GL_FLOAT;
-		case eShaderDataType::Float4:   return GL_FLOAT;
+		case eShaderDataType::Float:        return GL_FLOAT;
+		case eShaderDataType::Float2:       return GL_FLOAT;
+		case eShaderDataType::Float3:       return GL_FLOAT;
+		case eShaderDataType::Float4:       return GL_FLOAT;
 		case eShaderDataType::Matrix3f:     return GL_FLOAT;
 		case eShaderDataType::Matrix4f:     return GL_FLOAT;
 		case eShaderDataType::Integer:      return GL_INT;
 		case eShaderDataType::Integer2:     return GL_INT;
 		case eShaderDataType::Integer3:     return GL_INT;
 		case eShaderDataType::Integer4:     return GL_INT;
-		case eShaderDataType::Bool:     return GL_BOOL;
+		case eShaderDataType::Bool:         return GL_BOOL;
         case eShaderDataType::None:
         default:
             break;
@@ -45,6 +46,21 @@ namespace XD
 
 		mXD_ASSERTM(false, "Unknown ShaderDataType!");
 		return 0;
+	}
+
+    static X
+    fCheckShaderErrorsX(GLuint _id)
+	{
+		i4 result{};
+		char infoLog[1024];
+        OpenGLCheck(gGLGetShaderiv(_id, GL_COMPILE_STATUS, &result));
+        if (!result)
+        {
+            OpenGLCheck(gGLGetShaderInfoLog(_id, 1024, nullptr, infoLog));
+            mLOG("ERROR: Compile-time error: " << (const char*)infoLog);
+            return X_X;
+        }
+		return A_A;
 	}
 
     X
@@ -176,6 +192,64 @@ namespace XD
         OpenGLCheck(gGLBindVertexArrayProc(0), "Can't unbind vao");
         OpenGLCheck(gGLDeleteVertexArraysProc(1, &m_id), "Can't delete vao");
         return A_A;
+    }
+
+    X
+    XD_OpenGLShader::fCreateX(const std::string& _filepath)
+    {
+        std::filesystem::path path{_filepath};
+        if(!std::filesystem::exists(path)) return X_X;
+
+        X_Call(fFindShaderTypeX(path), "Can't recognize shader type");
+
+		std::ifstream fStream{path};
+
+		mXD_ASSERT(!fStream.fail());
+
+        std::stringstream sStream{};
+        sStream << fStream.rdbuf();
+        fStream.close();
+        std::string shaderSourceText{sStream.str()};
+        const GLchar* rawStr = shaderSourceText.c_str();
+
+        m_id = gGLCreateShaderProc(m_type);
+        mXD_ASSERT(m_id);
+        X_Call(fCheckOpenGLErrorX(__FILE__, __LINE__), "Can't create shader");
+        OpenGLCheck(gGLShaderSourceProc(m_id, 1, &rawStr, NULL), "");
+        OpenGLCheck(gGLCompileShaderProc(m_id));
+        X_Call(fCheckShaderErrorsX(m_id), "Occured some internal errors during shader creation");
+
+        return A_A;
+    }
+
+    X
+    XD_OpenGLShader::fDestroyX()
+    {
+        if (!m_id) return X_X;
+
+        OpenGLCheck(gGLDeleteShaderProc(m_id), "Can't delete shader");
+        m_id = 0;
+
+        return A_A;
+    }
+
+    X
+    XD_OpenGLShader::fFindShaderTypeX(const std::filesystem::path& _filepath)
+    {
+        std::string fileExtension = _filepath.extension().u8string();
+        if(fileExtension == ".vs")
+        {
+            m_type = GL_VERTEX_SHADER;
+            return A_A;
+        }
+        else if(fileExtension == ".fs")
+        {
+            m_type = GL_FRAGMENT_SHADER;
+            return A_A;
+        }
+
+        mLOG("Unknown shader file extension " << fileExtension);
+        return X_X;
     }
 
     XD_OpenGLContext::XD_OpenGLContext() : 

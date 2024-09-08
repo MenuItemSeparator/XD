@@ -34,6 +34,32 @@ namespace XD
         i8 m_layoutIndex;
     };
 
+    class XD_ENGINE_API XD_OpenGLShader final
+    {
+    public:
+        XD_OpenGLShader() :
+            m_id(0),
+            m_type(0)
+        {}
+
+        X fCreateX(const std::string& _filepath);
+        X fDestroyX();
+
+    private:
+        GLuint m_id;
+        GLenum m_type;
+
+        X fFindShaderTypeX(const std::filesystem::path& _filepath);
+    };
+
+    class XD_ENGINE_API XD_OpenGLShaderProgram final
+    {
+    public:
+        X fCreateX();
+    private:
+        GLuint m_id;
+    };
+
     class XD_ENGINE_API XD_OpenGLContext final
     {
     public:

@@ -48,7 +48,6 @@ target_include_directories(XDEngine PUBLIC ${GLAD_INCLUDE_DIR})
 target_link_libraries(XDEngine PUBLIC GLAD ${OPENGL_LIBRARY})
 
 
-
 #Definitions
 target_compile_definitions(XDEngine PUBLIC -DXD_EXPORTING=1)
 

@@ -22,6 +22,19 @@ namespace XD
     tGLVertexAttribPointer* gGLVertexAttribPointerProc;
     tGLVertexAttribDivisor* gGLVertexAttribDivisorProc;
 
+    tGLCreateShader* gGLCreateShaderProc;
+    tGLDeleteShader* gGLDeleteShaderProc;
+    tGLShaderSource* gGLShaderSourceProc;
+    tGLAttachShader* gGLAttachShaderProc;
+    tGLDetachShader* gGLDetachShaderProc;
+    tGLCompileShader* gGLCompileShaderProc;
+    tGLCreateProgram* gGLCreateProgramProc;
+    tGLDeleteProgram* gGLDeleteProgramProc;
+    tGLLinkProgram* gGLLinkProgramProc;
+    tGLUseProgram* gGLUseProgramProc;
+    tGLGetShaderiv* gGLGetShaderiv;
+    tGLGetShaderInfoLog* gGLGetShaderInfoLog;
+
     X 
     fLoadOpenGLInitialProcPtrX()
     {
@@ -66,6 +79,42 @@ namespace XD
 
         gGLVertexAttribDivisorProc = (tGLVertexAttribDivisor*)wglGetProcAddress("glVertexAttribDivisor");
         mXD_ASSERT(gGLVertexAttribDivisorProc);
+
+        gGLCreateShaderProc = (tGLCreateShader*)wglGetProcAddress("glCreateShader");
+        mXD_ASSERT(gGLCreateShaderProc);
+
+        gGLDeleteShaderProc = (tGLDeleteShader*)wglGetProcAddress("glDeleteShader");
+        mXD_ASSERT(gGLDeleteShaderProc);
+
+        gGLShaderSourceProc = (tGLShaderSource*)wglGetProcAddress("glShaderSource");
+        mXD_ASSERT(gGLShaderSourceProc);
+
+        gGLAttachShaderProc = (tGLAttachShader*)wglGetProcAddress("glAttachShader");
+        mXD_ASSERT(gGLAttachShaderProc);
+
+        gGLDetachShaderProc = (tGLDetachShader*)wglGetProcAddress("glDetachShader");
+        mXD_ASSERT(gGLDetachShaderProc);
+
+        gGLCompileShaderProc = (tGLCompileShader*)wglGetProcAddress("glCompileShader");
+        mXD_ASSERT(gGLCompileShaderProc);
+
+        gGLCreateProgramProc = (tGLCreateProgram*)wglGetProcAddress("glCreateProgram");
+        mXD_ASSERT(gGLCreateProgramProc);
+
+        gGLDeleteProgramProc = (tGLDeleteProgram*)wglGetProcAddress("glDeleteProgram");
+        mXD_ASSERT(gGLDeleteProgramProc);
+
+        gGLLinkProgramProc = (tGLLinkProgram*)wglGetProcAddress("glLinkProgram");
+        mXD_ASSERT(gGLLinkProgramProc);
+
+        gGLUseProgramProc = (tGLUseProgram*)wglGetProcAddress("glUseProgram");
+        mXD_ASSERT(gGLUseProgramProc);
+
+        gGLGetShaderiv = (tGLGetShaderiv*)wglGetProcAddress("glGetShaderiv");
+        mXD_ASSERT(gGLGetShaderiv);
+
+        gGLGetShaderInfoLog = (tGLGetShaderInfoLog*)wglGetProcAddress("glGetShaderInfoLog");
+        mXD_ASSERT(gGLGetShaderInfoLog);
 
         return A_A;
     }

@@ -13,6 +13,12 @@ namespace XD
 
     #define GL_DYNAMIC_DRAW 0x88E8
     #define GL_STATIC_DRAW 0x88E4
+
+    #define GL_FRAGMENT_SHADER 0x8B30
+    #define GL_VERTEX_SHADER 0x8B31
+
+    #define GL_COMPILE_STATUS 0x8B81
+    #define GL_LINK_STATUS 0x8B82
     //Core End
 
     //Extensions setup
@@ -67,6 +73,7 @@ namespace XD
     using GLsizei = i8;
     using GLsizeiptr = i8;
     using GLintptr = intptr_t;
+    using GLchar = char;
     
     #define GL_FLOAT 0x1406
     #define GL_BYTE 0x1400
@@ -128,6 +135,42 @@ namespace XD
 
     typedef void tGLVertexAttribDivisor(GLuint index, GLuint divisor);
     extern XD_ENGINE_API tGLVertexAttribDivisor* gGLVertexAttribDivisorProc;
+
+    typedef GLuint tGLCreateShader(GLenum type);
+    extern XD_ENGINE_API tGLCreateShader* gGLCreateShaderProc;
+
+    typedef void tGLDeleteShader(GLuint shader);
+    extern XD_ENGINE_API tGLDeleteShader* gGLDeleteShaderProc;
+
+    typedef void tGLShaderSource(GLuint shader, GLsizei count, const GLchar *const*string, const GLint *length);
+    extern XD_ENGINE_API tGLShaderSource* gGLShaderSourceProc;
+
+    typedef void tGLAttachShader(GLuint program, GLuint shader);
+    extern XD_ENGINE_API tGLAttachShader* gGLAttachShaderProc;
+
+    typedef void tGLDetachShader(GLuint program, GLuint shader);
+    extern XD_ENGINE_API tGLDetachShader* gGLDetachShaderProc;
+
+    typedef void tGLCompileShader(GLuint shader);
+    extern XD_ENGINE_API tGLCompileShader* gGLCompileShaderProc;
+
+    typedef GLuint tGLCreateProgram(void);
+    extern XD_ENGINE_API tGLCreateProgram* gGLCreateProgramProc;
+
+    typedef void tGLDeleteProgram(GLuint program);
+    extern XD_ENGINE_API tGLDeleteProgram* gGLDeleteProgramProc;
+
+    typedef void tGLLinkProgram(GLuint program);
+    extern XD_ENGINE_API tGLLinkProgram* gGLLinkProgramProc;
+
+    typedef void tGLUseProgram(GLuint program);
+    extern XD_ENGINE_API tGLUseProgram* gGLUseProgramProc;
+
+    typedef void tGLGetShaderiv(GLuint shader, GLenum pname, GLint *params);
+    extern XD_ENGINE_API tGLGetShaderiv* gGLGetShaderiv;
+
+    typedef void tGLGetShaderInfoLog(GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
+    extern XD_ENGINE_API tGLGetShaderInfoLog* gGLGetShaderInfoLog;
 
     X XD_ENGINE_API fLoadOpenGLInitialProcPtrX();
     X XD_ENGINE_API fLoadOpenGLExtensionProcPtrX(XD_Library& _library);
