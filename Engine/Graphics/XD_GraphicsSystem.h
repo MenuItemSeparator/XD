@@ -15,8 +15,8 @@ namespace XD
         X fInitializeX(const XD_GraphicsConfig& _config);
         X fShutdownX();
 
-        X fCreateVertexBufferX(VertexBufferHandle& _resultHandle, Memory* _data, VertexBufferLayoutHandle _layout);
-        X fDestroyVertexBufferX(VertexBufferHandle _vbHandle);
+        X fCreateVertexBufferObjectX(VertexBufferObjectHandle& _resultHandle, Memory* _data, VertexBufferLayoutHandle _layout);
+        X fDestroyVertexObjectBufferX(VertexBufferObjectHandle _vbHandle);
 
         X fCreateIndexBufferX(IndexBufferHandle& _resultHandle, Memory* _data);
         X fDestroyIndexBufferX(IndexBufferHandle _ibHandle);
@@ -35,7 +35,7 @@ namespace XD
 
     private:
         tUptr<class XD_Renderer> m_renderer;
-        tVertexBufferHandleMap m_vertexBufferHandleMap;
+        tVertexBufferObjectHandleMap m_vertexBufferHandleMap;
         tIndexBufferHandleMap m_indexBufferHandleMap;
         tVertexBufferLayoutHandleMap m_layoutHandleMap;
         tShaderHandleMap m_shaderHandleMap;

@@ -61,10 +61,21 @@ namespace XD
     //Types
     using GLenum = u8;
     using GLuint = u8;
+    using GLint = i4;
+    using GLboolean = unsigned char;
     using GLfloat = f4;
     using GLsizei = i8;
     using GLsizeiptr = i8;
     using GLintptr = intptr_t;
+    
+    #define GL_FLOAT 0x1406
+    #define GL_BYTE 0x1400
+    #define GL_UNSIGNED_BYTE 0x1401
+    #define GL_SHORT 0x1402
+    #define GL_UNSIGNED_SHORT 0x1403
+    #define GL_INT 0x1404
+    #define GL_UNSIGNED_INT 0x1405
+    #define GL_BOOL 0x8B56
     //Types End
 
     typedef HGLRC WINAPI tWGLCreateContextAttribsARB(HDC hdc, HGLRC hShareContext, const int *attribList);
@@ -96,6 +107,27 @@ namespace XD
 
     typedef void tGLBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const void *data);
     extern XD_ENGINE_API tGLBufferSubData* gGLBufferSubDataProc;
+
+    typedef void tGLGenVertexArrays(GLsizei n, GLuint *arrays);
+    extern XD_ENGINE_API tGLGenVertexArrays* gGLGenVertexArraysProc;
+
+    typedef void tGLDeleteVertexArrays(GLsizei n, const GLuint *arrays);
+    extern XD_ENGINE_API tGLDeleteVertexArrays* gGLDeleteVertexArraysProc;
+
+    typedef void tGLBindVertexArray(GLuint array);
+    extern XD_ENGINE_API tGLBindVertexArray* gGLBindVertexArrayProc;
+
+    typedef void tGLEnableVertexAttribArray(GLuint index);
+    extern XD_ENGINE_API tGLEnableVertexAttribArray* gGLEnableVertexAttribArrayProc;
+
+    typedef void tGLDisableVertexAttribArray(GLuint index);
+    extern XD_ENGINE_API tGLDisableVertexAttribArray* gGLDisableVertexAttribArrayProc;
+
+    typedef void tGLVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer);
+    extern XD_ENGINE_API tGLVertexAttribPointer* gGLVertexAttribPointerProc;
+
+    typedef void tGLVertexAttribDivisor(GLuint index, GLuint divisor);
+    extern XD_ENGINE_API tGLVertexAttribDivisor* gGLVertexAttribDivisorProc;
 
     X XD_ENGINE_API fLoadOpenGLInitialProcPtrX();
     X XD_ENGINE_API fLoadOpenGLExtensionProcPtrX(XD_Library& _library);

@@ -14,6 +14,13 @@ namespace XD
     tGLBufferData* gGLBufferDataProc;
     tGLBufferSubData* gGLBufferSubDataProc;
 
+    tGLGenVertexArrays* gGLGenVertexArraysProc;
+    tGLDeleteVertexArrays* gGLDeleteVertexArraysProc;
+    tGLBindVertexArray* gGLBindVertexArrayProc;
+    tGLEnableVertexAttribArray* gGLEnableVertexAttribArrayProc;
+    tGLDisableVertexAttribArray* gGLDisableVertexAttribArrayProc;
+    tGLVertexAttribPointer* gGLVertexAttribPointerProc;
+    tGLVertexAttribDivisor* gGLVertexAttribDivisorProc;
 
     X 
     fLoadOpenGLInitialProcPtrX()
@@ -38,6 +45,27 @@ namespace XD
 
         gGLBufferSubDataProc = (tGLBufferSubData*)wglGetProcAddress("glBufferSubData");
         mXD_ASSERT(gGLBufferSubDataProc);
+
+        gGLGenVertexArraysProc = (tGLGenVertexArrays*)wglGetProcAddress("glGenVertexArrays");
+        mXD_ASSERT(gGLGenVertexArraysProc);
+
+        gGLDeleteVertexArraysProc = (tGLDeleteVertexArrays*)wglGetProcAddress("glDeleteVertexArrays");
+        mXD_ASSERT(gGLDeleteVertexArraysProc);        
+
+        gGLBindVertexArrayProc = (tGLBindVertexArray*)wglGetProcAddress("glBindVertexArray");
+        mXD_ASSERT(gGLBindVertexArrayProc);
+
+        gGLEnableVertexAttribArrayProc = (tGLEnableVertexAttribArray*)wglGetProcAddress("glEnableVertexAttribArray");
+        mXD_ASSERT(gGLEnableVertexAttribArrayProc);
+
+        gGLDisableVertexAttribArrayProc = (tGLDisableVertexAttribArray*)wglGetProcAddress("glDisableVertexAttribArray");
+        mXD_ASSERT(gGLDisableVertexAttribArrayProc);
+
+        gGLVertexAttribPointerProc = (tGLVertexAttribPointer*)wglGetProcAddress("glVertexAttribPointer");
+        mXD_ASSERT(gGLVertexAttribPointerProc);
+
+        gGLVertexAttribDivisorProc = (tGLVertexAttribDivisor*)wglGetProcAddress("glVertexAttribDivisor");
+        mXD_ASSERT(gGLVertexAttribDivisorProc);
 
         return A_A;
     }

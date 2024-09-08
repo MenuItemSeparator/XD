@@ -23,8 +23,32 @@ namespace XD
         0,
     };
 
+    static GLenum fShaderDataTypeToOpenGLType(eShaderDataType type)
+	{
+		switch (type)
+		{
+		case eShaderDataType::Float:    return GL_FLOAT;
+		case eShaderDataType::Float2:   return GL_FLOAT;
+		case eShaderDataType::Float3:   return GL_FLOAT;
+		case eShaderDataType::Float4:   return GL_FLOAT;
+		case eShaderDataType::Matrix3f:     return GL_FLOAT;
+		case eShaderDataType::Matrix4f:     return GL_FLOAT;
+		case eShaderDataType::Integer:      return GL_INT;
+		case eShaderDataType::Integer2:     return GL_INT;
+		case eShaderDataType::Integer3:     return GL_INT;
+		case eShaderDataType::Integer4:     return GL_INT;
+		case eShaderDataType::Bool:     return GL_BOOL;
+        case eShaderDataType::None:
+        default:
+            break;
+		}
+
+		mXD_ASSERTM(false, "Unknown ShaderDataType!");
+		return 0;
+	}
+
     X
-    XD_OpenGLVertexBuffer::fCreateX(Memory *_data, VertexBufferLayoutHandle _referenceHandle)
+    XD_OpenGLVertexBufferObject::fCreateX(Memory *_data, VertexBufferLayoutHandle _referenceHandle)
     {
         mXD_ASSERT(_data);
         m_size = _data->m_byteSize;
@@ -39,7 +63,7 @@ namespace XD
     }
 
     X
-    XD_OpenGLVertexBuffer::fUpdateX(u8 _offset, Memory *_data)
+    XD_OpenGLVertexBufferObject::fUpdateX(u8 _offset, Memory *_data)
     {
         mXD_ASSERT(m_id);
         mXD_ASSERT(_data);
@@ -52,11 +76,105 @@ namespace XD
     }
 
     X
-    XD_OpenGLVertexBuffer::fDestroy()
+    XD_OpenGLVertexBufferObject::fDestroyX()
     {
         OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, 0), "Can't unbind vb buffer");
         OpenGLCheck(gGLDeleteBuffersProc(1, &m_id), "Can't delete vb buffer");
 
+        return A_A;
+    }
+
+    X XD_OpenGLVertexBufferObject::fBindX()
+    {
+        OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, m_id), "Can't bind vb buffer");
+        return A_A;
+    }
+
+    X XD_OpenGLVertexBufferObject::fUnbindX()
+    {
+        OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, 0), "Can't unbind vb buffer");
+        return A_A;
+    }
+
+    X
+    XD_OpenGLVertexArrayObject::fCreateX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout)
+    {
+        OpenGLCheck(gGLGenVertexArraysProc(1, &m_id), "Can't gen vao");
+        mXD_ASSERT(m_id);
+        X_Call(fAddVBOX(_vboHandle, _vboObject, _vboLayout), "Error while adding vbo to vao");
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLVertexArrayObject::fAddVBOX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout)
+    {
+        mXD_ASSERT(_vboObject);
+        mXD_ASSERT(_vboLayout);
+
+        OpenGLCheck(gGLBindVertexArrayProc(m_id), "Can't bind vao");
+        OpenGLCheck(_vboObject->fBindX(), "Can't bind vbo");
+
+		for (tLayoutIter it = _vboLayout->fBegin(); it != _vboLayout->fEnd(); ++it)
+		{
+			switch (it->fGetType())
+			{
+			case eShaderDataType::Float:
+			case eShaderDataType::Float2:
+			case eShaderDataType::Float3:
+			case eShaderDataType::Float4:
+			case eShaderDataType::Integer:
+			case eShaderDataType::Integer2:
+			case eShaderDataType::Integer3:
+			case eShaderDataType::Integer4:
+			case eShaderDataType::Bool:
+			{
+				OpenGLCheck(gGLEnableVertexAttribArrayProc(m_layoutIndex), "");
+				OpenGLCheck(gGLVertexAttribPointerProc(m_layoutIndex,
+					XD_LayoutElement::fGetComponentCount(it->fGetType()),
+					fShaderDataTypeToOpenGLType(it->fGetType()),
+					GL_FALSE,
+					_vboLayout->fGetStride(),
+					(const void*)it->fGetOffset()), "Error when vao attrib pointer");
+				++m_layoutIndex;
+				break;
+			}
+			case eShaderDataType::Matrix3f:
+			case eShaderDataType::Matrix4f:
+			{
+				u8 count = XD_LayoutElement::fGetComponentCount(it->fGetType());
+				for (u8 i = 0; i < count; ++i)
+				{
+					OpenGLCheck(gGLEnableVertexAttribArrayProc(m_layoutIndex), "Can't enable vertex attrib");
+					OpenGLCheck(gGLVertexAttribPointerProc(m_layoutIndex, 
+						count,
+						fShaderDataTypeToOpenGLType(it->fGetType()),
+						GL_FALSE,
+						_vboLayout->fGetStride(),
+						(const void*)(it->fGetOffset() + sizeof(float) * count * i)), "Error when vao attrib pointer");
+					OpenGLCheck(gGLVertexAttribDivisorProc(m_layoutIndex, 1), "Error when vao attrib divisor");
+					++m_layoutIndex;
+				}
+				break;
+			}
+			default:
+				mXD_ASSERTM(false, "Unknown ShaderDataType!");
+			}
+		}
+
+        X_Call(_vboObject->fUnbindX(), "Can't unbind vbo");
+        OpenGLCheck(gGLBindVertexArrayProc(0), "Can't unbind vao");
+
+		m_vbos.push_back(_vboHandle);
+
+        return A_A;
+    }
+
+    X
+    XD_OpenGLVertexArrayObject::fDestroyX()
+    {
+        mXD_ASSERT(m_id);
+        OpenGLCheck(gGLBindVertexArrayProc(0), "Can't unbind vao");
+        OpenGLCheck(gGLDeleteVertexArraysProc(1, &m_id), "Can't delete vao");
         return A_A;
     }
 
@@ -327,13 +445,25 @@ namespace XD
     }
 
     X 
-    XD_OpenGLRenderer::fvCreateVBOX(VertexBufferHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle)
+    XD_OpenGLRenderer::fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle)
     {
         return A_A;
     }
 
     X 
-    XD_OpenGLRenderer::fvDestroyVBOX(VertexBufferHandle _vboHandle)
+    XD_OpenGLRenderer::fvDestroyVBOX(VertexBufferObjectHandle _vboHandle)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle *_vboHandleArray, u8 _arraySize)
+    {
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle)
     {
         return A_A;
     }

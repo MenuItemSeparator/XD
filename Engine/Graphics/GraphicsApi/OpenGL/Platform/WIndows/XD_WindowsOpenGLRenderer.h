@@ -7,16 +7,31 @@
 
 namespace XD
 {
-    class XD_ENGINE_API XD_OpenGLVertexBuffer final
+    class XD_ENGINE_API XD_OpenGLVertexBufferObject final
     {
     public:
         X fCreateX(Memory* _data, VertexBufferLayoutHandle _referenceHandle);
         X fUpdateX(u8 _offset, Memory* _data);
-        X fDestroy();
+        X fDestroyX();
+
+        X fBindX();
+        X fUnbindX();
     private:
         GLuint m_id;
         VertexBufferLayoutHandle m_layout;
         u8 m_size;
+    };
+
+    class XD_ENGINE_API XD_OpenGLVertexArrayObject final
+    {
+    public:
+        X fCreateX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout);
+        X fAddVBOX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout);
+        X fDestroyX();
+    private:
+        GLuint m_id;
+        std::vector<VertexBufferObjectHandle> m_vbos;
+        i8 m_layoutIndex;
     };
 
     class XD_ENGINE_API XD_OpenGLContext final
@@ -56,8 +71,11 @@ namespace XD
         virtual X fvCreateIBOX(IndexBufferHandle _iboHandle, Memory* _data) override;
         virtual X fvDestroyIBOX(IndexBufferHandle _iboHandle) override;
 
-        virtual X fvCreateVBOX(VertexBufferHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) override;
-        virtual X fvDestroyVBOX(VertexBufferHandle _vboHandle) override;
+        virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) override;
+        virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) override;
+
+        virtual X fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle* _vboHandleArray, u8 _arraySize) override;
+        virtual X fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle) override;
         
         virtual X fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath) override;
         virtual X fvDestroyShaderX(ShaderHandle _handle) override;

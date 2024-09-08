@@ -45,7 +45,7 @@ namespace XD
     }
 
     X
-    XD_GraphicsSystem::fCreateVertexBufferX(VertexBufferHandle& _resultHandle, Memory *_data, VertexBufferLayoutHandle _layout)
+    XD_GraphicsSystem::fCreateVertexBufferObjectX(VertexBufferObjectHandle& _resultHandle, Memory *_data, VertexBufferLayoutHandle _layout)
     {
         _resultHandle = m_vertexBufferHandleMap.fCreateHandle();
         mXD_ASSERT(m_vertexBufferHandleMap.fIsValid(_resultHandle));
@@ -56,7 +56,7 @@ namespace XD
     }
 
     X
-    XD_GraphicsSystem::fDestroyVertexBufferX(VertexBufferHandle _vbHandle)
+    XD_GraphicsSystem::fDestroyVertexObjectBufferX(VertexBufferObjectHandle _vbHandle)
     {
         X_Call(m_renderer->fvDestroyVBOX(_vbHandle), "Can't destroy vertex buffer data");
         X_Call(m_vertexBufferHandleMap.fFreeHandleX(_vbHandle), "Can't free vertex buffer handle");
