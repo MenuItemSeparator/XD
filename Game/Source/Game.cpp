@@ -9,6 +9,22 @@ int Game::fStartup(int argc, const char **argv)
     XD::XD_Application application{applicationConfig};
     X_Call(application.fvInitializeX(), "Application initialization error");
 
+    //==========
+
+    XD::VertexBufferLayoutHandle layoutHandle;
+    std::vector<XD::eShaderDataType> shaderTypes{ XD::eShaderDataType::Float2 };
+    X_Call(application.fGetGraphicsSystem()->fCreateVertexBufferLayoutX(layoutHandle, shaderTypes), "");
+
+    XD::VertexBufferObjectHandle vboHandle;
+    float vboRawData[] = {1.0f, 1.0f, 1.0f};
+    XD::Memory vboMem{vboRawData, 3};
+    X_Call(application.fGetGraphicsSystem()->fCreateVertexBufferObjectX(vboHandle, &vboMem, layoutHandle), "");
+
+    X_Call(application.fGetGraphicsSystem()->fDestroyVertexBufferLayoutX(layoutHandle), "");
+    X_Call(application.fGetGraphicsSystem()->fDestroyVertexBufferObjectX(vboHandle), "");
+
+    //----------
+
     mLOG("Main loop started");
     X_Call(application.fLoopX(), "Application loop error");
 

@@ -46,7 +46,8 @@ namespace XD
             eShaderDataType::Bool
         };
 
-        XD_BufferLayout layoutBuffer{layout};
+        XD_BufferLayout layoutBuffer{};
+        X_Call(layoutBuffer.fCreateX(layout), "Can't create layout buffer");
         tLayoutIter end = layoutBuffer.fEnd();
         u8 counter = 0;
         u8 offset = 0;

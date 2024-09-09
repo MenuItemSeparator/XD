@@ -34,6 +34,8 @@ namespace XD
     tGLUseProgram* gGLUseProgramProc;
     tGLGetShaderiv* gGLGetShaderiv;
     tGLGetShaderInfoLog* gGLGetShaderInfoLog;
+    tGLGetProgramiv* gGLGetProgramivProc;
+    tGLGetProgramInfoLog* gGLGetProgramInfoLogProc;
 
     X 
     fLoadOpenGLInitialProcPtrX()
@@ -115,6 +117,12 @@ namespace XD
 
         gGLGetShaderInfoLog = (tGLGetShaderInfoLog*)wglGetProcAddress("glGetShaderInfoLog");
         mXD_ASSERT(gGLGetShaderInfoLog);
+
+        gGLGetProgramivProc = (tGLGetProgramiv*)wglGetProcAddress("glGetProgramiv");
+        mXD_ASSERT(gGLGetProgramivProc);
+
+        gGLGetProgramInfoLogProc = (tGLGetProgramInfoLog*)wglGetProcAddress("glGetProgramInfoLog");
+        mXD_ASSERT(gGLGetProgramInfoLogProc);
 
         return A_A;
     }

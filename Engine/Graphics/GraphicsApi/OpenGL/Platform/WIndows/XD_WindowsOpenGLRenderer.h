@@ -10,6 +10,12 @@ namespace XD
     class XD_ENGINE_API XD_OpenGLVertexBufferObject final
     {
     public:
+        XD_OpenGLVertexBufferObject() :
+            m_id(0),
+            m_layout(),
+            m_size(0)
+        {}
+
         X fCreateX(Memory* _data, VertexBufferLayoutHandle _referenceHandle);
         X fUpdateX(u8 _offset, Memory* _data);
         X fDestroyX();
@@ -25,6 +31,12 @@ namespace XD
     class XD_ENGINE_API XD_OpenGLVertexArrayObject final
     {
     public:
+        XD_OpenGLVertexArrayObject() :
+            m_id(0),
+            m_vbos(),
+            m_layoutIndex(0)
+        {}
+
         X fCreateX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout);
         X fAddVBOX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout);
         X fDestroyX();
@@ -45,6 +57,7 @@ namespace XD
         X fCreateX(const std::string& _filepath);
         X fDestroyX();
 
+        GLuint fGetId() const { return m_id; }
     private:
         GLuint m_id;
         GLenum m_type;
@@ -55,7 +68,12 @@ namespace XD
     class XD_ENGINE_API XD_OpenGLShaderProgram final
     {
     public:
-        X fCreateX();
+        XD_OpenGLShaderProgram() :
+            m_id(0)
+        {}
+
+        X fCreateX(const XD_OpenGLShader* _vs, const XD_OpenGLShader* _fs);
+        X fDestroyX();
     private:
         GLuint m_id;
     };
@@ -113,6 +131,12 @@ namespace XD
         tSptr<XD_OpenGLContext> m_context;
         XD_Library m_openGLDll;
         PIXELFORMATDESCRIPTOR m_pfd;
+
+        std::vector<XD_OpenGLVertexBufferObject> m_vbos;
+        std::vector<XD_OpenGLVertexArrayObject> m_vaos;
+        std::vector<XD_BufferLayout> m_layouts;
+        std::vector<XD_OpenGLShader> m_shaders;
+        std::vector<XD_OpenGLShaderProgram> m_programs;
 
         X fExtractInitialProcsFromDummyContextX();
         X fCreateValidPixelFormatX(HWND _hwnd);

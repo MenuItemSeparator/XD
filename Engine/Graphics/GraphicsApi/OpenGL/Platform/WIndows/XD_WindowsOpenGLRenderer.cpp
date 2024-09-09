@@ -53,10 +53,25 @@ namespace XD
 	{
 		i4 result{};
 		char infoLog[1024];
-        OpenGLCheck(gGLGetShaderiv(_id, GL_COMPILE_STATUS, &result));
+        OpenGLCheck(gGLGetShaderiv(_id, GL_COMPILE_STATUS, &result), "Error when getting shader compile status result code");
         if (!result)
         {
-            OpenGLCheck(gGLGetShaderInfoLog(_id, 1024, nullptr, infoLog));
+            OpenGLCheck(gGLGetShaderInfoLog(_id, 1024, nullptr, infoLog), "Can't get shader compile error info log");
+            mLOG("ERROR: Compile-time error: " << (const char*)infoLog);
+            return X_X;
+        }
+		return A_A;
+	}
+
+    static X
+    fCheckShaderProgramErrorsX(GLuint _id)
+	{
+		i4 result{};
+		char infoLog[1024];
+        OpenGLCheck(gGLGetProgramivProc(_id, GL_LINK_STATUS, &result), "Error when getting program link status result code");
+        if (!result)
+        {
+            OpenGLCheck(gGLGetProgramInfoLogProc(_id, 1024, nullptr, infoLog), "Can't get program link error info log");
             mLOG("ERROR: Compile-time error: " << (const char*)infoLog);
             return X_X;
         }
@@ -215,8 +230,8 @@ namespace XD
         m_id = gGLCreateShaderProc(m_type);
         mXD_ASSERT(m_id);
         X_Call(fCheckOpenGLErrorX(__FILE__, __LINE__), "Can't create shader");
-        OpenGLCheck(gGLShaderSourceProc(m_id, 1, &rawStr, NULL), "");
-        OpenGLCheck(gGLCompileShaderProc(m_id));
+        OpenGLCheck(gGLShaderSourceProc(m_id, 1, &rawStr, NULL), "Can't link shader id with source text");
+        OpenGLCheck(gGLCompileShaderProc(m_id), "Can't compile shader");
         X_Call(fCheckShaderErrorsX(m_id), "Occured some internal errors during shader creation");
 
         return A_A;
@@ -250,6 +265,35 @@ namespace XD
 
         mLOG("Unknown shader file extension " << fileExtension);
         return X_X;
+    }
+
+    X
+    XD_OpenGLShaderProgram::fCreateX(const XD_OpenGLShader *_vs, const XD_OpenGLShader *_fs)
+    {
+        mXD_ASSERT(_vs);
+        mXD_ASSERT(_fs);
+
+        m_id = gGLCreateProgramProc();
+        mXD_ASSERT(m_id);
+        X_Call(fCheckOpenGLErrorX(__FILE__, __LINE__), "Can't create shader program");
+
+        OpenGLCheck(gGLAttachShaderProc(m_id, _vs->fGetId()), "Can't attach vertex shader");
+        OpenGLCheck(gGLAttachShaderProc(m_id, _fs->fGetId()), "Can't attach fragment shader");
+        OpenGLCheck(gGLLinkProgramProc(m_id), "Can't link shader program");
+
+        X_Call(fCheckShaderProgramErrorsX(m_id), "Shader program internal error occured");
+
+        return A_A;
+    }
+
+    X
+    XD_OpenGLShaderProgram::fDestroyX()
+    {
+        mXD_ASSERT(m_id);
+
+        OpenGLCheck(gGLUseProgramProc(0), "Can't unbind shader program");
+        OpenGLCheck(gGLDeleteProgramProc(m_id), "Can't delete shader program");
+        return A_A;
     }
 
     XD_OpenGLContext::XD_OpenGLContext() : 
@@ -317,9 +361,13 @@ namespace XD
     XD_OpenGLRenderer::XD_OpenGLRenderer() :
         m_context(nullptr),
         m_openGLDll(),
-        m_pfd()
-    {
-    }
+        m_pfd(),
+        m_vbos(VBO_MAX_COUNT),
+        m_vaos(VAO_MAX_COUNT),
+        m_layouts(VBLAYOUT_MAX_COUNT),
+        m_shaders(SHADER_MAX_COUNT),
+        m_programs(SHADERPROG_MAX_COUNT)
+    {}
 
     X 
     XD_OpenGLRenderer::fvInitializeX(void* _hwnd)
@@ -497,12 +545,14 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements)
     {
+        X_Call(m_layouts[_layoutHandle].fCreateX(_elements), "Renderer can't create layout buffer");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle)
     {
+        X_Call(m_layouts[_layoutHandle].fDestroyX(), "Renderer can't destroy layout buffer");
         return A_A;
     }
 
@@ -565,5 +615,6 @@ namespace XD
     {
         return A_A;
     }
+
 
 }

@@ -45,6 +45,8 @@ namespace XD
             newHandle = m_handlePointer++;
         }
 
+        m_activeHandles.insert(newHandle);
+
         return T{newHandle};
     }
 

@@ -30,6 +30,8 @@ namespace XD
         virtual X fvInitializeX() override;
         virtual X fvTerminateX() override;
 
+        tSptr<XD_GraphicsSystem> fGetGraphicsSystem() { return m_graphicsSystem; }
+
         X fLoopX();
 
     private:

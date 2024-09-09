@@ -172,6 +172,12 @@ namespace XD
     typedef void tGLGetShaderInfoLog(GLuint shader, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
     extern XD_ENGINE_API tGLGetShaderInfoLog* gGLGetShaderInfoLog;
 
+    typedef void tGLGetProgramiv(GLuint program, GLenum pname, GLint *params);
+    extern XD_ENGINE_API tGLGetProgramiv* gGLGetProgramivProc;
+
+    typedef void tGLGetProgramInfoLog(GLuint program, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
+    extern XD_ENGINE_API tGLGetProgramInfoLog* gGLGetProgramInfoLogProc;
+
     X XD_ENGINE_API fLoadOpenGLInitialProcPtrX();
     X XD_ENGINE_API fLoadOpenGLExtensionProcPtrX(XD_Library& _library);
 }

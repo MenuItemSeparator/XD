@@ -52,14 +52,17 @@ namespace XD
 
         X_Call(m_renderer->fvCreateVBOX(_resultHandle, _data, _layout), "Can't create vertex buffer");
 
+        mLOG("Created VBO with handle " << _resultHandle);
         return A_A;
     }
 
     X
-    XD_GraphicsSystem::fDestroyVertexObjectBufferX(VertexBufferObjectHandle _vbHandle)
+    XD_GraphicsSystem::fDestroyVertexBufferObjectX(VertexBufferObjectHandle _vbHandle)
     {
         X_Call(m_renderer->fvDestroyVBOX(_vbHandle), "Can't destroy vertex buffer data");
         X_Call(m_vertexBufferHandleMap.fFreeHandleX(_vbHandle), "Can't free vertex buffer handle");
+
+        mLOG("Destroyed VBO with handle " << _vbHandle);
         return A_A;
     }
 
@@ -91,6 +94,7 @@ namespace XD
 
         X_Call(m_renderer->fvCreateVertexBufferLayoutX(_resultHandle, _elements), "Can't create vertex buffer layout");
 
+        mLOG("Created VB layout with handle " << _resultHandle);
         return A_A;
     }
 
@@ -100,6 +104,7 @@ namespace XD
         X_Call(m_renderer->fvDestroyVertexBufferLayoutX(_layoutHandle), "Can't destroy vertex buffer layout object");
         X_Call(m_layoutHandleMap.fFreeHandleX(_layoutHandle), "Can't free vertex buffer layout handle");
 
+        mLOG("Destroyed VB layout with handle " << _layoutHandle);
         return A_A;
     }
 
