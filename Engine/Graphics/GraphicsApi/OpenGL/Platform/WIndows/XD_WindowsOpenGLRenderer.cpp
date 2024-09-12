@@ -128,11 +128,46 @@ namespace XD
     }
 
     X
-    XD_OpenGLVertexArrayObject::fCreateX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout)
+    XD_OpenGLIndexBufferObject::fCreateX(Memory *_data)
+    {
+        mXD_ASSERT(_data);
+        m_size = _data->m_byteSize;
+
+        OpenGLCheck(gGLGenBuffersProc(1, &m_id), "Can't gen ib buffer");
+        mXD_ASSERT(m_id);
+        OpenGLCheck(gGLBindBufferProc(GL_ELEMENT_ARRAY_BUFFER, m_id), "Can't bind ib buffer");
+        OpenGLCheck(gGLBufferDataProc(GL_ELEMENT_ARRAY_BUFFER, m_size, _data->m_data, _data->m_data ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW), "Error when buffer data to ib");
+        OpenGLCheck(gGLBindBufferProc(GL_ELEMENT_ARRAY_BUFFER, 0), "Can't unbind ib buffer");
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLIndexBufferObject::fUpdateX(u8 _offset, Memory *_data)
+    {
+        mXD_ASSERT(m_id);
+        mXD_ASSERT(_data);
+
+        OpenGLCheck(gGLBindBufferProc(GL_ELEMENT_ARRAY_BUFFER, m_id), "Can't bind ib buffer");
+        OpenGLCheck(gGLBufferSubDataProc(GL_ELEMENT_ARRAY_BUFFER, _offset, _data->m_byteSize, _data->m_data), "Error when buffer subdata to ib");
+        OpenGLCheck(gGLBindBufferProc(GL_ELEMENT_ARRAY_BUFFER, 0), "Can't unbind ib buffer");
+
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLIndexBufferObject::fDestroyX()
+    {
+        OpenGLCheck(gGLBindBufferProc(GL_ELEMENT_ARRAY_BUFFER, 0), "Can't unbind ib buffer");
+        OpenGLCheck(gGLDeleteBuffersProc(1, &m_id), "Can't delete ib buffer");
+
+        return A_A;
+    }
+
+    X
+    XD_OpenGLVertexArrayObject::fCreateX()
     {
         OpenGLCheck(gGLGenVertexArraysProc(1, &m_id), "Can't gen vao");
         mXD_ASSERT(m_id);
-        X_Call(fAddVBOX(_vboHandle, _vboObject, _vboLayout), "Error while adding vbo to vao");
         return A_A;
     }
 
@@ -143,7 +178,7 @@ namespace XD
         mXD_ASSERT(_vboLayout);
 
         OpenGLCheck(gGLBindVertexArrayProc(m_id), "Can't bind vao");
-        OpenGLCheck(_vboObject->fBindX(), "Can't bind vbo");
+        X_Call(_vboObject->fBindX(), "Can't bind vbo");
 
 		for (tLayoutIter it = _vboLayout->fBegin(); it != _vboLayout->fEnd(); ++it)
 		{
@@ -364,6 +399,7 @@ namespace XD
         m_pfd(),
         m_vbos(VBO_MAX_COUNT),
         m_vaos(VAO_MAX_COUNT),
+        m_ibos(IBO_MAX_COUNT),
         m_layouts(VBLAYOUT_MAX_COUNT),
         m_shaders(SHADER_MAX_COUNT),
         m_programs(SHADERPROG_MAX_COUNT)
@@ -557,64 +593,89 @@ namespace XD
     }
 
     X 
-    XD_OpenGLRenderer::fvCreateIBOX(IndexBufferHandle _iboHandle, Memory* _data)
+    XD_OpenGLRenderer::fvCreateIBOX(IndexBufferObjectHandle _iboHandle, Memory* _data)
     {
+        X_Call(m_ibos[_iboHandle].fCreateX(_data), "Can't create ibo object");
         return A_A;
     }
 
     X 
-    XD_OpenGLRenderer::fvDestroyIBOX(IndexBufferHandle _iboHandle)
+    XD_OpenGLRenderer::fvDestroyIBOX(IndexBufferObjectHandle _iboHandle)
     {
+        X_Call(m_ibos[_iboHandle].fDestroyX(), "Can't destroy ibo object");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle)
     {
+        X_Call(m_vbos[_vboHandle].fCreateX(_data, _layoutHandle), "Can't create vbo object");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvDestroyVBOX(VertexBufferObjectHandle _vboHandle)
     {
+        X_Call(m_vbos[_vboHandle].fDestroyX(), "Can't destroy vbo object");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle *_vboHandleArray, u8 _arraySize)
     {
+        mXD_ASSERT(_arraySize > 0);
+
+        X_Call(m_vaos[_vaoHandle].fCreateX(), "Can't create vao object");
+
+        VertexBufferObjectHandle* start = _vboHandleArray;
+        VertexBufferObjectHandle* end = start + _arraySize;
+
+        for (VertexBufferObjectHandle* p = start; p != end; ++p)
+        {
+            XD_OpenGLVertexBufferObject& vbo = m_vbos[*p];
+            XD_BufferLayout& layout = m_layouts[vbo.fGetLayout()];
+
+            X_Call(m_vaos[_vaoHandle].fAddVBOX(*p, &vbo, &layout), "Can't add vbo object to vao");
+        }
+
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle)
     {
+        X_Call(m_vaos[_vaoHandle].fDestroyX(), "Can't destroy vao object");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath)
     {
+        X_Call(m_shaders[_handle].fCreateX(_filePath), "Can't create shader object");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvDestroyShaderX(ShaderHandle _handle)
     {
+        X_Call(m_shaders[_handle].fDestroyX(), "Can't destroy shader object");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvCreateShaderProgramX(ShaderProgramHandle _programHandle, ShaderHandle _vsh, ShaderHandle _fsh)
     {
+        XD_OpenGLShader& vs = m_shaders[_vsh];
+        XD_OpenGLShader& fs = m_shaders[_fsh];
+        X_Call(m_programs[_programHandle].fCreateX(&vs, &fs), "Can't create shader program object");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvDestroyShaderProgramX(ShaderProgramHandle _programHandle)
     {
+        X_Call(m_programs[_programHandle].fDestroyX(), "Can't destroy shader program object");
         return A_A;
     }
-
 
 }

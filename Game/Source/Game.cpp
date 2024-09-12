@@ -20,8 +20,18 @@ int Game::fStartup(int argc, const char **argv)
     XD::Memory vboMem{vboRawData, 3};
     X_Call(application.fGetGraphicsSystem()->fCreateVertexBufferObjectX(vboHandle, &vboMem, layoutHandle), "");
 
+    XD::IndexBufferObjectHandle iboHandle;
+    int iboRawData[] = {0, 1, 2};
+    XD::Memory iboMem{iboRawData, 3};
+    X_Call(application.fGetGraphicsSystem()->fCreateIndexBufferX(iboHandle, &iboMem), "");
+
+    XD::VertexArrayObjectHandle vaoHandle;
+    X_Call(application.fGetGraphicsSystem()->fCreateVertexArrayObjectX(vaoHandle, &vboHandle, 1), "");
+
     X_Call(application.fGetGraphicsSystem()->fDestroyVertexBufferLayoutX(layoutHandle), "");
     X_Call(application.fGetGraphicsSystem()->fDestroyVertexBufferObjectX(vboHandle), "");
+    X_Call(application.fGetGraphicsSystem()->fDestroyIndexBufferX(iboHandle), "");
+    X_Call(application.fGetGraphicsSystem()->fDestroyVertexArrayObjectX(vaoHandle), "");
 
     //----------
 

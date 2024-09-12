@@ -22,11 +22,24 @@ namespace XD
 
         X fBindX();
         X fUnbindX();
+
+        VertexBufferLayoutHandle fGetLayout() const { return m_layout; }
     private:
         GLuint m_id;
         VertexBufferLayoutHandle m_layout;
         u8 m_size;
     };
+
+    class XD_ENGINE_API XD_OpenGLIndexBufferObject final
+    {
+    public:
+        X fCreateX(Memory* _data);
+        X fUpdateX(u8 _offset, Memory* _data);
+        X fDestroyX();
+    private:
+        GLuint m_id;
+        u8 m_size;
+    };  
 
     class XD_ENGINE_API XD_OpenGLVertexArrayObject final
     {
@@ -37,7 +50,7 @@ namespace XD
             m_layoutIndex(0)
         {}
 
-        X fCreateX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout);
+        X fCreateX();
         X fAddVBOX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout);
         X fDestroyX();
     private:
@@ -112,8 +125,8 @@ namespace XD
         virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) override;
         virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) override;
 
-        virtual X fvCreateIBOX(IndexBufferHandle _iboHandle, Memory* _data) override;
-        virtual X fvDestroyIBOX(IndexBufferHandle _iboHandle) override;
+        virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, Memory* _data) override;
+        virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) override;
 
         virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) override;
         virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) override;
@@ -134,6 +147,7 @@ namespace XD
 
         std::vector<XD_OpenGLVertexBufferObject> m_vbos;
         std::vector<XD_OpenGLVertexArrayObject> m_vaos;
+        std::vector<XD_OpenGLIndexBufferObject> m_ibos;
         std::vector<XD_BufferLayout> m_layouts;
         std::vector<XD_OpenGLShader> m_shaders;
         std::vector<XD_OpenGLShaderProgram> m_programs;

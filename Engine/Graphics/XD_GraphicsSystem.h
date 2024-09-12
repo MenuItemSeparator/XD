@@ -18,11 +18,14 @@ namespace XD
         X fCreateVertexBufferObjectX(VertexBufferObjectHandle& _resultHandle, Memory* _data, VertexBufferLayoutHandle _layout);
         X fDestroyVertexBufferObjectX(VertexBufferObjectHandle _vbHandle);
 
-        X fCreateIndexBufferX(IndexBufferHandle& _resultHandle, Memory* _data);
-        X fDestroyIndexBufferX(IndexBufferHandle _ibHandle);
+        X fCreateIndexBufferX(IndexBufferObjectHandle& _resultHandle, Memory* _data);
+        X fDestroyIndexBufferX(IndexBufferObjectHandle _ibHandle);
 
         X fCreateVertexBufferLayoutX(VertexBufferLayoutHandle& _resultHandle, const std::vector<eShaderDataType>& _elements);
         X fDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle);
+
+        X fCreateVertexArrayObjectX(VertexArrayObjectHandle& _vaoHandle, VertexBufferObjectHandle* _vboHandleArray, u8 _arraySize);
+        X fDestroyVertexArrayObjectX(VertexArrayObjectHandle _vaoHandle);
 
         X fCreateShaderX(ShaderHandle& _resultHandle, const std::string& _filePath);
         X fDestroyShaderX(ShaderHandle _shaderHandle);
@@ -37,6 +40,7 @@ namespace XD
         tUptr<class XD_Renderer> m_renderer;
         tVertexBufferObjectHandleMap m_vertexBufferHandleMap;
         tIndexBufferHandleMap m_indexBufferHandleMap;
+        tVertexBufferArrayHandleMap m_vertexBufferArrayHandleMap;
         tVertexBufferLayoutHandleMap m_layoutHandleMap;
         tShaderHandleMap m_shaderHandleMap;
         tShaderProgramHandleMap m_shaderProgramHandleMap;

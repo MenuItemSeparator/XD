@@ -7,6 +7,7 @@ namespace XD
         m_renderer(),
         m_vertexBufferHandleMap(),
         m_indexBufferHandleMap(),
+        m_vertexBufferArrayHandleMap(),
         m_layoutHandleMap(),
         m_shaderHandleMap(),
         m_shaderProgramHandleMap()
@@ -67,21 +68,24 @@ namespace XD
     }
 
     X
-    XD_GraphicsSystem::fCreateIndexBufferX(IndexBufferHandle& _handle, Memory* _data)
+    XD_GraphicsSystem::fCreateIndexBufferX(IndexBufferObjectHandle& _handle, Memory* _data)
     {
         _handle = m_indexBufferHandleMap.fCreateHandle();
         mXD_ASSERT(m_indexBufferHandleMap.fIsValid(_handle));
 
         X_Call(m_renderer->fvCreateIBOX(_handle, _data), "Can't create index buffer");
 
+        mLOG("Created IBO with handle " << _handle);
         return A_A;
     }
 
     X
-    XD_GraphicsSystem::fDestroyIndexBufferX(IndexBufferHandle _ibHandle)
+    XD_GraphicsSystem::fDestroyIndexBufferX(IndexBufferObjectHandle _ibHandle)
     {
         X_Call(m_renderer->fvDestroyIBOX(_ibHandle), "Can't destroy index buffer data");
         X_Call(m_indexBufferHandleMap.fFreeHandleX(_ibHandle), "Can't free index buffer handle");
+
+        mLOG("Destroyed IBO with handle " << _ibHandle);
         return A_A;
     }
 
@@ -108,6 +112,29 @@ namespace XD
         return A_A;
     }
 
+    X 
+    XD_GraphicsSystem::fCreateVertexArrayObjectX(VertexArrayObjectHandle& _vaoHandle, VertexBufferObjectHandle *_vboHandleArray, u8 _arraySize)
+    {
+        _vaoHandle = m_vertexBufferArrayHandleMap.fCreateHandle();
+        mXD_ASSERT(m_vertexBufferArrayHandleMap.fIsValid(_vaoHandle));
+
+        X_Call(m_renderer->fvCreateVAOX(_vaoHandle, _vboHandleArray, _arraySize), "Can't create vao");
+
+        mLOG("Created VAO with handle " << _vaoHandle);
+        return A_A;
+    }
+
+    X 
+    XD_GraphicsSystem::fDestroyVertexArrayObjectX(VertexArrayObjectHandle _vaoHandle)
+    {
+        X_Call(m_renderer->fvDestroyVAOX(_vaoHandle), "Can't destroy vao object");
+        X_Call(m_vertexBufferArrayHandleMap.fFreeHandleX(_vaoHandle), "Can't free vao handle");
+
+        mLOG("Destroyed vao with handle " << _vaoHandle);
+
+        return A_A;
+    }
+
     X
     XD_GraphicsSystem::fCreateShaderX(ShaderHandle& _resultHandle, const std::string &_filePath)
     {
@@ -115,7 +142,8 @@ namespace XD
         mXD_ASSERT(m_shaderHandleMap.fIsValid(_resultHandle));
 
         X_Call(m_renderer->fvCreateShaderX(_resultHandle, _filePath), "Can't create shader data");
-
+       
+        mLOG("Created shader with handle " << _resultHandle);
         return A_A;
     }
 
@@ -125,6 +153,7 @@ namespace XD
         X_Call(m_renderer->fvDestroyShaderX(_shaderHandle), "Can't destroy shader");
         X_Call(m_shaderHandleMap.fFreeHandleX(_shaderHandle), "Can't free shader handle");
 
+        mLOG("Destroyed shader with handle " << _shaderHandle);
         return A_A;
     }
 
@@ -136,6 +165,7 @@ namespace XD
 
         X_Call(m_renderer->fvCreateShaderProgramX(_resultHandle, _vsHandle, _fsHandle), "Can't create shader program data");
 
+        mLOG("Created shader program with handle " << _resultHandle);
         return A_A;
     }
 
@@ -145,6 +175,7 @@ namespace XD
         X_Call(m_renderer->fvDestroyShaderProgramX(_programHandle), "Can't destroy shader program");
         X_Call(m_shaderProgramHandleMap.fFreeHandleX(_programHandle), "Can't free shader program handle");
 
+        mLOG("Destroyed shader program with handle " << _programHandle);
         return A_A;
     }
 

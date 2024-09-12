@@ -21,8 +21,8 @@ namespace XD
     using tVertexBufferLayoutHandleMap = XD_HandleMap<VertexBufferLayoutHandle, VBLAYOUT_MAX_COUNT>;
 
     const u8 IBO_MAX_COUNT = 1024;
-    mXD_MAKE_HANDLE_STRUCT(IndexBufferHandle);
-    using tIndexBufferHandleMap = XD_HandleMap<IndexBufferHandle, IBO_MAX_COUNT>;
+    mXD_MAKE_HANDLE_STRUCT(IndexBufferObjectHandle);
+    using tIndexBufferHandleMap = XD_HandleMap<IndexBufferObjectHandle, IBO_MAX_COUNT>;
 
     const u8 SHADER_MAX_COUNT = 1024;
     mXD_MAKE_HANDLE_STRUCT(ShaderHandle);
@@ -45,8 +45,8 @@ namespace XD
         virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) = 0;
         virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) = 0;
 
-        virtual X fvCreateIBOX(IndexBufferHandle _iboHandle, Memory* _data) = 0;
-        virtual X fvDestroyIBOX(IndexBufferHandle _iboHandle) = 0;
+        virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, Memory* _data) = 0;
+        virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) = 0;
 
         virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) = 0;
         virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) = 0;

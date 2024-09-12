@@ -58,10 +58,9 @@ namespace XD
     #define GL_POLYGON                        0x0009
     //Primitives End
 
-
-
     //Buffers
     #define GL_ARRAY_BUFFER 0x8892
+    #define GL_ELEMENT_ARRAY_BUFFER 0x8893
     //Buffers End
 
     //Types
