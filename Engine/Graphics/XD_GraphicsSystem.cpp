@@ -71,6 +71,13 @@ namespace XD
         return A_A;
     }
 
+    X 
+    XD_GraphicsSystem::fBindVertexBufferObjectX(VertexBufferObjectHandle _vbHandle)
+    {
+        X_Call(m_renderer->fvBindVBOX(_vbHandle), "Can't bind vbo");
+        return A_A;
+    }
+
     X
     XD_GraphicsSystem::fDestroyVertexBufferObjectX(VertexBufferObjectHandle _vbHandle)
     {
@@ -90,6 +97,13 @@ namespace XD
         X_Call(m_renderer->fvCreateIBOX(_handle, _data), "Can't create index buffer");
 
         mLOG("Created IBO with handle " << _handle);
+        return A_A;
+    }
+
+    X
+    XD_GraphicsSystem::fBindIndexBufferObjectX(IndexBufferObjectHandle _ibHandle)
+    {
+        X_Call(m_renderer->fvBindIBOX(_ibHandle), "Can't bind ibo");
         return A_A;
     }
 
@@ -139,6 +153,13 @@ namespace XD
     }
 
     X 
+    XD_GraphicsSystem::fBindVertexArrayObjectX(VertexArrayObjectHandle _vaoHandle)
+    {
+        X_Call(m_renderer->fvBindVAOX(_vaoHandle), "Can't bind vao");
+        return A_A;
+    }
+
+    X 
     XD_GraphicsSystem::fDestroyVertexArrayObjectX(VertexArrayObjectHandle _vaoHandle)
     {
         X_Call(m_renderer->fvDestroyVAOX(_vaoHandle), "Can't destroy vao object");
@@ -183,6 +204,13 @@ namespace XD
         return A_A;
     }
 
+    X 
+    XD_GraphicsSystem::fBindShaderProgramX(ShaderProgramHandle _programHandle)
+    {
+        X_Call(m_renderer->fvBindShaderProgram(_programHandle), "Can't bind shader program");
+        return A_A;
+    }
+
     X
     XD_GraphicsSystem::fDestroyShaderProgramX(ShaderProgramHandle _programHandle)
     {
@@ -197,6 +225,13 @@ namespace XD
     XD_GraphicsSystem::fBeginFrameX()
     {
         X_Call(m_renderer->fvBeginFrameX(), "Error while begin frame in renderer");
+        return A_A;
+    }
+
+    X
+    XD_GraphicsSystem::fRenderX()
+    {
+        X_Call(m_renderer->fvRenderX(), "Can't render primitive");
         return A_A;
     }
 

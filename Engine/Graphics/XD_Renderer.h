@@ -46,21 +46,26 @@ namespace XD
         virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) = 0;
 
         virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, Memory* _data) = 0;
+        virtual X fvBindIBOX(IndexBufferObjectHandle _iboHandle) = 0;
         virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) = 0;
 
         virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) = 0;
+        virtual X fvBindVBOX(VertexBufferObjectHandle _vboHandle) = 0;
         virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) = 0;
 
         virtual X fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle* _vboHandleArray, u8 _arraySize) = 0;
+        virtual X fvBindVAOX(VertexArrayObjectHandle _vaoHandle) = 0;
         virtual X fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle) = 0;
         
         virtual X fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath) = 0;
         virtual X fvDestroyShaderX(ShaderHandle _handle) = 0;
 
         virtual X fvCreateShaderProgramX(ShaderProgramHandle _programHandle, ShaderHandle _vsh, ShaderHandle _fsh) = 0;
+        virtual X fvBindShaderProgram(ShaderProgramHandle _programHandle) = 0;
         virtual X fvDestroyShaderProgramX(ShaderProgramHandle _programHandle) = 0;
 
         virtual X fvBeginFrameX() = 0;
+        virtual X fvRenderX() = 0;
         virtual X fvEndFrameX() = 0;
 
     protected:

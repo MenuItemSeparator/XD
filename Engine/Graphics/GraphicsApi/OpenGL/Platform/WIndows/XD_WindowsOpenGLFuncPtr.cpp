@@ -36,6 +36,7 @@ namespace XD
     tGLGetShaderInfoLog* gGLGetShaderInfoLog;
     tGLGetProgramiv* gGLGetProgramivProc;
     tGLGetProgramInfoLog* gGLGetProgramInfoLogProc;
+    tGLDrawElements* gGLDrawElementsProc;
 
     X 
     fLoadOpenGLInitialProcPtrX()
@@ -123,6 +124,9 @@ namespace XD
 
         gGLGetProgramInfoLogProc = (tGLGetProgramInfoLog*)wglGetProcAddress("glGetProgramInfoLog");
         mXD_ASSERT(gGLGetProgramInfoLogProc);
+
+        gGLDrawElementsProc = (tGLDrawElements*)wglGetProcAddress("glDrawElements");
+        mXD_ASSERT(gGLDrawElementsProc);
 
         return A_A;
     }

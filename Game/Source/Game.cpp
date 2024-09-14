@@ -9,36 +9,6 @@ int Game::fStartup(int argc, const char **argv)
     XD::XD_Application application{applicationConfig};
     X_Call(application.fvInitializeX(), "Application initialization error");
 
-    //==========
-
-    XD::VertexBufferLayoutHandle layoutHandle;
-    std::vector<XD::eShaderDataType> shaderTypes{ XD::eShaderDataType::Float2 };
-    X_Call(application.fGetGraphicsSystem()->fCreateVertexBufferLayoutX(layoutHandle, shaderTypes), "");
-
-    XD::VertexBufferObjectHandle vboHandle;
-    float vboRawData[] = {1.0f, 1.0f, 1.0f};
-    XD::Memory vboMem{vboRawData, 3};
-    X_Call(application.fGetGraphicsSystem()->fCreateVertexBufferObjectX(vboHandle, &vboMem, layoutHandle), "");
-
-    XD::IndexBufferObjectHandle iboHandle;
-    int iboRawData[] = {0, 1, 2};
-    XD::Memory iboMem{iboRawData, 3};
-    X_Call(application.fGetGraphicsSystem()->fCreateIndexBufferX(iboHandle, &iboMem), "");
-
-    XD::VertexArrayObjectHandle vaoHandle;
-    X_Call(application.fGetGraphicsSystem()->fCreateVertexArrayObjectX(vaoHandle, &vboHandle, 1), "");
-
-    XD::ShaderHandle vsHandle;
-    X_Call(application.fGetGraphicsSystem()->fCreateShaderX(vsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestVS.vs"), "");
-
-    XD::ShaderHandle fsHandle;
-    X_Call(application.fGetGraphicsSystem()->fCreateShaderX(fsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestFS.fs"), "");
-
-    XD::ShaderProgramHandle programHandle;
-    X_Call(application.fGetGraphicsSystem()->fCreateShaderProgramX(programHandle, vsHandle, fsHandle), "");
-
-    //----------
-
     mLOG("Main loop started");
     X_Call(application.fLoopX(), "Application loop error");
 

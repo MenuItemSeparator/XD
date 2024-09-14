@@ -177,6 +177,9 @@ namespace XD
     typedef void tGLGetProgramInfoLog(GLuint program, GLsizei bufSize, GLsizei *length, GLchar *infoLog);
     extern XD_ENGINE_API tGLGetProgramInfoLog* gGLGetProgramInfoLogProc;
 
+    typedef void tGLDrawElements(GLenum mode, GLsizei count, GLenum type, const void *indices);
+    extern XD_ENGINE_API tGLDrawElements* gGLDrawElementsProc;
+
     X XD_ENGINE_API fLoadOpenGLInitialProcPtrX();
     X XD_ENGINE_API fLoadOpenGLExtensionProcPtrX(XD_Library& _library);
 }

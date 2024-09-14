@@ -34,6 +34,7 @@ namespace XD
     {
     public:
         X fCreateX(Memory* _data);
+        X fBindX();
         X fUpdateX(u8 _offset, Memory* _data);
         X fDestroyX();
     private:
@@ -52,6 +53,7 @@ namespace XD
 
         X fCreateX();
         X fAddVBOX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout);
+        X fBindX();
         X fDestroyX();
     private:
         GLuint m_id;
@@ -86,6 +88,7 @@ namespace XD
         {}
 
         X fCreateX(const XD_OpenGLShader* _vs, const XD_OpenGLShader* _fs);
+        X fBindX();
         X fDestroyX();
     private:
         GLuint m_id;
@@ -120,24 +123,29 @@ namespace XD
         virtual X fvShutdownX() override;
 
         virtual X fvBeginFrameX() override;
+        virtual X fvRenderX() override;
         virtual X fvEndFrameX() override;
 
         virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) override;
         virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) override;
 
         virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, Memory* _data) override;
+        virtual X fvBindIBOX(IndexBufferObjectHandle _iboHandle) override;
         virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) override;
 
         virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) override;
+        virtual X fvBindVBOX(VertexBufferObjectHandle _vboHandle) override;
         virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) override;
 
         virtual X fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle* _vboHandleArray, u8 _arraySize) override;
+        virtual X fvBindVAOX(VertexArrayObjectHandle _vaoHandle) override;
         virtual X fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle) override;
         
         virtual X fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath) override;
         virtual X fvDestroyShaderX(ShaderHandle _handle) override;
 
         virtual X fvCreateShaderProgramX(ShaderProgramHandle _programHandle, ShaderHandle _vsh, ShaderHandle _fsh) override;
+        virtual X fvBindShaderProgram(ShaderProgramHandle _programHandle) override;
         virtual X fvDestroyShaderProgramX(ShaderProgramHandle _programHandle) override;
 
     private:

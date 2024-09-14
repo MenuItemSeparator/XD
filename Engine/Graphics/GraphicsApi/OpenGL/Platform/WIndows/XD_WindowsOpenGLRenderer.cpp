@@ -144,6 +144,14 @@ namespace XD
     }
 
     X 
+    XD_OpenGLIndexBufferObject::fBindX()
+    {
+        mXD_ASSERT(m_id);
+        OpenGLCheck(gGLBindBufferProc(GL_ELEMENT_ARRAY_BUFFER, m_id), "Can't bind ib buffer");
+        return A_A;
+    }
+
+    X 
     XD_OpenGLIndexBufferObject::fUpdateX(u8 _offset, Memory *_data)
     {
         mXD_ASSERT(m_id);
@@ -239,6 +247,14 @@ namespace XD
         return A_A;
     }
 
+    X 
+    XD_OpenGLVertexArrayObject::fBindX()
+    {
+        mXD_ASSERT(m_id);
+        OpenGLCheck(gGLBindVertexArrayProc(m_id), "Can't bind vao");
+        return A_A;
+    }
+
     X
     XD_OpenGLVertexArrayObject::fDestroyX()
     {
@@ -327,6 +343,15 @@ namespace XD
 
         X_Call(fCheckShaderProgramErrorsX(m_id), "Shader program internal error occured");
 
+        return A_A;
+    }
+
+    X
+    XD_OpenGLShaderProgram::fBindX()
+    {
+        mXD_ASSERT(m_id);
+
+        OpenGLCheck(gGLUseProgramProc(m_id), "Can't unbind shader program");
         return A_A;
     }
 
@@ -586,8 +611,15 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvBeginFrameX()
     {
-        OpenGLCheck(gSetClearColorProc(1.0f, 0.6f, 0.2f, 1.0f), "Can't set new clear color");
+        OpenGLCheck(gSetClearColorProc(1.0f, 0.1f, 0.2f, 1.0f), "Can't set new clear color");
         OpenGLCheck(gClearProc(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT), "Can't clear viewport");
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvRenderX()
+    {
+        OpenGLCheck(gGLDrawElementsProc(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0), "Can't render primitive");
         return A_A;
     }
 
@@ -619,6 +651,13 @@ namespace XD
         return A_A;
     }
 
+    X
+    XD_OpenGLRenderer::fvBindIBOX(IndexBufferObjectHandle _iboHandle)
+    {
+        X_Call(m_ibos[_iboHandle].fBindX(), "Can't bind ibo object");
+        return A_A;
+    }
+
     X 
     XD_OpenGLRenderer::fvDestroyIBOX(IndexBufferObjectHandle _iboHandle)
     {
@@ -630,6 +669,13 @@ namespace XD
     XD_OpenGLRenderer::fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle)
     {
         X_Call(m_vbos[_vboHandle].fCreateX(_data, _layoutHandle), "Can't create vbo object");
+        return A_A;
+    }
+
+    X 
+    XD_OpenGLRenderer::fvBindVBOX(VertexBufferObjectHandle _vboHandle)
+    {
+        X_Call(m_vbos[_vboHandle].fBindX(), "Can't bind vbo object");
         return A_A;
     }
 
@@ -662,6 +708,13 @@ namespace XD
     }
 
     X 
+    XD_OpenGLRenderer::fvBindVAOX(VertexArrayObjectHandle _vaoHandle)
+    {
+        X_Call(m_vaos[_vaoHandle].fBindX(), "Can't bind vao object");
+        return A_A;
+    }
+
+    X 
     XD_OpenGLRenderer::fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle)
     {
         X_Call(m_vaos[_vaoHandle].fDestroyX(), "Can't destroy vao object");
@@ -688,6 +741,13 @@ namespace XD
         XD_OpenGLShader& vs = m_shaders[_vsh];
         XD_OpenGLShader& fs = m_shaders[_fsh];
         X_Call(m_programs[_programHandle].fCreateX(&vs, &fs), "Can't create shader program object");
+        return A_A;
+    }
+
+    X
+    XD_OpenGLRenderer::fvBindShaderProgram(ShaderProgramHandle _programHandle)
+    {
+        X_Call(m_programs[_programHandle].fBindX(), "Can't bind shader program object");
         return A_A;
     }
 
