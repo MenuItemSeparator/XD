@@ -436,7 +436,8 @@ namespace XD
         m_ibos(IBO_MAX_COUNT),
         m_layouts(VBLAYOUT_MAX_COUNT),
         m_shaders(SHADER_MAX_COUNT),
-        m_programs(SHADERPROG_MAX_COUNT)
+        m_programs(SHADERPROG_MAX_COUNT),
+        m_targetIbo()
     {}
 
     X 
@@ -619,7 +620,8 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvRenderX()
     {
-        OpenGLCheck(gGLDrawElementsProc(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0), "Can't render primitive");
+        XD_OpenGLIndexBufferObject& ibo = m_ibos[m_targetIbo];
+        OpenGLCheck(gGLDrawElementsProc(GL_TRIANGLES, ibo.fGetIndexSize(), GL_UNSIGNED_INT, 0), "Can't render primitive");
         return A_A;
     }
 
@@ -655,6 +657,7 @@ namespace XD
     XD_OpenGLRenderer::fvBindIBOX(IndexBufferObjectHandle _iboHandle)
     {
         X_Call(m_ibos[_iboHandle].fBindX(), "Can't bind ibo object");
+        m_targetIbo = _iboHandle;
         return A_A;
     }
 

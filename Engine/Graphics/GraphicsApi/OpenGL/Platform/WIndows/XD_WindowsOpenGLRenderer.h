@@ -37,6 +37,9 @@ namespace XD
         X fBindX();
         X fUpdateX(u8 _offset, Memory* _data);
         X fDestroyX();
+
+        u8 fGetIndexSize() const { return m_size / sizeof(i4); }
+
     private:
         GLuint m_id;
         u8 m_size;
@@ -158,6 +161,8 @@ namespace XD
         std::vector<XD_BufferLayout> m_layouts;
         std::vector<XD_OpenGLShader> m_shaders;
         std::vector<XD_OpenGLShaderProgram> m_programs;
+
+        IndexBufferObjectHandle m_targetIbo;
 
         X fExtractInitialProcsFromDummyContextX();
         X fCreateValidPixelFormatX(HWND _hwnd);
