@@ -44,6 +44,8 @@ namespace XD
         tVertexBufferLayoutHandleMap m_layoutHandleMap;
         tShaderHandleMap m_shaderHandleMap;
         tShaderProgramHandleMap m_shaderProgramHandleMap;
+
+        bl m_disposed;
     };
 
 }

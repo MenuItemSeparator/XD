@@ -109,6 +109,8 @@ namespace XD
     X
     XD_OpenGLVertexBufferObject::fDestroyX()
     {
+        if(m_id == 0) return A_A;
+
         OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, 0), "Can't unbind vb buffer");
         OpenGLCheck(gGLDeleteBuffersProc(1, &m_id), "Can't delete vb buffer");
 
@@ -157,6 +159,8 @@ namespace XD
     X 
     XD_OpenGLIndexBufferObject::fDestroyX()
     {
+        if(m_id == 0) return A_A;
+
         OpenGLCheck(gGLBindBufferProc(GL_ELEMENT_ARRAY_BUFFER, 0), "Can't unbind ib buffer");
         OpenGLCheck(gGLDeleteBuffersProc(1, &m_id), "Can't delete ib buffer");
 
@@ -238,7 +242,8 @@ namespace XD
     X
     XD_OpenGLVertexArrayObject::fDestroyX()
     {
-        mXD_ASSERT(m_id);
+        if(m_id == 0) return A_A;
+        
         OpenGLCheck(gGLBindVertexArrayProc(0), "Can't unbind vao");
         OpenGLCheck(gGLDeleteVertexArraysProc(1, &m_id), "Can't delete vao");
         return A_A;
@@ -279,7 +284,7 @@ namespace XD
     X
     XD_OpenGLShader::fDestroyX()
     {
-        if (!m_id) return X_X;
+        if (m_id == 0) return A_A;
 
         OpenGLCheck(gGLDeleteShaderProc(m_id), "Can't delete shader");
         m_id = 0;
@@ -328,7 +333,7 @@ namespace XD
     X
     XD_OpenGLShaderProgram::fDestroyX()
     {
-        mXD_ASSERT(m_id);
+        if(m_id == 0) return A_A;
 
         OpenGLCheck(gGLUseProgramProc(0), "Can't unbind shader program");
         OpenGLCheck(gGLDeleteProgramProc(m_id), "Can't delete shader program");
@@ -563,7 +568,18 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvShutdownX()
     {
+        std::for_each(m_vbos.begin(), m_vbos.end(), [](XD_OpenGLVertexBufferObject& _vbo){ _vbo.fDestroyX().fCheck(); });
+        std::for_each(m_vaos.begin(), m_vaos.end(), [](XD_OpenGLVertexArrayObject& _vao){ _vao.fDestroyX().fCheck(); });
+        std::for_each(m_ibos.begin(), m_ibos.end(), [](XD_OpenGLIndexBufferObject& _ibo){ _ibo.fDestroyX().fCheck(); });
+        std::for_each(m_layouts.begin(), m_layouts.end(), [](XD_BufferLayout& _layout){ _layout.fDestroyX().fCheck(); });
+        std::for_each(m_shaders.begin(), m_shaders.end(), [](XD_OpenGLShader& _shader){ _shader.fDestroyX().fCheck(); });
+        std::for_each(m_programs.begin(), m_programs.end(), [](XD_OpenGLShaderProgram& _program){ _program.fDestroyX().fCheck(); });
+
+        X_Call(m_context->fDestroyX(), "Can't destroy context");
         X_Call(m_openGLDll.fUnloadLibraryX(), "Can't unload open gl library");
+
+        mLOG("OpenGL renderer shut down successfully");
+
         return A_A;
     }
 

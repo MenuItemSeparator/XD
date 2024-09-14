@@ -72,17 +72,23 @@ namespace XD
     X
     XD_Application::fTerminateSubsystemsX()
     {
+        mLOG("Starting subsystems termination");
+
         X_Call(m_graphicsSystem->fShutdownX(), "Error while terminating graphics system");
+
+        mLOG("Application subsystems was terminated successfully");
         return X::fSuccess();
     }
 
     X
     XD_Application::fTerminateWindowX(XD_Window* _window)
     {
-        mLOG("Window " << _window->fGetWidgetTitleName() << " was terminated");
+        mLOG("Starting window termination");
 
         X_Call(m_window->fvTerminateX(), "Can't terminate window with title " << _window->fGetWidgetTitleName());
         m_requestedTermination = true;
+
+        mLOG("Window " << _window->fGetWidgetTitleName() << " was terminated");
         return X::fSuccess();
     }
 

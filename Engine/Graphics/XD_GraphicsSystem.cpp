@@ -10,13 +10,18 @@ namespace XD
         m_vertexBufferArrayHandleMap(),
         m_layoutHandleMap(),
         m_shaderHandleMap(),
-        m_shaderProgramHandleMap()
+        m_shaderProgramHandleMap(),
+        m_disposed(false)
     {
 
     }
 
     XD_GraphicsSystem::~XD_GraphicsSystem()
     {
+        if(!m_disposed)
+        {
+            fShutdownX().fCheck();
+        }
     }
     
 
@@ -42,6 +47,15 @@ namespace XD
         if(!m_renderer) return X_X;
         
         X_Call(m_renderer->fvShutdownX(), "Error while shutdown renderer");
+
+        X_Call(m_vertexBufferHandleMap.fClearX(), "Can't clear vbo handle map");
+        X_Call(m_vertexBufferArrayHandleMap.fClearX(), "Can't clear vao handle map");
+        X_Call(m_layoutHandleMap.fClearX(), "Can't clear layout handle map");
+        X_Call(m_indexBufferHandleMap.fClearX(), "Can't clear ibo handle map");
+        X_Call(m_shaderHandleMap.fClearX(), "Can't clear shader handle map");
+        X_Call(m_shaderProgramHandleMap.fClearX(), "Can't clear shader program handle map");
+
+        m_disposed = true;
         return A_A;
     }
 

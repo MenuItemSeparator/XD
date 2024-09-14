@@ -11,6 +11,7 @@ namespace XD
         T fCreateHandle();
         X fFreeHandleX(T _handle);
         bl fIsValid(T _handle);
+        X fClearX();
     private:
         std::unordered_set<XD::u8> m_activeHandles;
         std::vector<XD::u8> m_freeHandles;
@@ -67,5 +68,14 @@ namespace XD
     XD_HandleMap<T, MAX_SIZE>::fIsValid(T _handle)
     {
         return m_activeHandles.find(_handle.m_handle) != m_activeHandles.end();
+    }
+    
+    template <typename T, size_t MAX_SIZE>
+    inline X XD_HandleMap<T, MAX_SIZE>::fClearX()
+    {
+        m_activeHandles.clear();
+        m_freeHandles.clear();
+        m_handlePointer = 0;
+        return A_A;
     }
 }
