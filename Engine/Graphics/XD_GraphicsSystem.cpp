@@ -71,13 +71,6 @@ namespace XD
         return A_A;
     }
 
-    X 
-    XD_GraphicsSystem::fBindVertexBufferObjectX(VertexBufferObjectHandle _vbHandle)
-    {
-        X_Call(m_renderer->fvBindVBOX(_vbHandle), "Can't bind vbo");
-        return A_A;
-    }
-
     X
     XD_GraphicsSystem::fDestroyVertexBufferObjectX(VertexBufferObjectHandle _vbHandle)
     {

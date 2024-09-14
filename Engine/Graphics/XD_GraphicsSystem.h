@@ -16,7 +16,6 @@ namespace XD
         X fShutdownX();
 
         X fCreateVertexBufferObjectX(VertexBufferObjectHandle& _resultHandle, Memory* _data, VertexBufferLayoutHandle _layout);
-        X fBindVertexBufferObjectX(VertexBufferObjectHandle _vbHandle);
         X fDestroyVertexBufferObjectX(VertexBufferObjectHandle _vbHandle);
 
         X fCreateIndexBufferX(IndexBufferObjectHandle& _resultHandle, Memory* _data);

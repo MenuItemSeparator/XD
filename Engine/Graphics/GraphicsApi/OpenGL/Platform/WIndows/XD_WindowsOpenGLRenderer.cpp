@@ -673,13 +673,6 @@ namespace XD
     }
 
     X 
-    XD_OpenGLRenderer::fvBindVBOX(VertexBufferObjectHandle _vboHandle)
-    {
-        X_Call(m_vbos[_vboHandle].fBindX(), "Can't bind vbo object");
-        return A_A;
-    }
-
-    X 
     XD_OpenGLRenderer::fvDestroyVBOX(VertexBufferObjectHandle _vboHandle)
     {
         X_Call(m_vbos[_vboHandle].fDestroyX(), "Can't destroy vbo object");

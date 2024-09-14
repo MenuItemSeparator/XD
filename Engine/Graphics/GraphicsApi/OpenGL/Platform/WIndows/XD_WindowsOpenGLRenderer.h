@@ -134,7 +134,6 @@ namespace XD
         virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) override;
 
         virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) override;
-        virtual X fvBindVBOX(VertexBufferObjectHandle _vboHandle) override;
         virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) override;
 
         virtual X fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle* _vboHandleArray, u8 _arraySize) override;

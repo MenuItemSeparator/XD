@@ -50,7 +50,6 @@ namespace XD
         virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) = 0;
 
         virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) = 0;
-        virtual X fvBindVBOX(VertexBufferObjectHandle _vboHandle) = 0;
         virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) = 0;
 
         virtual X fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle* _vboHandleArray, u8 _arraySize) = 0;
