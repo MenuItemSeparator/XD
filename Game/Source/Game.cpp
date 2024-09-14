@@ -28,10 +28,18 @@ int Game::fStartup(int argc, const char **argv)
     XD::VertexArrayObjectHandle vaoHandle;
     X_Call(application.fGetGraphicsSystem()->fCreateVertexArrayObjectX(vaoHandle, &vboHandle, 1), "");
 
+    XD::ShaderHandle vsHandle;
+    X_Call(application.fGetGraphicsSystem()->fCreateShaderX(vsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestVS.vs"), "");
+
+    XD::ShaderHandle fsHandle;
+    X_Call(application.fGetGraphicsSystem()->fCreateShaderX(fsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestFS.fs"), "");
+
     X_Call(application.fGetGraphicsSystem()->fDestroyVertexBufferLayoutX(layoutHandle), "");
     X_Call(application.fGetGraphicsSystem()->fDestroyVertexBufferObjectX(vboHandle), "");
     X_Call(application.fGetGraphicsSystem()->fDestroyIndexBufferX(iboHandle), "");
     X_Call(application.fGetGraphicsSystem()->fDestroyVertexArrayObjectX(vaoHandle), "");
+    X_Call(application.fGetGraphicsSystem()->fDestroyShaderX(vsHandle), "");
+    X_Call(application.fGetGraphicsSystem()->fDestroyShaderX(fsHandle), "");
 
     //----------
 

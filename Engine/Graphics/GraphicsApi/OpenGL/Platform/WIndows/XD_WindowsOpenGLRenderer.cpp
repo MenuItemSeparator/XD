@@ -248,7 +248,11 @@ namespace XD
     XD_OpenGLShader::fCreateX(const std::string& _filepath)
     {
         std::filesystem::path path{_filepath};
-        if(!std::filesystem::exists(path)) return X_X;
+        if(!std::filesystem::exists(path)) 
+        {
+            mLOG("Invalid shader path " << _filepath);
+            return X_X;
+        }
 
         X_Call(fFindShaderTypeX(path), "Can't recognize shader type");
 
