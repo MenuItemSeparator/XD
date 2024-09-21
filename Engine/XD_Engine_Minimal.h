@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <chrono>
 
 //XDEngine
 #include "XD_Engine_Definitions.h"

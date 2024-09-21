@@ -38,7 +38,7 @@ namespace XD
         const std::string& fGetWidgetTitleName() const { mXD_NOT_IMPLEMENTED(); return m_config.m_windowName; }
 
         tOnWindowResizedDelegate& fOnWindowResized() { mXD_NOT_IMPLEMENTED(); return m_onWindowResizedX; }
-        tOnWindowWantsToClose& fOnWindowWantsToCloseX() { mXD_NOT_IMPLEMENTED(); return m_onWindowWantsToCloseX; }
+        tOnWindowWantsToClose& fOnWindowWantsToClose() { mXD_NOT_IMPLEMENTED(); return m_onWindowWantsToCloseX; }
 
     protected:
         XD_WindowConfig m_config;

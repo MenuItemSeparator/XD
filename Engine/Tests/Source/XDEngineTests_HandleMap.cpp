@@ -1,5 +1,5 @@
 #include "Graphics/XD_Graphics_Minimal.h"
-#include "Graphics/XD_HandleMap.h"
+#include "Common/XD_HandleMap.h"
 #include "XD_Test_Minimal.h"
 
 namespace XD

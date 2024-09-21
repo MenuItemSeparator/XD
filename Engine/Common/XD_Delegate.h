@@ -27,33 +27,26 @@ namespace XD
         XD_Delegate() = default;
         XD_Delegate(const XD_Delegate&) = delete;
         XD_Delegate& operator=(const XD_Delegate&) = delete;
-        XD_Delegate(XD_Delegate&& d) noexcept : m_callable(nullptr) { m_callable.swap(d.m_callable); }
-        XD_Delegate& operator=(XD_Delegate&& d) noexcept
-        {
-            if (&d == this) return *this;
-            m_callable.swap(d.m_callable);
-            return *this;
-        }
         ~XD_Delegate() = default;
 
         template<typename T>
         void
         fBind(T& instance, tFnPtr<T> ptrToFn)
         {
-            m_callable = std::make_unique<XD_MemFunCallable<T, Ret(Args...)>>(instance, ptrToFn);
+            m_callable = std::make_unique<XD_MemFunCallable<T, Ret(Args...)>>( instance, ptrToFn );
         }
 
         template<typename T>
         void
         fBind(T& instance, tConstFnPtr<T> ptrToFn)
         {
-            m_callable = std::make_unique<XD_ConstMemFunCallable<T, Ret(Args...)>>(instance, ptrToFn);
+            m_callable = std::make_unique<XD_ConstMemFunCallable<T, Ret(Args...)>>( instance, ptrToFn );
         }
 
         bl fIsValid() const { return m_callable != nullptr; }
         Ret operator()(Args... args) { return m_callable->fInvoke(std::forward<Args>(args)...); }
         Ret fInvoke(Args... args) { return m_callable->fInvoke(std::forward<Args>(args)...); }
-
+        void fClear() { m_callable.reset(); }
     private:
         tUptr<XD_Callable<Ret(Args...)>> m_callable;
     };
@@ -98,8 +91,8 @@ namespace XD
 
         bl fIsValid() const { return m_callable != nullptr; }
         XD::X operator()(Args... args) { X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
-        XD::X fInvoke(Args... args) { X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
-
+        XD::X fInvoke(Args... args) { mXD_ASSERT(fIsValid()); X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
+        XD::X fClearX() { m_callable.reset(); return A_A; }
     private:
         tUptr<XD_Callable<XD::X(Args...)>> m_callable;
     };

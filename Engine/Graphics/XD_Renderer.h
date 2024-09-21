@@ -4,7 +4,7 @@
 #include "Common/Platform/XD_Common_PlatformSelector.h"
 #include "Application/Platform/XD_Application_PlatformSelector.h"
 #include "Graphics/XD_BufferLayout.h"
-#include "XD_HandleMap.h"
+#include "Common/XD_HandleMap.h"
 
 namespace XD
 {
@@ -28,7 +28,7 @@ namespace XD
     mXD_MAKE_HANDLE_STRUCT(ShaderProgramHandle);
     using tShaderProgramHandleMap = XD_HandleMap<ShaderProgramHandle, SHADERPROG_MAX_COUNT>;
 
-    //Пока виртуальные, потом девиртуализирую самые часто используемые функции
+    //Пока виртуальные, потом девиртуализирую самые часто используемые функции (или нет)
     class XD_ENGINE_API XD_Renderer
     {
     public:
@@ -36,6 +36,7 @@ namespace XD
         eRendererType GetRendererType() const { return m_rendererType; }
 
         virtual X fvInitializeX(void* _hwnd) = 0;
+
         virtual X fvShutdownX() = 0;
 
         virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) = 0;

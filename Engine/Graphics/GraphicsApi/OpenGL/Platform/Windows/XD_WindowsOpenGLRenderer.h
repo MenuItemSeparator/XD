@@ -162,5 +162,6 @@ namespace XD
 
         X fExtractInitialProcsFromDummyContextX();
         X fCreateValidPixelFormatX(HWND _hwnd);
+
     };
 }

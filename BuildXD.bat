@@ -58,7 +58,7 @@ if %cmake_generator% == "Visual Studio 17 2022" (
 )
 
 echo "===================================="
-echo "===| Started XD tests |==="
+echo "===|      Started XD tests      |==="
 echo "===================================="
 
 ctest --test-dir ./Engine/Tests/.
