@@ -12,21 +12,20 @@ namespace XD
     public:
         XD_OpenGLVertexBufferObject() :
             m_id(0),
-            m_layout(),
             m_size(0)
         {}
 
-        X fCreateX(Memory* _data, VertexBufferLayoutHandle _referenceHandle);
+        X fCreateX(Memory* _data);
         X fUpdateX(u8 _offset, Memory* _data);
         X fDestroyX();
 
         X fBindX();
         X fUnbindX();
 
-        VertexBufferLayoutHandle fGetLayout() const { return m_layout; }
+        bl fIsValid() const { return m_id != 0; }
+
     private:
         GLuint m_id;
-        VertexBufferLayoutHandle m_layout;
         u8 m_size;
     };
 
@@ -50,17 +49,18 @@ namespace XD
     public:
         XD_OpenGLVertexArrayObject() :
             m_id(0),
-            m_vbos(),
+            m_layoutHandle(),
+            m_vbo(),
             m_layoutIndex(0)
         {}
 
-        X fCreateX();
-        X fAddVBOX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout);
+        X fCreateX(VertexBufferLayoutHandle _layoutHandle, XD_BufferLayout* _bufferLayout, Memory* _data);
         X fBindX();
         X fDestroyX();
     private:
         GLuint m_id;
-        std::vector<VertexBufferObjectHandle> m_vbos;
+        VertexBufferLayoutHandle m_layoutHandle;
+        XD_OpenGLVertexBufferObject m_vbo;
         i8 m_layoutIndex;
     };
 
@@ -137,11 +137,8 @@ namespace XD
         virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) override;
 
         virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) override;
+        virtual X fvBindVBOX(VertexBufferObjectHandle _vboHandle) override;
         virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) override;
-
-        virtual X fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle* _vboHandleArray, u8 _arraySize) override;
-        virtual X fvBindVAOX(VertexArrayObjectHandle _vaoHandle) override;
-        virtual X fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle) override;
         
         virtual X fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath) override;
         virtual X fvDestroyShaderX(ShaderHandle _handle) override;
@@ -155,7 +152,6 @@ namespace XD
         XD_Library m_openGLDll;
         PIXELFORMATDESCRIPTOR m_pfd;
 
-        std::vector<XD_OpenGLVertexBufferObject> m_vbos;
         std::vector<XD_OpenGLVertexArrayObject> m_vaos;
         std::vector<XD_OpenGLIndexBufferObject> m_ibos;
         std::vector<XD_BufferLayout> m_layouts;

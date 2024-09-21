@@ -12,10 +12,6 @@ namespace XD
     mXD_MAKE_HANDLE_STRUCT(VertexBufferObjectHandle);
     using tVertexBufferObjectHandleMap = XD_HandleMap<VertexBufferObjectHandle, VBO_MAX_COUNT>;
 
-    const u8 VAO_MAX_COUNT = 1024;
-    mXD_MAKE_HANDLE_STRUCT(VertexArrayObjectHandle);
-    using tVertexBufferArrayHandleMap = XD_HandleMap<VertexArrayObjectHandle, VAO_MAX_COUNT>;
-
     const u8 VBLAYOUT_MAX_COUNT = 32;
     mXD_MAKE_HANDLE_STRUCT(VertexBufferLayoutHandle);
     using tVertexBufferLayoutHandleMap = XD_HandleMap<VertexBufferLayoutHandle, VBLAYOUT_MAX_COUNT>;
@@ -50,12 +46,9 @@ namespace XD
         virtual X fvDestroyIBOX(IndexBufferObjectHandle _iboHandle) = 0;
 
         virtual X fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle) = 0;
+        virtual X fvBindVBOX(VertexBufferObjectHandle _vboHandle) = 0;
         virtual X fvDestroyVBOX(VertexBufferObjectHandle _vboHandle) = 0;
 
-        virtual X fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle* _vboHandleArray, u8 _arraySize) = 0;
-        virtual X fvBindVAOX(VertexArrayObjectHandle _vaoHandle) = 0;
-        virtual X fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle) = 0;
-        
         virtual X fvCreateShaderX(ShaderHandle _handle, const std::string& _filePath) = 0;
         virtual X fvDestroyShaderX(ShaderHandle _handle) = 0;
 

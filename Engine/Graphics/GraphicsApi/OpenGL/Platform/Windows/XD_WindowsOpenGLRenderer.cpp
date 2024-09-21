@@ -79,11 +79,10 @@ namespace XD
 	}
 
     X
-    XD_OpenGLVertexBufferObject::fCreateX(Memory *_data, VertexBufferLayoutHandle _referenceHandle)
+    XD_OpenGLVertexBufferObject::fCreateX(Memory *_data)
     {
         mXD_ASSERT(_data);
         m_size = _data->m_byteSize;
-        m_layout = _referenceHandle;
 
         OpenGLCheck(gGLGenBuffersProc(1, &m_id), "Can't gen vb buffer");
         mXD_ASSERT(m_id);
@@ -176,23 +175,22 @@ namespace XD
     }
 
     X
-    XD_OpenGLVertexArrayObject::fCreateX()
+    XD_OpenGLVertexArrayObject::fCreateX(VertexBufferLayoutHandle _layoutHandle, XD_BufferLayout* _bufferLayout, Memory* _data)
     {
+        mXD_ASSERT(_bufferLayout);
+        mXD_ASSERT(!m_vbo.fIsValid());
+
+        m_layoutHandle = _layoutHandle;
+
         OpenGLCheck(gGLGenVertexArraysProc(1, &m_id), "Can't gen vao");
         mXD_ASSERT(m_id);
-        return A_A;
-    }
 
-    X 
-    XD_OpenGLVertexArrayObject::fAddVBOX(VertexBufferObjectHandle _vboHandle, XD_OpenGLVertexBufferObject* _vboObject, XD_BufferLayout* _vboLayout)
-    {
-        mXD_ASSERT(_vboObject);
-        mXD_ASSERT(_vboLayout);
+        X_Call(m_vbo.fCreateX(_data), "Can't create vbo while creating vao");
 
         OpenGLCheck(gGLBindVertexArrayProc(m_id), "Can't bind vao");
-        X_Call(_vboObject->fBindX(), "Can't bind vbo");
+        X_Call(m_vbo.fBindX(), "Can't bind vbo");
 
-		for (tLayoutIter it = _vboLayout->fBegin(); it != _vboLayout->fEnd(); ++it)
+        for (tLayoutIter it = _bufferLayout->fBegin(); it != _bufferLayout->fEnd(); ++it)
 		{
 			switch (it->fGetType())
 			{
@@ -211,7 +209,7 @@ namespace XD
 					XD_LayoutElement::fGetComponentCount(it->fGetType()),
 					fShaderDataTypeToOpenGLType(it->fGetType()),
 					GL_FALSE,
-					_vboLayout->fGetStride(),
+					_bufferLayout->fGetStride(),
 					(const void*)it->fGetOffset()), "Error when vao attrib pointer");
 				++m_layoutIndex;
 				break;
@@ -227,7 +225,7 @@ namespace XD
 						count,
 						fShaderDataTypeToOpenGLType(it->fGetType()),
 						GL_FALSE,
-						_vboLayout->fGetStride(),
+						_bufferLayout->fGetStride(),
 						(const void*)(it->fGetOffset() + sizeof(float) * count * i)), "Error when vao attrib pointer");
 					OpenGLCheck(gGLVertexAttribDivisorProc(m_layoutIndex, 1), "Error when vao attrib divisor");
 					++m_layoutIndex;
@@ -239,10 +237,8 @@ namespace XD
 			}
 		}
 
-        X_Call(_vboObject->fUnbindX(), "Can't unbind vbo");
+        X_Call(m_vbo.fUnbindX(), "Can't unbind vbo");
         OpenGLCheck(gGLBindVertexArrayProc(0), "Can't unbind vao");
-
-		m_vbos.push_back(_vboHandle);
 
         return A_A;
     }
@@ -260,6 +256,7 @@ namespace XD
     {
         if(m_id == 0) return A_A;
         
+        X_Call(m_vbo.fDestroyX(), "Can't destroy vbo while destroying vao");
         OpenGLCheck(gGLBindVertexArrayProc(0), "Can't unbind vao");
         OpenGLCheck(gGLDeleteVertexArraysProc(1, &m_id), "Can't delete vao");
         return A_A;
@@ -431,8 +428,7 @@ namespace XD
         m_context(nullptr),
         m_openGLDll(),
         m_pfd(),
-        m_vbos(VBO_MAX_COUNT),
-        m_vaos(VAO_MAX_COUNT),
+        m_vaos(VBO_MAX_COUNT),
         m_ibos(IBO_MAX_COUNT),
         m_layouts(VBLAYOUT_MAX_COUNT),
         m_shaders(SHADER_MAX_COUNT),
@@ -594,7 +590,6 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvShutdownX()
     {
-        std::for_each(m_vbos.begin(), m_vbos.end(), [](XD_OpenGLVertexBufferObject& _vbo){ _vbo.fDestroyX().fCheck(); });
         std::for_each(m_vaos.begin(), m_vaos.end(), [](XD_OpenGLVertexArrayObject& _vao){ _vao.fDestroyX().fCheck(); });
         std::for_each(m_ibos.begin(), m_ibos.end(), [](XD_OpenGLIndexBufferObject& _ibo){ _ibo.fDestroyX().fCheck(); });
         std::for_each(m_layouts.begin(), m_layouts.end(), [](XD_BufferLayout& _layout){ _layout.fDestroyX().fCheck(); });
@@ -671,49 +666,21 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvCreateVBOX(VertexBufferObjectHandle _vboHandle, Memory* _data, VertexBufferLayoutHandle _layoutHandle)
     {
-        X_Call(m_vbos[_vboHandle].fCreateX(_data, _layoutHandle), "Can't create vbo object");
+        XD_BufferLayout& layoutBuffer = m_layouts[_layoutHandle];
+        X_Call(m_vaos[_vboHandle].fCreateX(_layoutHandle, &layoutBuffer, _data), "Can't create vao object");
+        return A_A;
+    }
+
+    X XD_OpenGLRenderer::fvBindVBOX(VertexBufferObjectHandle _vboHandle)
+    {
+        X_Call(m_vaos[_vboHandle].fBindX(), "Can't bind vao object");
         return A_A;
     }
 
     X 
     XD_OpenGLRenderer::fvDestroyVBOX(VertexBufferObjectHandle _vboHandle)
     {
-        X_Call(m_vbos[_vboHandle].fDestroyX(), "Can't destroy vbo object");
-        return A_A;
-    }
-
-    X 
-    XD_OpenGLRenderer::fvCreateVAOX(VertexArrayObjectHandle _vaoHandle, VertexBufferObjectHandle *_vboHandleArray, u8 _arraySize)
-    {
-        mXD_ASSERT(_arraySize > 0);
-
-        X_Call(m_vaos[_vaoHandle].fCreateX(), "Can't create vao object");
-
-        VertexBufferObjectHandle* start = _vboHandleArray;
-        VertexBufferObjectHandle* end = start + _arraySize;
-
-        for (VertexBufferObjectHandle* p = start; p != end; ++p)
-        {
-            XD_OpenGLVertexBufferObject& vbo = m_vbos[*p];
-            XD_BufferLayout& layout = m_layouts[vbo.fGetLayout()];
-
-            X_Call(m_vaos[_vaoHandle].fAddVBOX(*p, &vbo, &layout), "Can't add vbo object to vao");
-        }
-
-        return A_A;
-    }
-
-    X 
-    XD_OpenGLRenderer::fvBindVAOX(VertexArrayObjectHandle _vaoHandle)
-    {
-        X_Call(m_vaos[_vaoHandle].fBindX(), "Can't bind vao object");
-        return A_A;
-    }
-
-    X 
-    XD_OpenGLRenderer::fvDestroyVAOX(VertexArrayObjectHandle _vaoHandle)
-    {
-        X_Call(m_vaos[_vaoHandle].fDestroyX(), "Can't destroy vao object");
+        X_Call(m_vaos[_vboHandle].fDestroyX(), "Can't destroy vao object");
         return A_A;
     }
 

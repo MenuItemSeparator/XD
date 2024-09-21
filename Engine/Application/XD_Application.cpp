@@ -4,7 +4,6 @@ namespace XD
 {
     XD::VertexBufferObjectHandle vboHandle;
     XD::IndexBufferObjectHandle iboHandle;
-    XD::VertexArrayObjectHandle vaoHandle;
     XD::ShaderProgramHandle programHandle;
 
 
@@ -56,8 +55,6 @@ namespace XD
         XD::Memory iboMem{iboRawData, sizeof(iboRawData)};
         X_Call(fGetGraphicsSystem()->fCreateIndexBufferX(iboHandle, &iboMem), "");
 
-        X_Call(fGetGraphicsSystem()->fCreateVertexArrayObjectX(vaoHandle, &vboHandle, 1), "");
-
         XD::ShaderHandle vsHandle;
         X_Call(fGetGraphicsSystem()->fCreateShaderX(vsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestVS.vs"), "");
 
@@ -93,7 +90,7 @@ namespace XD
         {
             X_Call(m_graphicsSystem->fBeginFrameX(), "Error while begin frame in graphics subsystem");
 
-            X_Call(m_graphicsSystem->fBindVertexArrayObjectX(vaoHandle), "");
+            X_Call(m_graphicsSystem->fBindVertexBufferObjectX(vboHandle), "");
             X_Call(m_graphicsSystem->fBindIndexBufferObjectX(iboHandle), "");
             X_Call(m_graphicsSystem->fBindShaderProgramX(programHandle), "");
             X_Call(m_graphicsSystem->fRenderX(), "");

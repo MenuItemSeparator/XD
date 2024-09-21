@@ -7,7 +7,6 @@ namespace XD
         m_renderer(),
         m_vertexBufferHandleMap(),
         m_indexBufferHandleMap(),
-        m_vertexBufferArrayHandleMap(),
         m_layoutHandleMap(),
         m_shaderHandleMap(),
         m_shaderProgramHandleMap(),
@@ -49,7 +48,6 @@ namespace XD
         X_Call(m_renderer->fvShutdownX(), "Error while shutdown renderer");
 
         X_Call(m_vertexBufferHandleMap.fClearX(), "Can't clear vbo handle map");
-        X_Call(m_vertexBufferArrayHandleMap.fClearX(), "Can't clear vao handle map");
         X_Call(m_layoutHandleMap.fClearX(), "Can't clear layout handle map");
         X_Call(m_indexBufferHandleMap.fClearX(), "Can't clear ibo handle map");
         X_Call(m_shaderHandleMap.fClearX(), "Can't clear shader handle map");
@@ -68,6 +66,13 @@ namespace XD
         X_Call(m_renderer->fvCreateVBOX(_resultHandle, _data, _layout), "Can't create vertex buffer");
 
         mLOG("Created VBO with handle " << _resultHandle);
+        return A_A;
+    }
+
+    X 
+    XD_GraphicsSystem::fBindVertexBufferObjectX(VertexBufferObjectHandle _vbHandle)
+    {
+        X_Call(m_renderer->fvBindVBOX(_vbHandle), "Can't bind vbo");
         return A_A;
     }
 
@@ -130,36 +135,6 @@ namespace XD
         X_Call(m_layoutHandleMap.fFreeHandleX(_layoutHandle), "Can't free vertex buffer layout handle");
 
         mLOG("Destroyed VB layout with handle " << _layoutHandle);
-        return A_A;
-    }
-
-    X 
-    XD_GraphicsSystem::fCreateVertexArrayObjectX(VertexArrayObjectHandle& _vaoHandle, VertexBufferObjectHandle *_vboHandleArray, u8 _arraySize)
-    {
-        _vaoHandle = m_vertexBufferArrayHandleMap.fCreateHandle();
-        mXD_ASSERT(m_vertexBufferArrayHandleMap.fIsValid(_vaoHandle));
-
-        X_Call(m_renderer->fvCreateVAOX(_vaoHandle, _vboHandleArray, _arraySize), "Can't create vao");
-
-        mLOG("Created VAO with handle " << _vaoHandle);
-        return A_A;
-    }
-
-    X 
-    XD_GraphicsSystem::fBindVertexArrayObjectX(VertexArrayObjectHandle _vaoHandle)
-    {
-        X_Call(m_renderer->fvBindVAOX(_vaoHandle), "Can't bind vao");
-        return A_A;
-    }
-
-    X 
-    XD_GraphicsSystem::fDestroyVertexArrayObjectX(VertexArrayObjectHandle _vaoHandle)
-    {
-        X_Call(m_renderer->fvDestroyVAOX(_vaoHandle), "Can't destroy vao object");
-        X_Call(m_vertexBufferArrayHandleMap.fFreeHandleX(_vaoHandle), "Can't free vao handle");
-
-        mLOG("Destroyed vao with handle " << _vaoHandle);
-
         return A_A;
     }
 
