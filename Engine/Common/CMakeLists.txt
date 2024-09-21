@@ -1,7 +1,7 @@
 set(XD_ENGINE_COMMON_DIRECTORY ${XD_ENGINE_ROOT_DIRECTORY}/Common)
 
 set(XD_COMMON_SRC
-Common/Platform/XDCommon_PlatformSelector.cpp)
+Common/Platform/XD_Common_PlatformSelector.cpp)
 
 set(XD_COMMON_HEADERS
     ${XD_ENGINE_COMMON_DIRECTORY}

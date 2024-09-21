@@ -1,5 +1,7 @@
 #pragma once
-#include "XDApplication_Minimal.h"
+#include "XD_Application_Minimal.h"
+#include "Application/Platform/XD_Application_PlatformSelector.h"
+#include "Graphics/XD_GraphicsSystem.h"
 
 namespace XD
 {
@@ -20,29 +22,28 @@ namespace XD
         virtual ~XD_Application_Interface() = default;
     };
 
-    class XD_ENGINE_API XD_ApplicationContext
+    class XD_ENGINE_API XD_Application : public XD_Application_Interface
     {
     public:
-        bl m_requestedTermination : 1;
-    };
+        XD_Application(const XD_ApplicationConfig& _config);
 
-    class XD_Application_Base : public XD_Application_Interface
-    {
-    public:
-        XD_Application_Base(const XD_Application_Base&) = delete;
-        XD_Application_Base& operator=(const XD_Application_Base&) = delete;
+        virtual X fvInitializeX() override;
+        virtual X fvTerminateX() override;
 
-        X fLoopX() { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
+        tSptr<XD_GraphicsSystem> fGetGraphicsSystem() { return m_graphicsSystem; }
 
-    protected:
+        X fLoopX();
+
+    private:
+        tSptr<XD_Window> m_window;
+        tSptr<XD_GraphicsSystem> m_graphicsSystem;
+        
         XD_ApplicationConfig m_config;
-        XD_ApplicationContext m_context;
+        bl m_requestedTermination;
 
-        XD_Application_Base(const XD_ApplicationConfig& _config);
-
-        bl fWantsToTerminate() const { mXD_NOT_IMPLEMENTED(); return false; }
-        X fTerminateSubsystemsX() { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
-        X fTerminateWidgetX(class XD_Widget* _widget) { mXD_NOT_IMPLEMENTED(); return X::fFail(); }
+        bl fWantsToTerminate() const;
+        X fTerminateSubsystemsX();
+        X fTerminateWindowX(XD_Window* _widget);
     };
 
 }

@@ -1,7 +1,7 @@
 include(FindPackageHandleStandardArgs)
 
 find_library(XD_ENGINE_LIBRARY XDEngine HINTS "${CMAKE_BINARY_DIR}/Engine")
-find_path(XD_ENGINE_MAIN_HEADER_DIR NAMES "XDEngine.h" PATHS "${XD_ROOT_SOURCE_PATH}/Engine/")
+find_path(XD_ENGINE_MAIN_HEADER_DIR NAMES "XD_Engine_Definitions.h" PATHS "${XD_ROOT_SOURCE_PATH}/Engine/")
 
 if(NOT ${XD_ENGINE_LIBRARY} STREQUAL "XD_ENGINE_LIBRARY-NOTFOUND")
     message("===| FOUND XD ENGINE LIB |===")

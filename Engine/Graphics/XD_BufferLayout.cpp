@@ -69,9 +69,8 @@ namespace XD
         }
     }
 
-    XD_BufferLayout::XD_BufferLayout(const std::vector<eShaderDataType>& _elements) :
-        m_elements(),
-        m_stride()
+    X
+    XD_BufferLayout::fCreateX(const std::vector<eShaderDataType> &_elements)
     {
         m_elements.reserve(_elements.size());
         for(u8 i = 0; i < _elements.size(); ++i)
@@ -79,6 +78,15 @@ namespace XD
             m_elements.push_back({_elements[i]});
         }
         fCalculateOffsetsAndStride();
+
+        return A_A;
+    }
+
+    X 
+    XD_BufferLayout::fDestroyX()
+    {
+        m_stride = 0;
+        return A_A;
     }
 
     void

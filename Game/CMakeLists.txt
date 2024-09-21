@@ -30,4 +30,5 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     target_compile_definitions(XDGame PRIVATE -DXD_BUILD_TYPE_DEBUG=1)
 endif()
 
+message("${CMAKE_INSTALL_PREFIX}")
 install(TARGETS XDGame XDFramework XDEngine DESTINATION ${CMAKE_INSTALL_PREFIX}/XDGame)

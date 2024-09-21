@@ -1,6 +1,6 @@
 #pragma once
 #include <cmath>
-#include "XDMath_Common.h"
+#include "XD_Math_Common.h"
 
 namespace XD
 {

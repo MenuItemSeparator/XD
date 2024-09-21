@@ -1,7 +1,6 @@
 #pragma once
-
 #include <memory>
-#include "XDEngine.h"
+#include "XD_Engine_Definitions.h"
 
 namespace XD
 {
@@ -14,15 +13,16 @@ namespace XD
     using bl = bool;
 
     template<typename T>
-    using UPtr = std::unique_ptr<T>;
+    using tUptr = std::unique_ptr<T>;
     template<typename T>
-    using SPtr = std::shared_ptr<T>;
+    using tSptr = std::shared_ptr<T>;
     template<typename T>
-    using WPtr = std::weak_ptr<T>;
+    using tWptr = std::weak_ptr<T>;
 
     const i4 XD_RESULT_SUCCESS = 0x0;
     const i4 XD_RESULT_FAIL = -1;
     const i4 XD_RESULT_DISABLED = INT_MAX;
+    const u8 XD_INVALID_HANDLE = UINT64_MAX;
 
     enum eEmote
     {
@@ -65,10 +65,12 @@ namespace XD
         i8 m_result;
     };
 
+    struct Memory
+    {
+    public:
+        void* m_data;
+        u8 m_byteSize;
+    };
+
 } // ns
 
-class Z
-{
-public:
-    static XD::i8 m_value;
-};

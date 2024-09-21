@@ -1,5 +1,5 @@
 #pragma once
-#include "XDEngine_Minimal.h"
+#include "XD_Engine_Minimal.h"
 
 namespace XD
 {
@@ -44,8 +44,10 @@ namespace XD
     class XD_ENGINE_API XD_BufferLayout final
     {
     public:
-        XD_BufferLayout() = delete;
-        XD_BufferLayout(const std::vector<eShaderDataType>& _elements);
+        XD_BufferLayout() = default;
+        X fCreateX(const std::vector<eShaderDataType>& _elements);
+        X fDestroyX();
+
         tLayoutIter fBegin() const { return m_elements.cbegin(); }
         tLayoutIter fEnd() const { return m_elements.cend(); }
         u8 fGetStride() const { return m_stride; }

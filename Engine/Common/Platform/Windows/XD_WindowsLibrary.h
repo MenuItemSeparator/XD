@@ -1,24 +1,13 @@
 #pragma once
 #include <libloaderapi.h>
-#include "XDEngine_Minimal.h"
+#include <Windows.h>
+#include <wingdi.h>
+#include "XD_Engine_Minimal.h"
 #include "../../XD_Library.h"
 
+//Windows implementation
 namespace XD
 {
-    class XD_ENGINE_API XD_FuncProc : public XD_FuncProc_Base
-    {
-    public:
-        XD_FuncProc(void* _procPtr);
-
-        template <typename T, typename = std::enable_if_t<std::is_function_v<T>>>
-        operator T *() const
-        {
-            return reinterpret_cast<T *>(m_procPtr);
-        }
-    private:
-        FARPROC m_procPtr;
-    };
-
     class XD_ENGINE_API XD_Library : public XD_Library_Base
     {
     public:
@@ -26,14 +15,13 @@ namespace XD
         ~XD_Library();
 
         X fLoadLibraryX(const std::string& _libraryName);
-        XD_FuncProc fGetProcAddress(const char* _procName);
+        virtual XD_FuncProc fvGetProcAddress(const char* _procName);
         X fUnloadLibraryX();
         bl fIsLoaded() const;
 
-    private:
+    protected:
         std::string m_libraryName;
         HMODULE m_libraryHandle;
         bl m_isLibraryLoaded;
     };
-
 }

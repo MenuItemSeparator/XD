@@ -1,7 +1,16 @@
 #pragma once
-#include "XDEngine.h"
-#include "XDEngine_PlatformSelector.h"
+#include "XD_Engine_Definitions.h"
+#include "XD_Engine_PlatformSelector.h"
 #include "XD_Log.h"
+
+#define dXD_ATOW(text) L#text
+
+#define mXD_MAKE_HANDLE_STRUCT(name) \
+    struct name \
+    { \
+        XD::u8 m_handle; \
+        operator XD::u8(){ return m_handle; } \
+    };\
 
 #ifdef dXD_DEBUG
     #define X_Call(func, error_msg) \

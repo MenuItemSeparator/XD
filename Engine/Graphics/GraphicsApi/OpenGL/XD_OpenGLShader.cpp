@@ -2,11 +2,6 @@
 
 namespace XD
 {
-    XD_OpenGLShader::XD_OpenGLShader()
-    {
-        XD_Shader::fBindFunctions_Internal<XD_OpenGLShader>();
-    }
-
     X
     XD_OpenGLShader::fUseX()
     {
@@ -50,7 +45,7 @@ namespace XD
     }
 
     X
-    XD_OpenGLShader::fSetMatrix4X(const char *_name, const Matrix4f &_matrix)
+    XD_OpenGLShader::fSetMatrix4fX(const char *_name, const Matrix4f &_matrix)
     {
         mXD_NOT_IMPLEMENTED();
         return A_A;

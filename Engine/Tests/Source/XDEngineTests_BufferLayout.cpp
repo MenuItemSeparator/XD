@@ -1,11 +1,11 @@
-#include "XDEngine_Minimal.h"
-#include "XDTest_Minimal.h"
+#include "XD_Engine_Minimal.h"
+#include "XD_Test_Minimal.h"
 #include "Graphics/XD_BufferLayout.h"
 
 namespace XD
 {
     X
-    Test_LayoutElementStatics()
+    Test_CreateAndDestroyHandle()
     {
         mXD_IS_TRUE(XD_LayoutElement::fGetComponentCount(eShaderDataType::Float) == 1, "Float component count invalid");
         mXD_IS_TRUE(XD_LayoutElement::fGetComponentCount(eShaderDataType::Float2) == 2, "Float2 component count invalid");
@@ -46,7 +46,8 @@ namespace XD
             eShaderDataType::Bool
         };
 
-        XD_BufferLayout layoutBuffer{layout};
+        XD_BufferLayout layoutBuffer{};
+        X_Call(layoutBuffer.fCreateX(layout), "Can't create layout buffer");
         tLayoutIter end = layoutBuffer.fEnd();
         u8 counter = 0;
         u8 offset = 0;
@@ -70,7 +71,7 @@ namespace XD
 int
 main(int argc, const char** argv)
 {
-    X_Call(XD::Test_LayoutElementStatics(), "Layout element statics test failed");
+    X_Call(XD::Test_CreateAndDestroyHandle(), "Layout element statics test failed");
     X_Call(XD::Test_BufferLayoutConstruction(), "Buffer layout construction test failed");
     return 0;
 }

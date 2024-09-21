@@ -1,6 +1,7 @@
 #pragma once
 
-#ifdef XD_PLATFORM_WINDOWS
+#ifdef _WIN32
+    #define NOWINBASEINTERLOCK
     #define dXD_PLATFORM_WINDOWS
     #define dFORCEINLINE __forceinline
 
@@ -11,6 +12,8 @@
             entryPointClass.FuncName(argc, argv); \
             return 0; \
         }
+#else
+    //Unknown platofrm
 #endif
 
 
