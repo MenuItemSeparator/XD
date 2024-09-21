@@ -10,19 +10,24 @@ namespace XD
     XD::ShaderProgramHandle programHandle;
 
     XD::XD_ApplicationConfig applicationConfig{};
-    XD::XD_Application application{applicationConfig};
+    XD::tUptr<XD::XD_Application> application = std::make_unique<XD::XD_Application>(applicationConfig);
 
     class TestWrapper
     {
     public:
         X fRenderLoopCallbackX()
         {
-            X_Call(application.fGetGraphicsSystem()->fBindVertexBufferObjectX(vboHandle), "");
-            X_Call(application.fGetGraphicsSystem()->fBindIndexBufferObjectX(iboHandle), "");
-            X_Call(application.fGetGraphicsSystem()->fBindShaderProgramX(programHandle), "");
-            X_Call(application.fGetGraphicsSystem()->fRenderX(), "");
+            X_Call(application->fGetGraphicsSystem()->fBindVertexBufferObjectX(vboHandle), "");
+            X_Call(application->fGetGraphicsSystem()->fBindIndexBufferObjectX(iboHandle), "");
+            X_Call(application->fGetGraphicsSystem()->fBindShaderProgramX(programHandle), "");
+            X_Call(application->fGetGraphicsSystem()->fRenderX(), "");
 
             return A_A;
+        }
+
+        void fStopApplication()
+        {
+            application->fvTerminateX().fCheck();
         }
     };
 
@@ -33,8 +38,11 @@ namespace XD
 
         TestWrapper wrapper{};
 
-        X_Call(application.fvInitializeX(), "Application initialization error");
-        application.fOnRenderLoopCallback().fBind(wrapper, &TestWrapper::fRenderLoopCallbackX);
+        X_Call(application->fvInitializeX(), "Application initialization error");
+        application->fOnRenderLoopCallback().fBind(wrapper, &TestWrapper::fRenderLoopCallbackX);
+
+        TimerHandle timerHandle{};
+        X_Call(application->fGetTimerManager()->fStartTimerX(timerHandle, 1.0, wrapper, &TestWrapper::fStopApplication), "Can't start app stopper timer");
 
         //Application initialization end
 
@@ -42,7 +50,7 @@ namespace XD
 
         XD::VertexBufferLayoutHandle layoutHandle;
         std::vector<XD::eShaderDataType> shaderTypes{ XD::eShaderDataType::Float3 };
-        X_Call(application.fGetGraphicsSystem()->fCreateVertexBufferLayoutX(layoutHandle, shaderTypes), "Can't create vb layout");
+        X_Call(application->fGetGraphicsSystem()->fCreateVertexBufferLayoutX(layoutHandle, shaderTypes), "Can't create vb layout");
 
         float vboRawData[] = {
             0.5f,  0.5f, 0.0f,  // top right
@@ -51,26 +59,26 @@ namespace XD
             -0.5f,  0.5f, 0.0f   // top left 
         };
         XD::Memory vboMem{vboRawData, sizeof(vboRawData)};
-        X_Call(application.fGetGraphicsSystem()->fCreateVertexBufferObjectX(vboHandle, &vboMem, layoutHandle), "Can't create vbo");
+        X_Call(application->fGetGraphicsSystem()->fCreateVertexBufferObjectX(vboHandle, &vboMem, layoutHandle), "Can't create vbo");
 
         int iboRawData[] = {
             0, 1, 3,   // first triangle
             1, 2, 3 
         };
         XD::Memory iboMem{iboRawData, sizeof(iboRawData)};
-        X_Call(application.fGetGraphicsSystem()->fCreateIndexBufferX(iboHandle, &iboMem), "Can't create ibo");
+        X_Call(application->fGetGraphicsSystem()->fCreateIndexBufferX(iboHandle, &iboMem), "Can't create ibo");
 
         XD::ShaderHandle vsHandle;
-        X_Call(application.fGetGraphicsSystem()->fCreateShaderX(vsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestVS.vs"), "Can't create vertex shader");
+        X_Call(application->fGetGraphicsSystem()->fCreateShaderX(vsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestVS.vs"), "Can't create vertex shader");
         XD::ShaderHandle fsHandle;
-        X_Call(application.fGetGraphicsSystem()->fCreateShaderX(fsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestFS.fs"), "Can't create fragment shader");
+        X_Call(application->fGetGraphicsSystem()->fCreateShaderX(fsHandle, cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestFS.fs"), "Can't create fragment shader");
 
-        X_Call(application.fGetGraphicsSystem()->fCreateShaderProgramX(programHandle, vsHandle, fsHandle), "Can't create shader program");
+        X_Call(application->fGetGraphicsSystem()->fCreateShaderProgramX(programHandle, vsHandle, fsHandle), "Can't create shader program");
 
         //Graphics objects setup end
 
         mLOG("Test main loop started");
-        X_Call(application.fLoopX(), "Application loop error");
+        X_Call(application->fLoopX(), "Application loop error");
         mLOG("Test main loop end");
 
         return A_A;

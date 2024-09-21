@@ -10,7 +10,10 @@ namespace XD
 
     XD_Application::XD_Application(const XD_ApplicationConfig& _config) :
         m_window(nullptr),
-        m_graphicsSystem(nullptr),
+        m_graphicsSystem(),
+        m_timerManager(),
+        m_timeClock(),
+        m_onRenderLoopCallback(),
         m_config(_config),
         m_requestedTermination(false)
     {}
@@ -28,8 +31,7 @@ namespace XD
         graphicsConfig.m_rendererType = XD::eRendererType::OpenGL;
         graphicsConfig.m_hwnd = m_window->fvGetWindowRawPtr();
 
-        m_graphicsSystem = std::make_shared<XD_GraphicsSystem>();
-        X_Call(m_graphicsSystem->fInitializeX(graphicsConfig), "Failed when initializing graphics system");
+        X_Call(m_graphicsSystem.fInitializeX(graphicsConfig), "Failed when initializing graphics system");
 
         return X::fSuccess();
     }
@@ -56,21 +58,24 @@ namespace XD
 
         while(!fWantsToTerminate())
         {
-            X_Call(m_graphicsSystem->fBeginFrameX(), "Error while begin frame in graphics subsystem");
+            const double deltaTime = m_timeClock.Restart();
+            X_Call(m_window->fUpdateX(), "Window update error");
+            X_Call(m_timerManager.fUpdateX(deltaTime), "Some error while updating main timer manager");
+
+            X_Call(m_graphicsSystem.fBeginFrameX(), "Error while begin frame in graphics subsystem");
 
             if(m_onRenderLoopCallback.fIsValid())
             {
                 X_Call(m_onRenderLoopCallback.fInvoke(), "Render loop callback error");
             }
 
-            X_Call(m_graphicsSystem->fEndFrameX(), "Error while end frame in graphics subsystem");
-
-            X_Call(m_window->fUpdateX(), "Window update error");
+            X_Call(m_graphicsSystem.fEndFrameX(), "Error while end frame in graphics subsystem");
         }
 
         mLOG("Requested application termination");
-
         X_Call(fTerminateSubsystemsX(), "Error while terminating application subsystems");
+        X_Call(m_window->fvTerminateX(), "Can't terminate window with title " << m_window->fGetWidgetTitleName());
+        mLOG("Window " << m_window->fGetWidgetTitleName() << " was terminated");
 
         return X::fSuccess();
     }
@@ -80,7 +85,7 @@ namespace XD
     {
         mLOG("Starting subsystems termination");
 
-        X_Call(m_graphicsSystem->fShutdownX(), "Error while terminating graphics system");
+        X_Call(m_graphicsSystem.fShutdownX(), "Error while terminating graphics system");
 
         mLOG("Application subsystems was terminated successfully");
         return X::fSuccess();
@@ -91,10 +96,7 @@ namespace XD
     {
         mLOG("Starting window termination");
 
-        X_Call(m_window->fvTerminateX(), "Can't terminate window with title " << _window->fGetWidgetTitleName());
         m_requestedTermination = true;
-
-        mLOG("Window " << _window->fGetWidgetTitleName() << " was terminated");
         return X::fSuccess();
     }
 

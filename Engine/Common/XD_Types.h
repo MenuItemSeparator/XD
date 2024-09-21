@@ -20,14 +20,16 @@ namespace XD
     using tWptr = std::weak_ptr<T>;
 
     const i4 XD_RESULT_SUCCESS = 0x0;
-    const i4 XD_RESULT_FAIL = -1;
+    const i4 XD_RESULT_NONCRIT_FAIL = 0x1;
+    const i4 XD_RESULT_CRIT_FAIL = -1;
     const i4 XD_RESULT_DISABLED = INT_MAX;
     const u8 XD_INVALID_HANDLE = UINT64_MAX;
 
     enum eEmote
     {
         A_A = XD_RESULT_SUCCESS,
-        X_X = XD_RESULT_FAIL
+        X_X = XD_RESULT_CRIT_FAIL,
+        T_T = XD_RESULT_NONCRIT_FAIL,
     };
 
     class XD_ENGINE_API X

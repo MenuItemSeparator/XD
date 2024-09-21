@@ -8,7 +8,7 @@
 #define mXD_MAKE_HANDLE_STRUCT(name) \
     struct name \
     { \
-        XD::u8 m_handle; \
+        XD::u8 m_handle{XD_INVALID_HANDLE}; \
         operator XD::u8(){ return m_handle; } \
     };\
 
@@ -16,7 +16,7 @@
     #define X_Call(func, error_msg) \
         if (!func.fCheck()) \
         { \
-            mLOG(error_msg << " " << __func__ << " " << __LINE__); \
+            mLOG(error_msg << " " << __func__ << " " << __LINE__ << " " << __FILE__); \
             return XD::X::fFail(); \
         }
 #else

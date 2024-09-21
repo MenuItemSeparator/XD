@@ -16,10 +16,12 @@
     #define mXD_ASSERTM(cond, msg)  if (!(cond)) { std::cout << ">> [Assert " << #cond << " fail] [ " << __FILE__ << " | " << __func__ << " | " << __LINE__ << " ] : " msg << std::endl; __debugbreak(); }
     #define mXD_ASSERT(cond)  if (!(cond)) mXD_ASSERTM(cond, "<<");
     #define mXD_NOT_IMPLEMENTED() mXD_ASSERTM(false, "Not implemented function reached");
+    #define mXD_WARN(cond, msg) if (!(cond)) { std::cout << ">> [Warning " << #cond << " failed] [ " << __FILE__ << " | " << __func__ << " | " << __LINE__ << " ] : " msg << std::endl; }
 #else
     #define mXD_ASSERTM(cond, msg);
     #define mXD_ASSERT(cond);
     #define mXD_NOT_IMPLEMENTED();
+    #define mXD_WARN(cond, msg);
 #endif
 
 #define dXD_ENGINE_RESOURCE_FOLDER_PATH_STR XD_ENGINE_RESOURCE_FOLDER_PATH

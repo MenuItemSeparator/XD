@@ -25,11 +25,11 @@ namespace XD
     {
         using tPtrToFn = Ret(T::*)(Args...);
     public:
-        XD_MemFunCallable(T& instance, tPtrToFn ptrToFunction) : m_instance(instance), m_ptrToFunction(ptrToFunction) {}
-        virtual Ret fInvoke(Args... args) override { return (m_instance.*m_ptrToFunction)(std::forward<Args>(args)...); }
-    private:
         T& m_instance;
         tPtrToFn m_ptrToFunction;
+
+        XD_MemFunCallable(T& instance, tPtrToFn ptrToFunction) : m_instance(instance), m_ptrToFunction(ptrToFunction) {}
+        virtual Ret fInvoke(Args... args) override { return (m_instance.*m_ptrToFunction)(std::forward<Args>(args)...); }
     };
 
     template<typename Ret, typename T>
