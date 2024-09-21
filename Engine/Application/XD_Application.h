@@ -22,6 +22,8 @@ namespace XD
         virtual ~XD_Application_Interface() = default;
     };
 
+    using tOnRenderLoopCallback = XD_Delegate<X(void)>;
+
     class XD_ENGINE_API XD_Application : public XD_Application_Interface
     {
     public:
@@ -30,6 +32,7 @@ namespace XD
         virtual X fvInitializeX() override;
         virtual X fvTerminateX() override;
 
+        tOnRenderLoopCallback& fOnRenderLoopCallback() { return m_onRenderLoopCallback; }
         tSptr<XD_GraphicsSystem> fGetGraphicsSystem() { return m_graphicsSystem; }
 
         X fLoopX();
@@ -37,6 +40,8 @@ namespace XD
     private:
         tSptr<XD_Window> m_window;
         tSptr<XD_GraphicsSystem> m_graphicsSystem;
+
+        tOnRenderLoopCallback m_onRenderLoopCallback;
         
         XD_ApplicationConfig m_config;
         bl m_requestedTermination;

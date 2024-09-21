@@ -98,7 +98,7 @@ namespace XD
 
         bl fIsValid() const { return m_callable != nullptr; }
         XD::X operator()(Args... args) { X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
-        XD::X fInvoke(Args... args) { X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
+        XD::X fInvoke(Args... args) { mXD_ASSERT(fIsValid()); X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
 
     private:
         tUptr<XD_Callable<XD::X(Args...)>> m_callable;

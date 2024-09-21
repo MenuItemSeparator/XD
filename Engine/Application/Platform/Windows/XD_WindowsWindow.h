@@ -24,7 +24,7 @@ namespace XD
         const std::string& fGetWidgetTitleName() const { return m_config.m_windowName; }
 
         tOnWindowResizedDelegate& fOnWindowResized() { return m_onWindowResizedX; }
-        tOnWindowWantsToClose& fOnWindowWantsToCloseX() { return m_onWindowWantsToCloseX; }
+        tOnWindowWantsToClose& fOnWindowWantsToClose() { return m_onWindowWantsToCloseX; }
 
         LRESULT fHandleMessage_Internal(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
 
