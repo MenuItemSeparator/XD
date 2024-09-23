@@ -8,6 +8,9 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
 //XDEngine
 #include "XD_Engine_Definitions.h"
