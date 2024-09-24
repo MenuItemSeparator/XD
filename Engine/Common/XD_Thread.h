@@ -8,7 +8,7 @@ namespace XD
     class XD_ENGINE_API XD_ThreadBase
     {
     public:
-        XD_ThreadBase();
+        XD_ThreadBase() = default;
         virtual ~XD_ThreadBase() = default;
         XD_ThreadBase(const XD_ThreadBase&) = delete;
         XD_ThreadBase& operator=(const XD_ThreadBase&) = delete;
