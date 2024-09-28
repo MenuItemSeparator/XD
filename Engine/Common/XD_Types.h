@@ -1,9 +1,11 @@
 #pragma once
 #include <memory>
+#include <thread>
 #include "XD_Engine_Definitions.h"
 
 namespace XD
 {
+    using ubyte = uint8_t;
     using i4 = int32_t;
     using i8 = int64_t;
     using u4 = uint32_t;
@@ -24,6 +26,8 @@ namespace XD
     const i4 XD_RESULT_CRIT_FAIL = -1;
     const i4 XD_RESULT_DISABLED = INT_MAX;
     const u8 XD_INVALID_HANDLE = UINT64_MAX;
+
+    const std::thread::id MAIN_THREAD_ID = std::this_thread::get_id();
 
     enum eEmote
     {
@@ -73,6 +77,11 @@ namespace XD
         void* m_data;
         u8 m_byteSize;
     };
+
+    inline bl fIsMainThread()
+    {
+        return std::this_thread::get_id() == MAIN_THREAD_ID;
+    }
 
 } // ns
 

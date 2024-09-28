@@ -24,8 +24,6 @@ namespace XD
         virtual ~XD_Application_Interface() = default;
     };
 
-    using tOnRenderLoopCallback = XD_Delegate<X(void)>;
-
     class XD_ENGINE_API XD_Application : public XD_Application_Interface
     {
     public:
@@ -36,7 +34,6 @@ namespace XD
         virtual X fvInitializeX() override;
         virtual X fvTerminateX() override;
 
-        tOnRenderLoopCallback& fOnRenderLoopCallback() { return m_onRenderLoopCallback; }
         XD_GraphicsSystem* fGetGraphicsSystem() { return &m_graphicsSystem; }
         XD_TimerManager* fGetTimerManager() { return &m_timerManager; }
 
@@ -48,8 +45,6 @@ namespace XD
         XD_TimerManager m_timerManager;
         XD_TimeClock m_timeClock;
 
-        tOnRenderLoopCallback m_onRenderLoopCallback;
-        
         XD_ApplicationConfig m_config;
         bl m_requestedTermination;
 

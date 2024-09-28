@@ -13,7 +13,6 @@ namespace XD
         m_graphicsSystem(),
         m_timerManager(),
         m_timeClock(),
-        m_onRenderLoopCallback(),
         m_config(_config),
         m_requestedTermination(false)
     {}
@@ -61,15 +60,6 @@ namespace XD
             const double deltaTime = m_timeClock.Restart();
             X_Call(m_window->fUpdateX(), "Window update error");
             X_Call(m_timerManager.fUpdateX(deltaTime), "Some error while updating main timer manager");
-
-            X_Call(m_graphicsSystem.fBeginFrameX(), "Error while begin frame in graphics subsystem");
-
-            if(m_onRenderLoopCallback.fIsValid())
-            {
-                X_Call(m_onRenderLoopCallback.fInvoke(), "Render loop callback error");
-            }
-
-            X_Call(m_graphicsSystem.fEndFrameX(), "Error while end frame in graphics subsystem");
         }
 
         mLOG("Requested application termination");

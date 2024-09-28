@@ -4,6 +4,7 @@
 #ifdef dXD_PLATFORM_WINDOWS
     #include "Windows/XD_WindowsLibrary.h"
     #include "Windows/XD_WindowsThread.h"
+    #include "Windows/XD_WindowsMutex.h"
 #else
 //Unknown platform
 #endif

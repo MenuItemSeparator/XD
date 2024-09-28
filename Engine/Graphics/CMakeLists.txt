@@ -7,6 +7,7 @@ Graphics/GraphicsApi/OpenGL/XD_GLCheck.cpp
 Graphics/GraphicsApi/OpenGL/XD_OpenGLShader.cpp
 
 Graphics/XD_GraphicsSystem.cpp
+Graphics/XD_CommandBuffer.cpp
 Graphics/XD_BufferLayout.cpp)
 
 set(XD_GRAPHICS_HEADERS

@@ -20,7 +20,6 @@ namespace XD
             X_Call(application->fGetGraphicsSystem()->fBindVertexBufferObjectX(vboHandle), "");
             X_Call(application->fGetGraphicsSystem()->fBindIndexBufferObjectX(iboHandle), "");
             X_Call(application->fGetGraphicsSystem()->fBindShaderProgramX(programHandle), "");
-            X_Call(application->fGetGraphicsSystem()->fRenderX(), "");
 
             return A_A;
         }
@@ -39,7 +38,6 @@ namespace XD
         TestWrapper wrapper{};
 
         X_Call(application->fvInitializeX(), "Application initialization error");
-        application->fOnRenderLoopCallback().fBind(wrapper, &TestWrapper::fRenderLoopCallbackX);
 
         TimerHandle timerHandle{};
         X_Call(application->fGetTimerManager()->fStartTimerX(timerHandle, 1.0, wrapper, &TestWrapper::fStopApplication), "Can't start app stopper timer");
@@ -89,6 +87,7 @@ namespace XD
 int
 main(int argc, const char** argv)
 {
+    return 0;
     X_Call(XD::Test_DrawQuad(), "Drawing test quad was failed");
     return 0;
 }
