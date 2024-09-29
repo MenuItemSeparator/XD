@@ -7,7 +7,7 @@ namespace XD
 {
     enum class eRenderThreadState
     {
-        NoContext = 0,
+        NotInitialized = 0,
         Render,
         Exiting,
 
@@ -17,9 +17,11 @@ namespace XD
     class XD_ENGINE_API XD_RenderFrame final
     {
     public:
-        XD_RenderFrame() = default;
-    private:
+        XD_RenderFrame();
 
+        XD_CommandBuffer& fGetCommandBuffer() { return m_commandBuffer; }
+    private:
+        XD_CommandBuffer m_commandBuffer;
     };
 
     class XD_ENGINE_API XD_GraphicsSystem final
@@ -53,7 +55,6 @@ namespace XD
 
         X fSubmitPrimitiveX();
         X fRenderFrameX();
-        X fSwapFramesX();
 
     private:
         // Game thread
@@ -62,27 +63,29 @@ namespace XD
         tVertexBufferLayoutHandleMap m_layoutHandleMap;
         tShaderHandleMap m_shaderHandleMap;
         tShaderProgramHandleMap m_shaderProgramHandleMap;
-
-        // Shared data
+        XD_GraphicsConfig m_config;
 
         XD_RenderFrame m_frames[2];
         XD_RenderFrame* m_constructingFrame;
         XD_RenderFrame* m_renderingFrame;
 
-        // Render thread
-
         tUptr<class XD_Renderer> m_renderer;
         XD_Thread m_renderThread;
         XD_Mutex m_resourcesMutex;
-        std::atomic_bool m_disposed;
+
+        std::atomic_bool m_readyForSwapFrames;
+        std::atomic_bool m_renderThreadIsStopped;
+        std::atomic_bool m_graphicsSystemsDisposed;
 
         static unsigned int fEntryPoint_RenderThread(void* _userData);
         eRenderThreadState fRenderFrame_RenderThread();
         eRenderThreadState fRenderFrame_Internal_RenderThread();
 
+        X fSwapFramesX();
         X fBeginFrameX_RenderThread();
         X fRenderX_RenderThread();
         X fEndFrameX_RenderThread();
+        X fExecuteCommandsX_RenderThread();
     };
 
 }

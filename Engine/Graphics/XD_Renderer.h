@@ -36,6 +36,7 @@ namespace XD
         eRendererType GetRendererType() const { return m_rendererType; }
 
         virtual X fvInitializeX(void* _hwnd) = 0;
+        virtual bl fvIsInitialized() const = 0;
 
         virtual X fvShutdownX() = 0;
 

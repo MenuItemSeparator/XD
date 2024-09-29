@@ -26,6 +26,8 @@ namespace XD
         BindShaderProgram,
         DestroyShaderProgram,
 
+        SetClearColor,
+
         End,
 
         COUNT
@@ -40,10 +42,13 @@ namespace XD
         XD_CommandBuffer(const XD_CommandBuffer&) = delete;
         XD_CommandBuffer& operator=(const XD_CommandBuffer&) = delete;
 
-		X fStartX();
-		X fFinishX();
+		void fStartWrite() ;
+		void fFinishWrite();
 
         X fReadX(ubyte* _data, u8 _size);
+        void fFinishRead();
+
+        u8 fGetSize() const { return m_size; }
 
         template<typename T>
 		X fReadX(T& _in)

@@ -3,6 +3,11 @@
 
 namespace XD
 {
+    XD_RenderFrame::XD_RenderFrame() :
+        m_commandBuffer()
+    {
+    }
+
     XD_GraphicsSystem::XD_GraphicsSystem() :
         m_vertexBufferHandleMap(),
         m_indexBufferHandleMap(),
@@ -15,14 +20,16 @@ namespace XD
         m_renderer(),
         m_renderThread(),
         m_resourcesMutex(),
-        m_disposed(false)
+        m_readyForSwapFrames(true),
+        m_renderThreadIsStopped(false),
+        m_graphicsSystemsDisposed(false)
     {
 
     }
 
     XD_GraphicsSystem::~XD_GraphicsSystem()
     {
-        if(!m_disposed)
+        if(!m_graphicsSystemsDisposed)
         {
             fShutdownX().fCheck();
         }
@@ -33,7 +40,9 @@ namespace XD
     {
         mXD_ASSERT(fIsMainThread());
 
-        switch(_config.m_rendererType)
+        m_config = _config;
+
+        switch(m_config.m_rendererType)
         {
         case eRendererType::OpenGL:
             m_renderer = std::make_unique<XD_OpenGLRenderer>();
@@ -43,8 +52,15 @@ namespace XD
             return X_X;
         }
 
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        commandBuffer.fStartWrite();
+        eRenderCommand initializeCommand = eRenderCommand::RendererCreate;
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(initializeCommand), "Can't write renderer initialize command");
+        commandBuffer.fFinishWrite();
+
+        //One additional render call to initialize context;
+        X_Call(fRenderFrameX(), "Primary render frame error");
         X_Call(m_renderThread.fLaunchX(&XD_GraphicsSystem::fEntryPoint_RenderThread, this, "Render thread"), "Can't launch render thread");
-        X_Call(m_renderer->fvInitializeX(_config.m_hwnd), "Can't initialize target renderer");
         return A_A;
     }
 
@@ -55,15 +71,17 @@ namespace XD
 
         if(!m_renderer) return X_X;
 
-        m_disposed = true;
+        m_graphicsSystemsDisposed = true;
         
-        X_Call(m_renderThread.fWaitX(), "Error while waiting render thread shutting down");
-        X_Call(m_renderer->fvShutdownX(), "Error while shutdown renderer");
+        while(!m_renderThreadIsStopped) {};
+
         X_Call(m_vertexBufferHandleMap.fClearX(), "Can't clear vbo handle map");
         X_Call(m_layoutHandleMap.fClearX(), "Can't clear layout handle map");
         X_Call(m_indexBufferHandleMap.fClearX(), "Can't clear ibo handle map");
         X_Call(m_shaderHandleMap.fClearX(), "Can't clear shader handle map");
         X_Call(m_shaderProgramHandleMap.fClearX(), "Can't clear shader program handle map");
+
+        mLOG("Graphics system shut down successfully");
 
         return A_A;
     }
@@ -139,6 +157,7 @@ namespace XD
             XD_LockScope resScope{ m_resourcesMutex };
             X_Call(m_renderer->fvBindIBOX(_ibHandle), "Can't bind ibo");
         }
+
         return A_A;
     }
 
@@ -271,6 +290,8 @@ namespace XD
     {
         mXD_ASSERT(fIsMainThread());
 
+        mXD_NOT_IMPLEMENTED();
+
         return A_A;
     }
 
@@ -278,6 +299,11 @@ namespace XD
     XD_GraphicsSystem::fRenderFrameX()
     {
         mXD_ASSERT(fIsMainThread());
+
+        while(!m_readyForSwapFrames) {};
+
+        X_Call(fSwapFramesX(), "Error while swapping constructing and render frames");
+        m_readyForSwapFrames = false;
 
         return A_A;
     }
@@ -287,16 +313,16 @@ namespace XD
     {
         mXD_ASSERT(fIsMainThread());
         
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            std::swap(m_constructingFrame, m_renderingFrame);
-        }
+        std::swap(m_constructingFrame, m_renderingFrame);
+
         return A_A;
     }
 
     X 
     XD_GraphicsSystem::fBeginFrameX_RenderThread()
     {
+        mXD_ASSERT(!fIsMainThread());
+
         X_Call(m_renderer->fvBeginFrameX(), "Error while begin frame in renderer");
         return A_A;
     }
@@ -304,6 +330,8 @@ namespace XD
     X
     XD_GraphicsSystem::fRenderX_RenderThread()
     {
+        mXD_ASSERT(!fIsMainThread());
+
         X_Call(m_renderer->fvRenderX(), "Can't render primitive");
         return A_A;
     }
@@ -311,12 +339,47 @@ namespace XD
     X 
     XD_GraphicsSystem::fEndFrameX_RenderThread()
     {
+        mXD_ASSERT(!fIsMainThread());
+
         X_Call(m_renderer->fvEndFrameX(), "Error while end frame in renderer");
+        return A_A;
+    }
+
+    X 
+    XD_GraphicsSystem::fExecuteCommandsX_RenderThread()
+    {
+        mXD_ASSERT(!fIsMainThread());
+
+        eRenderCommand command = eRenderCommand::End;
+        XD_CommandBuffer& renderCommands = m_renderingFrame->fGetCommandBuffer();
+
+        if(renderCommands.fGetSize() == 0) return A_A;
+        
+        do
+        {
+            X_Call(renderCommands.fReadX<eRenderCommand>(command), "Can't read next render command");
+
+            switch (command)
+            {
+            case eRenderCommand::RendererCreate:
+                X_Call(m_renderer->fvInitializeX(m_config.m_hwnd), "Can't initialize target renderer");
+                break;
+            default:
+                break;
+            }
+
+
+        } while (command != eRenderCommand::End);
+        
+        renderCommands.fFinishRead();
+
         return A_A;
     }
 
     unsigned int XD_GraphicsSystem::fEntryPoint_RenderThread(void *_userData)
     {
+        mXD_ASSERT(!fIsMainThread());
+
         mLOG("Function in render thread");
         XD_GraphicsSystem* graphicsSystem = reinterpret_cast<XD_GraphicsSystem*>(_userData);
         while (eRenderThreadState::Exiting != graphicsSystem->fRenderFrame_RenderThread()) {};
@@ -325,25 +388,45 @@ namespace XD
 
     eRenderThreadState XD_GraphicsSystem::fRenderFrame_RenderThread()
     {
-        eRenderThreadState result = fRenderFrame_Internal_RenderThread();
-        if (result == eRenderThreadState::Exiting)
-        {
-            ///????
-            m_renderThread.fWaitX().fCheck();
-        }
+        mXD_ASSERT(!fIsMainThread());
 
+        do
+        {
+            if(m_graphicsSystemsDisposed)
+            {
+                m_renderer->fvShutdownX().fCheck();
+                m_renderThreadIsStopped = true;
+
+                mLOG("Render thread is exiting. Renderer was terminated.");
+                return eRenderThreadState::Exiting;
+            }
+
+        } while (m_readyForSwapFrames);
+        
+
+        eRenderThreadState result = fRenderFrame_Internal_RenderThread();
+
+        m_readyForSwapFrames = true;
         return result;
     }
 
     eRenderThreadState XD_GraphicsSystem::fRenderFrame_Internal_RenderThread()
     {
+        mXD_ASSERT(!fIsMainThread());
+
         //ExecuteCommands
+        fExecuteCommandsX_RenderThread().fCheck();
+
+        if(!m_renderer->fvIsInitialized())
+        {
+            return eRenderThreadState::NotInitialized;
+        }
 
         //RenderFrame
 
         fBeginFrameX_RenderThread().fCheck();
         fEndFrameX_RenderThread().fCheck();
 
-        return m_disposed ? eRenderThreadState::Exiting : eRenderThreadState::Render;
+        return m_graphicsSystemsDisposed ? eRenderThreadState::Exiting : eRenderThreadState::Render;
     }
 }

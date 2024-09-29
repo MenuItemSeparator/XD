@@ -433,7 +433,8 @@ namespace XD
         m_layouts(VBLAYOUT_MAX_COUNT),
         m_shaders(SHADER_MAX_COUNT),
         m_programs(SHADERPROG_MAX_COUNT),
-        m_targetIbo()
+        m_targetIbo(),
+        m_isInitialized(false)
     {}
 
     X 
@@ -446,8 +447,15 @@ namespace XD
         X_Call(fCreateValidPixelFormatX(hwnd), "Error while creating valid pixel format");
         X_Call(fLoadOpenGLExtensionProcPtrX(m_openGLDll), "Error while loading initial gl proc ptrs");
 
+        m_isInitialized = true;
         mLOG("OpenGL renderer initialized successfully");
         return A_A;
+    }
+
+    bl 
+    XD_OpenGLRenderer::fvIsInitialized() const
+    {
+        return m_isInitialized;
     }
 
     X 

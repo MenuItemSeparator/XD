@@ -123,6 +123,8 @@ namespace XD
         XD_OpenGLRenderer();
         
         virtual X fvInitializeX(void* _hwnd) override;
+        virtual bl fvIsInitialized() const override;
+
         virtual X fvShutdownX() override;
 
         virtual X fvBeginFrameX() override;
@@ -159,6 +161,7 @@ namespace XD
         std::vector<XD_OpenGLShaderProgram> m_programs;
 
         IndexBufferObjectHandle m_targetIbo;
+        bl m_isInitialized;
 
         X fExtractInitialProcsFromDummyContextX();
         X fCreateValidPixelFormatX(HWND _hwnd);

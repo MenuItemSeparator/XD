@@ -60,6 +60,8 @@ namespace XD
             const double deltaTime = m_timeClock.Restart();
             X_Call(m_window->fUpdateX(), "Window update error");
             X_Call(m_timerManager.fUpdateX(deltaTime), "Some error while updating main timer manager");
+
+            X_Call(m_graphicsSystem.fRenderFrameX(), "Error while swapping frames.");
         }
 
         mLOG("Requested application termination");

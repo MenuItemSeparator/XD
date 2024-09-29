@@ -19,10 +19,10 @@ namespace XD
         TestStruct dataStruct{3,5,"World"};
 
         XD_CommandBuffer commandBuffer{};
-        X_Call(commandBuffer.fStartX(), "Can't start writing to command buffer in tests");
+        commandBuffer.fStartWrite();
         X_Call(commandBuffer.fWriteX<int>(dataInt), "Can't write int to command buffer in tests");
         X_Call(commandBuffer.fWriteX<TestStruct>(dataStruct), "Can't write struct to command buffer in tests");
-        X_Call(commandBuffer.fFinishX(), "Can't end writing to command buffer in tests");
+        commandBuffer.fFinishWrite();
 
         int checkInt = 0;
         TestStruct checkStruct{};
@@ -30,6 +30,7 @@ namespace XD
         X_Call(commandBuffer.fReadX<int>(checkInt), "Can't read int from command buffer in tests");
         mXD_ASSERT(checkInt == dataInt);
         X_Call(commandBuffer.fReadX<TestStruct>(checkStruct), "Can't read struct from command buffer in tests");
+        commandBuffer.fFinishRead();
         mXD_ASSERT(checkStruct.X == dataStruct.X);
         mXD_ASSERT(checkStruct.Y == dataStruct.Y);
         mXD_ASSERT(checkStruct.Z == dataStruct.Z);
