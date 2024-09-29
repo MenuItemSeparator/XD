@@ -39,7 +39,7 @@ namespace XD
 
         X fLoopX();
 
-    private:
+    protected:
         tSptr<XD_Window> m_window;
         XD_GraphicsSystem m_graphicsSystem;
         XD_TimerManager m_timerManager;
@@ -47,6 +47,8 @@ namespace XD
 
         XD_ApplicationConfig m_config;
         bl m_requestedTermination;
+
+        virtual X fvLoopX_Internal(f8 _deltaTime);
 
         bl fWantsToTerminate() const;
         X fTerminateSubsystemsX();

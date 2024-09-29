@@ -58,6 +58,8 @@ namespace XD
         virtual X fvBindShaderProgram(ShaderProgramHandle _programHandle) = 0;
         virtual X fvDestroyShaderProgramX(ShaderProgramHandle _programHandle) = 0;
 
+        virtual X fvSetClearColorX(const XD_Color& _color) = 0;
+
         virtual X fvBeginFrameX() = 0;
         virtual X fvRenderX() = 0;
         virtual X fvEndFrameX() = 0;

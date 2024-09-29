@@ -10,26 +10,53 @@ namespace XD
     XD::ShaderProgramHandle programHandle;
 
     XD::XD_ApplicationConfig applicationConfig{};
-    XD::tUptr<XD::XD_Application> application = std::make_unique<XD::XD_Application>(applicationConfig);
 
-    class TestWrapper
+    class SetClearColorApplication : public XD_Application
     {
     public:
-        X fRenderLoopCallbackX()
-        {
-            X_Call(application->fGetGraphicsSystem()->fBindVertexBufferObjectX(vboHandle), "");
-            X_Call(application->fGetGraphicsSystem()->fBindIndexBufferObjectX(iboHandle), "");
-            X_Call(application->fGetGraphicsSystem()->fBindShaderProgramX(programHandle), "");
+        SetClearColorApplication(const XD_ApplicationConfig& _config) :
+            XD_Application(_config)
+        {}
 
+        virtual X fvInitializeX() override
+        {
+            X_Call(XD_Application::fvInitializeX(), "Super initialization fail");
+
+            TimerHandle timerHandle{};
+            X_Call(fGetTimerManager()->fStartTimerX(timerHandle, 1.0, *this, &SetClearColorApplication::fStopApplication), "Can't start app stopper timer");
+            
             return A_A;
         }
 
+    protected:
+        virtual X fvLoopX_Internal(f8 _deltaTime) override
+        {
+            static XD_Color clearColor{1.0f, 0.5f, 0.0f, 1.0f};
+            clearColor.m_r = fmod(clearColor.m_r + 0.03f, 1.0f);
+            clearColor.m_g = fmod(clearColor.m_g + 0.06f, 1.0f);
+            clearColor.m_b = fmod(clearColor.m_b + 0.09f, 1.0f);
+
+            X_Call(m_graphicsSystem.fSetClearColorX(clearColor), "Error while setting clear color.");
+            return A_A;
+        }
+
+    private:
         void fStopApplication()
         {
-            application->fvTerminateX().fCheck();
+            fvTerminateX().fCheck();
         }
     };
 
+    X
+    Test_SetClearColor()
+    {
+        tUptr<SetClearColorApplication> application = std::make_unique<SetClearColorApplication>(applicationConfig);
+        X_Call(application->fvInitializeX(), "Set clear color test application initialization error");
+        X_Call(application->fLoopX(), "Application loop error");
+        return A_A;
+    }
+
+/*
     X
     Test_DrawQuad()
     {
@@ -81,13 +108,14 @@ namespace XD
 
         return A_A;
     }
+*/
 }
 
 
 int
 main(int argc, const char** argv)
 {
-    return 0;
-    X_Call(XD::Test_DrawQuad(), "Drawing test quad was failed");
+    X_Call(XD::Test_SetClearColor(), "Change clear color test was failed");
+    //X_Call(XD::Test_DrawQuad(), "Drawing test quad was failed");
     return 0;
 }

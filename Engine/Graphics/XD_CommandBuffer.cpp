@@ -11,7 +11,7 @@ namespace XD
         m_capacity(COMMAND_BUFFER_STATIC_SIZE)
     {
         m_buffer = reinterpret_cast<ubyte*>(malloc(COMMAND_BUFFER_STATIC_SIZE));
-        fFinishWrite();
+        fFinishWrite_Internal();
     }
 
     XD_CommandBuffer::~XD_CommandBuffer()
@@ -19,14 +19,14 @@ namespace XD
     }
 
     void
-    XD_CommandBuffer::fStartWrite()
+    XD_CommandBuffer::fStartWrite_Internal()
     {
         m_pos = 0;
         m_size = 0;
     }
 
     void
-    XD_CommandBuffer::fFinishWrite()
+    XD_CommandBuffer::fFinishWrite_Internal()
     {
         ubyte cmd = static_cast<ubyte>(eRenderCommand::End);
         fWriteX<ubyte>(cmd).fCheck();

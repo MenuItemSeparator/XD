@@ -53,8 +53,13 @@ namespace XD
         X fBindShaderProgramX(ShaderProgramHandle _programHandle);
         X fDestroyShaderProgramX(ShaderProgramHandle _programHandle);
 
+        X fSetClearColorX(const XD_Color& _color);
         X fSubmitPrimitiveX();
-        X fRenderFrameX();
+
+        //Prepare constructing frame
+        X fBeginFrameX();
+        //Swap constructing and render frames
+        X fEndFrameX();
 
     private:
         // Game thread
@@ -63,7 +68,6 @@ namespace XD
         tVertexBufferLayoutHandleMap m_layoutHandleMap;
         tShaderHandleMap m_shaderHandleMap;
         tShaderProgramHandleMap m_shaderProgramHandleMap;
-        XD_GraphicsConfig m_config;
 
         XD_RenderFrame m_frames[2];
         XD_RenderFrame* m_constructingFrame;
@@ -71,11 +75,15 @@ namespace XD
 
         tUptr<class XD_Renderer> m_renderer;
         XD_Thread m_renderThread;
+        
         XD_Mutex m_resourcesMutex;
+        //Shared resources
+        XD_GraphicsConfig m_config;
+        //Shared resources END
 
         std::atomic_bool m_readyForSwapFrames;
         std::atomic_bool m_renderThreadIsStopped;
-        std::atomic_bool m_graphicsSystemsDisposed;
+        std::atomic_bool m_graphicsSystemIsShutdown;
 
         static unsigned int fEntryPoint_RenderThread(void* _userData);
         eRenderThreadState fRenderFrame_RenderThread();

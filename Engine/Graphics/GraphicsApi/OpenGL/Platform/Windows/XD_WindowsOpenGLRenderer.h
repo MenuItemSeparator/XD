@@ -149,6 +149,8 @@ namespace XD
         virtual X fvBindShaderProgram(ShaderProgramHandle _programHandle) override;
         virtual X fvDestroyShaderProgramX(ShaderProgramHandle _programHandle) override;
 
+        virtual X fvSetClearColorX(const XD_Color& _color) override;
+
     private:
         tSptr<XD_OpenGLContext> m_context;
         XD_Library m_openGLDll;

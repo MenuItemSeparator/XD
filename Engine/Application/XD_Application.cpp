@@ -32,14 +32,14 @@ namespace XD
 
         X_Call(m_graphicsSystem.fInitializeX(graphicsConfig), "Failed when initializing graphics system");
 
-        return X::fSuccess();
+        return A_A;
     }
 
     X
     XD_Application::fvTerminateX()
     {
         m_requestedTermination = true;
-        return X::fSuccess();
+        return A_A;
     }
 
     bl
@@ -57,11 +57,13 @@ namespace XD
 
         while(!fWantsToTerminate())
         {
-            const double deltaTime = m_timeClock.Restart();
+            const f8 deltaTime = m_timeClock.Restart();
             X_Call(m_window->fUpdateX(), "Window update error");
             X_Call(m_timerManager.fUpdateX(deltaTime), "Some error while updating main timer manager");
 
-            X_Call(m_graphicsSystem.fRenderFrameX(), "Error while swapping frames.");
+            X_Call(m_graphicsSystem.fBeginFrameX(), "Error while resetting constructing frame.");
+            X_Call(fvLoopX_Internal(deltaTime), "Internal loop caused error");
+            X_Call(m_graphicsSystem.fEndFrameX(), "Error while swapping render frames.");
         }
 
         mLOG("Requested application termination");
@@ -70,6 +72,12 @@ namespace XD
         mLOG("Window " << m_window->fGetWidgetTitleName() << " was terminated");
 
         return X::fSuccess();
+    }
+
+    X
+    XD_Application::fvLoopX_Internal(f8 _deltaTime)
+    {
+        return A_A;
     }
 
     X
@@ -86,10 +94,10 @@ namespace XD
     X
     XD_Application::fTerminateWindowX(XD_Window* _window)
     {
-        mLOG("Starting window termination");
+        mLOG("Received window termination callback");
 
-        m_requestedTermination = true;
-        return X::fSuccess();
+        X_Call(fvTerminateX(), "Can't terminate application after receiving window termination callback");
+        return A_A;
     }
 
 }

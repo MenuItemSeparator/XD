@@ -20,23 +20,24 @@ namespace XD
         m_renderer(),
         m_renderThread(),
         m_resourcesMutex(),
+        m_config(),
         m_readyForSwapFrames(true),
         m_renderThreadIsStopped(false),
-        m_graphicsSystemsDisposed(false)
+        m_graphicsSystemIsShutdown(false)
     {
 
     }
 
     XD_GraphicsSystem::~XD_GraphicsSystem()
     {
-        if(!m_graphicsSystemsDisposed)
+        if(!m_graphicsSystemIsShutdown)
         {
             fShutdownX().fCheck();
         }
     }
-    
 
-    X XD_GraphicsSystem::fInitializeX(const XD_GraphicsConfig &_config)
+    X 
+    XD_GraphicsSystem::fInitializeX(const XD_GraphicsConfig &_config)
     {
         mXD_ASSERT(fIsMainThread());
 
@@ -52,14 +53,16 @@ namespace XD
             return X_X;
         }
 
+        //One additional render call to initialize context;
+        X_Call(fBeginFrameX(), "Primary render frame start error");
+
         XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
-        commandBuffer.fStartWrite();
         eRenderCommand initializeCommand = eRenderCommand::RendererCreate;
         X_Call(commandBuffer.fWriteX<eRenderCommand>(initializeCommand), "Can't write renderer initialize command");
-        commandBuffer.fFinishWrite();
 
-        //One additional render call to initialize context;
-        X_Call(fRenderFrameX(), "Primary render frame error");
+        X_Call(fEndFrameX(), "Primary render frame end error");
+        //One additional render call to initialize context END;
+
         X_Call(m_renderThread.fLaunchX(&XD_GraphicsSystem::fEntryPoint_RenderThread, this, "Render thread"), "Can't launch render thread");
         return A_A;
     }
@@ -71,8 +74,9 @@ namespace XD
 
         if(!m_renderer) return X_X;
 
-        m_graphicsSystemsDisposed = true;
-        
+        mLOG("Graphics system termination started.")
+
+        m_graphicsSystemIsShutdown = true;
         while(!m_renderThreadIsStopped) {};
 
         X_Call(m_vertexBufferHandleMap.fClearX(), "Can't clear vbo handle map");
@@ -286,6 +290,23 @@ namespace XD
     }
 
     X 
+    XD_GraphicsSystem::fSetClearColorX(const XD_Color& _color)
+    {
+        mXD_ASSERT(fIsMainThread());
+
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        
+        XD_Color newColor{ _color };
+        eRenderCommand setClearColorCommand = eRenderCommand::SetClearColor;
+
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(setClearColorCommand), "Can't write set clear color command");
+        X_Call(commandBuffer.fWriteX<XD_Color>(newColor), "Can't write clear color struct");
+
+        mLOG("Set new clear color. " << _color);
+        return A_A;
+    }
+
+    X 
     XD_GraphicsSystem::fSubmitPrimitiveX()
     {
         mXD_ASSERT(fIsMainThread());
@@ -296,9 +317,20 @@ namespace XD
     }
 
     X 
-    XD_GraphicsSystem::fRenderFrameX()
+    XD_GraphicsSystem::fBeginFrameX()
+    {
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        commandBuffer.fStartWrite_Internal();
+        return A_A;
+    }
+
+    X 
+    XD_GraphicsSystem::fEndFrameX()
     {
         mXD_ASSERT(fIsMainThread());
+
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        commandBuffer.fFinishWrite_Internal();
 
         while(!m_readyForSwapFrames) {};
 
@@ -362,7 +394,17 @@ namespace XD
             switch (command)
             {
             case eRenderCommand::RendererCreate:
+            {
+                XD_LockScope{m_resourcesMutex};
                 X_Call(m_renderer->fvInitializeX(m_config.m_hwnd), "Can't initialize target renderer");
+            }
+                break;
+            case eRenderCommand::SetClearColor:
+            {
+                XD_Color newClearColor{};
+                X_Call(renderCommands.fReadX<XD_Color>(newClearColor), "Can't read new clear color struct");
+                X_Call(m_renderer->fvSetClearColorX(newClearColor), "Can't set new clear color to renderer");
+            }
                 break;
             default:
                 break;
@@ -392,7 +434,7 @@ namespace XD
 
         do
         {
-            if(m_graphicsSystemsDisposed)
+            if(m_graphicsSystemIsShutdown)
             {
                 m_renderer->fvShutdownX().fCheck();
                 m_renderThreadIsStopped = true;
@@ -427,6 +469,6 @@ namespace XD
         fBeginFrameX_RenderThread().fCheck();
         fEndFrameX_RenderThread().fCheck();
 
-        return m_graphicsSystemsDisposed ? eRenderThreadState::Exiting : eRenderThreadState::Render;
+        return eRenderThreadState::Render;
     }
 }

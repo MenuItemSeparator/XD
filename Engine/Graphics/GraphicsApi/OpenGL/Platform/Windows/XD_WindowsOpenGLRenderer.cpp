@@ -615,7 +615,6 @@ namespace XD
     X 
     XD_OpenGLRenderer::fvBeginFrameX()
     {
-        OpenGLCheck(gSetClearColorProc(1.0f, 0.1f, 0.2f, 1.0f), "Can't set new clear color");
         OpenGLCheck(gClearProc(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT), "Can't clear viewport");
         return A_A;
     }
@@ -729,4 +728,10 @@ namespace XD
         return A_A;
     }
 
+    X
+    XD_OpenGLRenderer::fvSetClearColorX(const XD_Color& _color)
+    {
+        OpenGLCheck(gSetClearColorProc(_color.m_r, _color.m_g, _color.m_b, _color.m_a), "Can't set new clear color");
+        return A_A;
+    }
 }

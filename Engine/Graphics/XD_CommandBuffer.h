@@ -6,7 +6,7 @@ namespace XD
     enum class eRenderCommand : ubyte
     {
         RendererCreate = 0,
-        RendererDestroy,
+        RendererTerminate,
 
         CreateVBO,
         BindVBO,
@@ -42,8 +42,8 @@ namespace XD
         XD_CommandBuffer(const XD_CommandBuffer&) = delete;
         XD_CommandBuffer& operator=(const XD_CommandBuffer&) = delete;
 
-		void fStartWrite() ;
-		void fFinishWrite();
+		void fStartWrite_Internal();
+		void fFinishWrite_Internal();
 
         X fReadX(ubyte* _data, u8 _size);
         void fFinishRead();
