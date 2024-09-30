@@ -131,7 +131,7 @@ namespace XD
         virtual X fvRenderX() override;
         virtual X fvEndFrameX() override;
 
-        virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) override;
+        virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, Memory* _elements) override;
         virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) override;
 
         virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, Memory* _data) override;

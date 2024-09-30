@@ -40,7 +40,7 @@ namespace XD
 
         virtual X fvShutdownX() = 0;
 
-        virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements) = 0;
+        virtual X fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, Memory* _elements) = 0;
         virtual X fvDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle) = 0;
 
         virtual X fvCreateIBOX(IndexBufferObjectHandle _iboHandle, Memory* _data) = 0;

@@ -7,7 +7,6 @@ namespace XD
         m_displayName("Nameless application")
     {}
 
-
     XD_Application::XD_Application(const XD_ApplicationConfig& _config) :
         m_window(nullptr),
         m_graphicsSystem(),
@@ -31,6 +30,41 @@ namespace XD
         graphicsConfig.m_hwnd = m_window->fvGetWindowRawPtr();
 
         X_Call(m_graphicsSystem.fInitializeX(graphicsConfig), "Failed when initializing graphics system");
+
+        if(false)
+        {
+            XD::VertexBufferLayoutHandle layoutHandle;
+            static std::vector<XD::eShaderDataType> shaderTypes{ XD::eShaderDataType::Float3 };
+            X_Call(fGetGraphicsSystem()->fCreateVertexBufferLayoutX(layoutHandle, shaderTypes), "Can't create vb layout");
+
+            static float vboRawData[] = {
+                0.5f,  0.5f, 0.0f,  // top right
+                0.5f, -0.5f, 0.0f,  // bottom right
+                -0.5f, -0.5f, 0.0f,  // bottom left
+                -0.5f,  0.5f, 0.0f   // top left 
+            };
+            static XD::Memory vboMem{vboRawData, sizeof(vboRawData)};
+            X_Call(fGetGraphicsSystem()->fCreateVertexBufferObjectX(m_vboHandle, &vboMem, layoutHandle), "Can't create vbo");
+
+            static int iboRawData[] = {
+                0, 1, 3,   // first triangle
+                1, 2, 3 
+            };
+            static XD::Memory iboMem{iboRawData, sizeof(iboRawData)};
+            X_Call(fGetGraphicsSystem()->fCreateIndexBufferX(m_iboHandle, &iboMem), "Can't create ibo");
+
+            XD::ShaderHandle vsHandle;
+            static std::string vsFilePath = cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestVS.vs";
+            X_Call(fGetGraphicsSystem()->fCreateShaderX(vsHandle, vsFilePath), "Can't create vertex shader");
+            XD::ShaderHandle fsHandle;
+            static std::string fsFilePath = cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestFS.fs";
+            X_Call(fGetGraphicsSystem()->fCreateShaderX(fsHandle, fsFilePath), "Can't create fragment shader");
+
+            X_Call(fGetGraphicsSystem()->fCreateShaderProgramX(m_programHandle, vsHandle, fsHandle), "Can't create shader program");
+
+            XD_Color col{1.0f, 0.2f, 0.2f, 1.0f};
+            X_Call(fGetGraphicsSystem()->fSetClearColorX(col), "");
+        }
 
         return A_A;
     }
@@ -61,9 +95,8 @@ namespace XD
             X_Call(m_window->fUpdateX(), "Window update error");
             X_Call(m_timerManager.fUpdateX(deltaTime), "Some error while updating main timer manager");
 
-            X_Call(m_graphicsSystem.fBeginFrameX(), "Error while resetting constructing frame.");
             X_Call(fvLoopX_Internal(deltaTime), "Internal loop caused error");
-            X_Call(m_graphicsSystem.fEndFrameX(), "Error while swapping render frames.");
+            X_Call(m_graphicsSystem.fStageFrameX(), "Error while swapping render frames.");
         }
 
         mLOG("Requested application termination");

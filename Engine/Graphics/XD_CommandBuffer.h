@@ -5,30 +5,32 @@ namespace XD
 {
     enum class eRenderCommand : ubyte
     {
-        RendererCreate = 0,
-        RendererDestroy,
+        RendererCreate = 0, //!
+        RendererDestroy, //Not used
 
-        CreateVBO,
-        BindVBO,
-        DestroyVBO,
+        CreateVBO, //!
+        BindVBO, //!
+        DestroyVBO, //!
 
-        CreateIBO,
-        BindIBO,
-        DestroyIBO,
+        CreateIBO, //!
+        BindIBO, //!
+        DestroyIBO, //!
 
-        CreateLayout,
-        DestroyLayout,
+        CreateLayout, //!
+        DestroyLayout, //!
 
-        CreateShader,
-        DestroyShader,
+        CreateShader, //!
+        DestroyShader, //!
 
-        CreateShaderProgram,
-        BindShaderProgram,
+        CreateShaderProgram, //!
+        BindShaderProgram, //!
         DestroyShaderProgram,
 
-        SetClearColor,
+        SetClearColor, //!
 
-        End,
+        RenderPrimitive,
+
+        End, //!
 
         COUNT
     };
@@ -42,7 +44,7 @@ namespace XD
         XD_CommandBuffer(const XD_CommandBuffer&) = delete;
         XD_CommandBuffer& operator=(const XD_CommandBuffer&) = delete;
 
-		void fStartWrite_Internal();
+		void fReset();
 		void fFinishWrite_Internal();
 
         X fReadX(ubyte* _data, u8 _size);

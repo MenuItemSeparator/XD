@@ -43,7 +43,7 @@ namespace XD
         X fBindIndexBufferObjectX(IndexBufferObjectHandle _ibHandle);
         X fDestroyIndexBufferX(IndexBufferObjectHandle _ibHandle);
 
-        X fCreateVertexBufferLayoutX(VertexBufferLayoutHandle& _resultHandle, const std::vector<eShaderDataType>& _elements);
+        X fCreateVertexBufferLayoutX(VertexBufferLayoutHandle& _resultHandle, std::vector<eShaderDataType>& _elements);
         X fDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle);
 
         X fCreateShaderX(ShaderHandle& _resultHandle, const std::string& _filePath);
@@ -56,10 +56,8 @@ namespace XD
         X fSetClearColorX(const XD_Color& _color);
         X fSubmitPrimitiveX();
 
-        //Prepare constructing frame
-        X fBeginFrameX();
         //Swap constructing and render frames
-        X fEndFrameX();
+        X fStageFrameX();
 
     private:
         XD_RenderFrame m_frames[2];
@@ -89,7 +87,6 @@ namespace XD
 
         X fSwapFramesX();
         X fBeginFrameX_RenderThread();
-        X fRenderX_RenderThread();
         X fEndFrameX_RenderThread();
         X fTryExecuteInitializeCommandX_RenderThread();
         X fExecuteCommonCommandsX_RenderThread();

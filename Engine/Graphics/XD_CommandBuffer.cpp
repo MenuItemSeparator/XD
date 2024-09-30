@@ -19,7 +19,7 @@ namespace XD
     }
 
     void
-    XD_CommandBuffer::fStartWrite_Internal()
+    XD_CommandBuffer::fReset()
     {
         m_pos = 0;
         m_size = 0;
@@ -47,7 +47,7 @@ namespace XD
     X 
     XD_CommandBuffer::fWriteX(ubyte* _data, uint32_t _size)
     {
-        mXD_ASSERTM(m_size == 0, "Called without fStart/fEnd calls. Size: " << m_size);
+        //mXD_ASSERTM(m_size == 0, "Called without fStart/fEnd calls. Size: " << m_size);
 
         if (m_pos + _size > m_capacity)
         {

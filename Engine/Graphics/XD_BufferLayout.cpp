@@ -70,13 +70,16 @@ namespace XD
     }
 
     X
-    XD_BufferLayout::fCreateX(const std::vector<eShaderDataType> &_elements)
+    XD_BufferLayout::fCreateX(const eShaderDataType* _elementsPtr, u8 _elementsNum)
     {
-        m_elements.reserve(_elements.size());
-        for(u8 i = 0; i < _elements.size(); ++i)
+        m_elements.reserve(_elementsNum);
+
+        for(u8 i = 0; i < _elementsNum; ++i)
         {
-            m_elements.push_back({_elements[i]});
+            const eShaderDataType newElement = _elementsPtr[i];
+            m_elements.push_back({newElement});
         }
+
         fCalculateOffsetsAndStride();
 
         return A_A;

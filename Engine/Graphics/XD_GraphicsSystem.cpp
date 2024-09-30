@@ -54,13 +54,13 @@ namespace XD
         }
 
         //One additional render call to initialize context;
-        X_Call(fBeginFrameX(), "Primary render frame start error");
+        //X_Call(fBeginFrameX(), "Primary render frame start error");
 
         XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
         eRenderCommand initializeCommand = eRenderCommand::RendererCreate;
         X_Call(commandBuffer.fWriteX<eRenderCommand>(initializeCommand), "Can't write renderer initialize command");
 
-        X_Call(fEndFrameX(), "Primary render frame end error");
+        //X_Call(fEndFrameX(), "Primary render frame end error");
         //One additional render call to initialize context END;
 
         X_Call(m_renderThread.fLaunchX(&XD_GraphicsSystem::fEntryPoint_RenderThread, this, "Render thread"), "Can't launch render thread");
@@ -131,7 +131,7 @@ namespace XD
     {
         mXD_ASSERT(fIsMainThread());
 
-        eRenderCommand destroyVBOCommand = eRenderCommand::BindVBO;
+        eRenderCommand destroyVBOCommand = eRenderCommand::DestroyVBO;
         XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
         X_Call(commandBuffer.fWriteX<eRenderCommand>(destroyVBOCommand), "Can't write down destroy vbo command to command buffer");
         X_Call(commandBuffer.fWriteX<VertexBufferObjectHandle>(_vbHandle), "Can't write down vbo handle to command buffer");
@@ -145,15 +145,19 @@ namespace XD
     XD_GraphicsSystem::fCreateIndexBufferX(IndexBufferObjectHandle& _handle, Memory* _data)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
-
-        _handle = m_indexBufferHandleMap.fCreateHandle();
-        mXD_ASSERT(m_indexBufferHandleMap.fIsValid(_handle));
 
         {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvCreateIBOX(_handle, _data), "Can't create index buffer");
+            XD_LockScope{m_resourcesMutex};
+
+            _handle = m_indexBufferHandleMap.fCreateHandle();
+            mXD_ASSERT(m_indexBufferHandleMap.fIsValid(_handle));
         }
+
+        eRenderCommand createIBOCommand = eRenderCommand::CreateIBO;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(createIBOCommand), "Can't write down create ibo command to command buffer");
+        X_Call(commandBuffer.fWriteX<IndexBufferObjectHandle>(_handle), "Can't write down ibo handle to command buffer");
+        X_Call(commandBuffer.fWriteX<Memory>(*_data), "Can't write down ibo data to command buffer");
 
         mLOG("Created IBO with handle " << _handle);
         return A_A;
@@ -163,12 +167,11 @@ namespace XD
     XD_GraphicsSystem::fBindIndexBufferObjectX(IndexBufferObjectHandle _ibHandle)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
 
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvBindIBOX(_ibHandle), "Can't bind ibo");
-        }
+        eRenderCommand bindIBOCommand = eRenderCommand::BindIBO;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(bindIBOCommand), "Can't write down bind ibo command to command buffer");
+        X_Call(commandBuffer.fWriteX<IndexBufferObjectHandle>(_ibHandle), "Can't write down ibo handle to command buffer");
 
         return A_A;
     }
@@ -177,32 +180,38 @@ namespace XD
     XD_GraphicsSystem::fDestroyIndexBufferX(IndexBufferObjectHandle _ibHandle)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
+        
+        eRenderCommand destroyIBOCommand = eRenderCommand::DestroyIBO;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(destroyIBOCommand), "Can't write down destroy ibo command to command buffer");
+        X_Call(commandBuffer.fWriteX<IndexBufferObjectHandle>(_ibHandle), "Can't write down ibo handle to command buffer");
 
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvDestroyIBOX(_ibHandle), "Can't destroy index buffer data");
-        }
+        //Handle will be deleted in render thread
 
-        X_Call(m_indexBufferHandleMap.fFreeHandleX(_ibHandle), "Can't free index buffer handle");
-        mLOG("Destroyed IBO with handle " << _ibHandle);
         return A_A;
     }
 
-    
     X
-    XD_GraphicsSystem::fCreateVertexBufferLayoutX(VertexBufferLayoutHandle& _resultHandle, const std::vector<eShaderDataType>& _elements)
+    XD_GraphicsSystem::fCreateVertexBufferLayoutX(VertexBufferLayoutHandle& _resultHandle, std::vector<eShaderDataType>& _elements)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
-
-        _resultHandle = m_layoutHandleMap.fCreateHandle();
-        mXD_ASSERT(m_layoutHandleMap.fIsValid(_resultHandle));
 
         {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvCreateVertexBufferLayoutX(_resultHandle, _elements), "Can't create vertex buffer layout");
+            XD_LockScope{m_resourcesMutex};
+
+            _resultHandle = m_layoutHandleMap.fCreateHandle();
+            mXD_ASSERT(m_layoutHandleMap.fIsValid(_resultHandle));
         }
+
+        eRenderCommand createLayoutCommand = eRenderCommand::CreateLayout;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        Memory elementsData{};
+        elementsData.m_byteSize = _elements.size() * sizeof(eShaderDataType);
+        elementsData.m_data = _elements.data();
+
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(createLayoutCommand), "Can't write down create layout command to command buffer");
+        X_Call(commandBuffer.fWriteX<VertexBufferLayoutHandle>(_resultHandle), "Can't write down layout handle to command buffer");
+        X_Call(commandBuffer.fWriteX<Memory>(elementsData), "Can't write down layout data to command buffer");
 
         mLOG("Created VB layout with handle " << _resultHandle);
         return A_A;
@@ -212,15 +221,12 @@ namespace XD
     XD_GraphicsSystem::fDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
+    
+        eRenderCommand destroyLayoutCommand = eRenderCommand::DestroyLayout;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(destroyLayoutCommand), "Can't write down destroy layout command to command buffer");
+        X_Call(commandBuffer.fWriteX<VertexBufferLayoutHandle>(_layoutHandle), "Can't write down  layout handle to command buffer");
 
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvDestroyVertexBufferLayoutX(_layoutHandle), "Can't destroy vertex buffer layout object");
-        }
-
-        X_Call(m_layoutHandleMap.fFreeHandleX(_layoutHandle), "Can't free vertex buffer layout handle");
-        mLOG("Destroyed VB layout with handle " << _layoutHandle);
         return A_A;
     }
 
@@ -228,15 +234,18 @@ namespace XD
     XD_GraphicsSystem::fCreateShaderX(ShaderHandle& _resultHandle, const std::string &_filePath)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
-
-        _resultHandle = m_shaderHandleMap.fCreateHandle();
-        mXD_ASSERT(m_shaderHandleMap.fIsValid(_resultHandle));
 
         {
             XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvCreateShaderX(_resultHandle, _filePath), "Can't create shader data");
+            _resultHandle = m_shaderHandleMap.fCreateHandle();
+            mXD_ASSERT(m_shaderHandleMap.fIsValid(_resultHandle));
         }
+
+        eRenderCommand createShaderCommand = eRenderCommand::CreateShader;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(createShaderCommand), "Can't write down create shader command to command buffer");
+        X_Call(commandBuffer.fWriteX<ShaderHandle>(_resultHandle), "Can't write down shader handle to command buffer");
+        X_Call(commandBuffer.fWriteX<std::string>(const_cast<std::string&>(_filePath)), "Can't write down shader file path to command buffer");
        
         mLOG("Created shader with handle " << _resultHandle);
         return A_A;
@@ -246,15 +255,12 @@ namespace XD
     XD_GraphicsSystem::fDestroyShaderX(ShaderHandle _shaderHandle)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
 
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvDestroyShaderX(_shaderHandle), "Can't destroy shader");
-        }
+        eRenderCommand destroyShaderCommand = eRenderCommand::DestroyShader;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(destroyShaderCommand), "Can't write down destroy Shader command to command buffer");
+        X_Call(commandBuffer.fWriteX<ShaderHandle>(_shaderHandle), "Can't write down Shader handle to command buffer");
 
-        X_Call(m_shaderHandleMap.fFreeHandleX(_shaderHandle), "Can't free shader handle");
-        mLOG("Destroyed shader with handle " << _shaderHandle);
         return A_A;
     }
 
@@ -262,15 +268,20 @@ namespace XD
     XD_GraphicsSystem::fCreateShaderProgramX(ShaderProgramHandle& _resultHandle, ShaderHandle _vsHandle, ShaderHandle _fsHandle)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
-
-        _resultHandle = m_shaderProgramHandleMap.fCreateHandle();
-        mXD_ASSERT(m_shaderProgramHandleMap.fIsValid(_resultHandle));
 
         {
             XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvCreateShaderProgramX(_resultHandle, _vsHandle, _fsHandle), "Can't create shader program data");
+
+            _resultHandle = m_shaderProgramHandleMap.fCreateHandle();
+            mXD_ASSERT(m_shaderProgramHandleMap.fIsValid(_resultHandle));
         }
+
+        eRenderCommand createShaderProgramCommand = eRenderCommand::CreateShaderProgram;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(createShaderProgramCommand), "Can't write down create shader program command to command buffer");
+        X_Call(commandBuffer.fWriteX<ShaderProgramHandle>(_resultHandle), "Can't write down shader program handle to command buffer");
+        X_Call(commandBuffer.fWriteX<ShaderHandle>(_vsHandle), "Can't write down vs shader handle to command buffer");
+        X_Call(commandBuffer.fWriteX<ShaderHandle>(_fsHandle), "Can't write down fs shader handle to command buffer");
 
         mLOG("Created shader program with handle " << _resultHandle);
         return A_A;
@@ -280,12 +291,12 @@ namespace XD
     XD_GraphicsSystem::fBindShaderProgramX(ShaderProgramHandle _programHandle)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
 
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvBindShaderProgram(_programHandle), "Can't bind shader program");
-        }
+        eRenderCommand bindProgramCommand = eRenderCommand::BindShaderProgram;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(bindProgramCommand), "Can't write down bind shader program command to command buffer");
+        X_Call(commandBuffer.fWriteX<ShaderProgramHandle>(_programHandle), "Can't write down shader program handle to command buffer");
+
         return A_A;
     }
 
@@ -293,15 +304,12 @@ namespace XD
     XD_GraphicsSystem::fDestroyShaderProgramX(ShaderProgramHandle _programHandle)
     {
         mXD_ASSERT(fIsMainThread());
-        mXD_NOT_IMPLEMENTED();
 
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvDestroyShaderProgramX(_programHandle), "Can't destroy shader program");
-        }
+        eRenderCommand destroyShaderProgramCommand = eRenderCommand::DestroyShaderProgram;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(destroyShaderProgramCommand), "Can't write down destroy shader program command to command buffer");
+        X_Call(commandBuffer.fWriteX<ShaderProgramHandle>(_programHandle), "Can't write down shader program handle to command buffer");
 
-        X_Call(m_shaderProgramHandleMap.fFreeHandleX(_programHandle), "Can't free shader program handle");
-        mLOG("Destroyed shader program with handle " << _programHandle);
         return A_A;
     }
 
@@ -327,21 +335,16 @@ namespace XD
     {
         mXD_ASSERT(fIsMainThread());
 
-        mXD_NOT_IMPLEMENTED();
-
-        return A_A;
-    }
-
-    X 
-    XD_GraphicsSystem::fBeginFrameX()
-    {
         XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
-        commandBuffer.fStartWrite_Internal();
+
+        eRenderCommand renderPrimitiveCommand = eRenderCommand::RenderPrimitive;
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(renderPrimitiveCommand), "Can't write render primitive command");
+
         return A_A;
     }
 
     X 
-    XD_GraphicsSystem::fEndFrameX()
+    XD_GraphicsSystem::fStageFrameX()
     {
         mXD_ASSERT(fIsMainThread());
 
@@ -349,10 +352,12 @@ namespace XD
         commandBuffer.fFinishWrite_Internal();
 
         while(!m_readyForSwapFrames) {};
-
         X_Call(fSwapFramesX(), "Error while swapping constructing and render frames");
         m_readyForSwapFrames = false;
 
+        XD_CommandBuffer& newCommandBuffer = m_constructingFrame->fGetCommandBuffer();
+        newCommandBuffer.fReset();
+        
         return A_A;
     }
 
@@ -372,15 +377,6 @@ namespace XD
         mXD_ASSERT(!fIsMainThread());
 
         X_Call(m_renderer->fvBeginFrameX(), "Error while begin frame in renderer");
-        return A_A;
-    }
-
-    X
-    XD_GraphicsSystem::fRenderX_RenderThread()
-    {
-        mXD_ASSERT(!fIsMainThread());
-
-        X_Call(m_renderer->fvRenderX(), "Can't render primitive");
         return A_A;
     }
 
@@ -432,6 +428,8 @@ namespace XD
             {
             case eRenderCommand::SetClearColor:
             {
+                mLOG("SetClearColor command started");
+
                 XD_Color newClearColor{};
                 X_Call(renderCommands.fReadX<XD_Color>(newClearColor), "Can't read new clear color struct");
                 X_Call(m_renderer->fvSetClearColorX(newClearColor), "Can't set new clear color to renderer");
@@ -439,6 +437,8 @@ namespace XD
                 break;
             case eRenderCommand::CreateVBO:
             {
+                mLOG("CreateVBO command started");
+
                 VertexBufferObjectHandle vboHandle{};
                 Memory data{};
                 VertexBufferLayoutHandle layoutHandle{};
@@ -451,6 +451,8 @@ namespace XD
                 break;
             case eRenderCommand::BindVBO:
             {
+                mLOG("BindVBO command started");
+
                 VertexBufferObjectHandle vboHandle{};
 
                 X_Call(renderCommands.fReadX<VertexBufferObjectHandle>(vboHandle), "Can't read vbo handle while binding vbo");
@@ -459,6 +461,8 @@ namespace XD
                 break;
             case eRenderCommand::DestroyVBO:
             {
+                mLOG("DestroyVBO command started");
+
                 VertexBufferObjectHandle vboHandle{};
 
                 X_Call(renderCommands.fReadX<VertexBufferObjectHandle>(vboHandle), "Can't read vbo handle while destroying vbo");
@@ -466,10 +470,154 @@ namespace XD
 
                 {
                     XD_LockScope{m_resourcesMutex};
-
                     X_Call(m_vertexBufferHandleMap.fFreeHandleX(vboHandle), "Can't free vertex buffer handle");
-                    mLOG("Destroyed VBO with handle " << vboHandle);
                 }
+
+                mLOG("Destroyed VBO with handle " << vboHandle);
+            }
+                break;
+            case eRenderCommand::CreateIBO:
+            {
+                mLOG("CreateIBO command started");
+
+                IndexBufferObjectHandle iboHandle{};
+                Memory data{};
+
+                X_Call(renderCommands.fReadX<IndexBufferObjectHandle>(iboHandle), "Can't read ibo handle while creating ibo");
+                X_Call(renderCommands.fReadX<Memory>(data), "Can't read ibo data while creating ibo");
+                X_Call(m_renderer->fvCreateIBOX(iboHandle, &data), "Can't create index buffer");
+
+            }
+                break;
+            case eRenderCommand::BindIBO:
+            {
+                mLOG("BindIBO command started");
+
+                IndexBufferObjectHandle iboHandle{};
+
+                X_Call(renderCommands.fReadX<IndexBufferObjectHandle>(iboHandle), "Can't read ibo handle while binding ibo");
+                X_Call(m_renderer->fvBindIBOX(iboHandle), "Can't bind ibo");
+            }
+                break;
+            case eRenderCommand::DestroyIBO:
+            {
+                mLOG("DestroyIBO command started");
+
+                IndexBufferObjectHandle iboHandle{};
+
+                X_Call(renderCommands.fReadX<IndexBufferObjectHandle>(iboHandle), "Can't read ibo handle while destroying ibo");
+                X_Call(m_renderer->fvDestroyIBOX(iboHandle), "Can't destroy index buffer data");
+
+                {
+                    XD_LockScope resScope{ m_resourcesMutex };
+                    X_Call(m_indexBufferHandleMap.fFreeHandleX(iboHandle), "Can't free index buffer handle");
+                }
+
+                mLOG("Destroyed IBO with handle " << iboHandle);
+            }
+                break;
+            case eRenderCommand::CreateLayout:
+            {
+                mLOG("CreateLayout command started");
+
+                VertexBufferLayoutHandle layoutHandle{};
+                Memory data{};
+
+                X_Call(renderCommands.fReadX<VertexBufferLayoutHandle>(layoutHandle), "Can't read layout handle while creating layout");
+                X_Call(renderCommands.fReadX<Memory>(data), "Can't read layout data while creating layout");
+                X_Call(m_renderer->fvCreateVertexBufferLayoutX(layoutHandle, &data), "Can't create vertex buffer layout");
+            }
+                break;
+            case eRenderCommand::DestroyLayout:
+            {
+                mLOG("DestroyLayout command started");
+
+                VertexBufferLayoutHandle layoutHandle{};
+
+                X_Call(renderCommands.fReadX<VertexBufferLayoutHandle>(layoutHandle), "Can't read layout handle while destroying layout");
+                X_Call(m_renderer->fvDestroyVertexBufferLayoutX(layoutHandle), "Can't destroy vertex buffer layout object");
+
+                {
+                    XD_LockScope resScope{ m_resourcesMutex };
+                    X_Call(m_layoutHandleMap.fFreeHandleX(layoutHandle), "Can't free vertex buffer layout handle");
+                }
+
+                mLOG("Destroyed VB layout with handle " << layoutHandle);
+            }
+                break;
+            case eRenderCommand::CreateShader:
+            {
+                mLOG("CreateShader command started");
+
+                ShaderHandle shaderHandle{};
+                std::string filePath{};
+
+                X_Call(renderCommands.fReadX<ShaderHandle>(shaderHandle), "Can't read shader handle while creating shader");
+                X_Call(renderCommands.fReadX<std::string>(filePath), "Can't read shader file path while creating shader");
+                X_Call(m_renderer->fvCreateShaderX(shaderHandle, filePath), "Can't create shader data");
+            }
+                break;
+            case eRenderCommand::DestroyShader:
+            {
+                mLOG("DestroyShader command started");
+
+                ShaderHandle shaderHandle{};
+
+                X_Call(renderCommands.fReadX<ShaderHandle>(shaderHandle), "Can't read shader handle while destroying shader");
+                X_Call(m_renderer->fvDestroyShaderX(shaderHandle), "Can't destroy shader");
+
+                {
+                    XD_LockScope resScope{ m_resourcesMutex };
+                    X_Call(m_shaderHandleMap.fFreeHandleX(shaderHandle), "Can't free shader handle");
+                }
+
+                mLOG("Destroyed shader with handle " << shaderHandle);
+            }
+                break;
+            case eRenderCommand::CreateShaderProgram:
+            {
+                mLOG("CreateShaderProgram command started");
+
+                ShaderProgramHandle programHandle{};
+                ShaderHandle vsShaderHandle{};
+                ShaderHandle fsShaderHandle{};
+
+                X_Call(renderCommands.fReadX<ShaderProgramHandle>(programHandle), "Can't read shader program handle while creating shader program");
+                X_Call(renderCommands.fReadX<ShaderHandle>(vsShaderHandle), "Can't read vs shader handle while creating shader program");
+                X_Call(renderCommands.fReadX<ShaderHandle>(fsShaderHandle), "Can't read fs shader handle while creating shader program");
+                X_Call(m_renderer->fvCreateShaderProgramX(programHandle, vsShaderHandle, fsShaderHandle), "Can't create shader program data");
+            }
+                break;
+            case eRenderCommand::BindShaderProgram:
+            {
+                mLOG("BindShaderProgram command started");
+
+                ShaderProgramHandle programHandle{};
+
+                X_Call(renderCommands.fReadX<ShaderProgramHandle>(programHandle), "Can't read shader program handle while binding shader program");
+                X_Call(m_renderer->fvBindShaderProgram(programHandle), "Can't bind shader program");
+            }
+                break;
+            case eRenderCommand::DestroyShaderProgram:
+            {
+                mLOG("DestroyShaderProgram command started");
+
+                ShaderProgramHandle programHandle{};
+                X_Call(renderCommands.fReadX<ShaderProgramHandle>(programHandle), "Can't read shader program handle while destroying shader program");
+                X_Call(m_renderer->fvDestroyShaderProgramX(programHandle), "Can't destroy shader program");
+
+                {
+                    XD_LockScope resScope{ m_resourcesMutex };
+                    X_Call(m_shaderProgramHandleMap.fFreeHandleX(programHandle), "Can't free shader program handle");
+                }       
+
+                mLOG("Destroyed shader program with handle " << programHandle);
+            }
+                break;
+            case eRenderCommand::RenderPrimitive:
+            {
+                mLOG("Render command started");
+                X_Call(m_renderer->fvRenderX(), "Error while rendering primitive");
             }
                 break;
             default:
@@ -523,7 +671,6 @@ namespace XD
         if(!m_renderer->fvIsInitialized())
         {
             fTryExecuteInitializeCommandX_RenderThread().fCheck();
-            return eRenderThreadState::NotInitialized;
         }
 
         //RenderFrame

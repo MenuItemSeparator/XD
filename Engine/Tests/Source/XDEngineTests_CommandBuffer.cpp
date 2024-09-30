@@ -19,7 +19,7 @@ namespace XD
         TestStruct dataStruct{3,5,"World"};
 
         XD_CommandBuffer commandBuffer{};
-        commandBuffer.fStartWrite_Internal();
+        commandBuffer.fReset();
         X_Call(commandBuffer.fWriteX<int>(dataInt), "Can't write int to command buffer in tests");
         X_Call(commandBuffer.fWriteX<TestStruct>(dataStruct), "Can't write struct to command buffer in tests");
         commandBuffer.fFinishWrite_Internal();

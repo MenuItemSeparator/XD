@@ -86,6 +86,7 @@ namespace XD
 
         OpenGLCheck(gGLGenBuffersProc(1, &m_id), "Can't gen vb buffer");
         mXD_ASSERT(m_id);
+        mLOG("Generated vbo with id " << m_id);
         OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, m_id), "Can't bind vb buffer");
         OpenGLCheck(gGLBufferDataProc(GL_ARRAY_BUFFER, m_size, _data->m_data, _data->m_data ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW), "Error when buffer data to vb");
         OpenGLCheck(gGLBindBufferProc(GL_ARRAY_BUFFER, 0), "Can't unbind vb buffer");
@@ -184,6 +185,7 @@ namespace XD
 
         OpenGLCheck(gGLGenVertexArraysProc(1, &m_id), "Can't gen vao");
         mXD_ASSERT(m_id);
+        mLOG("Generated vao with id " << m_id);
 
         X_Call(m_vbo.fCreateX(_data), "Can't create vbo while creating vao");
 
@@ -635,9 +637,11 @@ namespace XD
     }
 
     X 
-    XD_OpenGLRenderer::fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, const std::vector<eShaderDataType>& _elements)
+    XD_OpenGLRenderer::fvCreateVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle, Memory* _elements)
     {
-        X_Call(m_layouts[_layoutHandle].fCreateX(_elements), "Renderer can't create layout buffer");
+        eShaderDataType* dataPtr = reinterpret_cast<eShaderDataType*>(_elements->m_data);
+        u8 elementsNum = _elements->m_byteSize / sizeof(eShaderDataType);
+        X_Call(m_layouts[_layoutHandle].fCreateX(dataPtr, elementsNum), "Renderer can't create layout buffer");
         return A_A;
     }
 

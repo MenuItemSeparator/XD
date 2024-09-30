@@ -45,7 +45,7 @@ namespace XD
     {
     public:
         XD_BufferLayout() = default;
-        X fCreateX(const std::vector<eShaderDataType>& _elements);
+        X fCreateX(const eShaderDataType* _elementsPtr, u8 _elementsNum);
         X fDestroyX();
 
         tLayoutIter fBegin() const { return m_elements.cbegin(); }
