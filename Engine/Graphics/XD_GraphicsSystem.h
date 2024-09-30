@@ -62,13 +62,6 @@ namespace XD
         X fEndFrameX();
 
     private:
-        // Game thread
-        tVertexBufferObjectHandleMap m_vertexBufferHandleMap;
-        tIndexBufferHandleMap m_indexBufferHandleMap;
-        tVertexBufferLayoutHandleMap m_layoutHandleMap;
-        tShaderHandleMap m_shaderHandleMap;
-        tShaderProgramHandleMap m_shaderProgramHandleMap;
-
         XD_RenderFrame m_frames[2];
         XD_RenderFrame* m_constructingFrame;
         XD_RenderFrame* m_renderingFrame;
@@ -79,6 +72,11 @@ namespace XD
         XD_Mutex m_resourcesMutex;
         //Shared resources
         XD_GraphicsConfig m_config;
+        tVertexBufferObjectHandleMap m_vertexBufferHandleMap;
+        tIndexBufferHandleMap m_indexBufferHandleMap;
+        tVertexBufferLayoutHandleMap m_layoutHandleMap;
+        tShaderHandleMap m_shaderHandleMap;
+        tShaderProgramHandleMap m_shaderProgramHandleMap;
         //Shared resources END
 
         std::atomic_bool m_readyForSwapFrames;
@@ -93,7 +91,8 @@ namespace XD
         X fBeginFrameX_RenderThread();
         X fRenderX_RenderThread();
         X fEndFrameX_RenderThread();
-        X fExecuteCommandsX_RenderThread();
+        X fTryExecuteInitializeCommandX_RenderThread();
+        X fExecuteCommonCommandsX_RenderThread();
     };
 
 }

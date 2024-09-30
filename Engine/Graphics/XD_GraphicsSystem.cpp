@@ -9,11 +9,6 @@ namespace XD
     }
 
     XD_GraphicsSystem::XD_GraphicsSystem() :
-        m_vertexBufferHandleMap(),
-        m_indexBufferHandleMap(),
-        m_layoutHandleMap(),
-        m_shaderHandleMap(),
-        m_shaderProgramHandleMap(),
         m_frames(),
         m_constructingFrame(&m_frames[0]),
         m_renderingFrame(&m_frames[1]),
@@ -21,6 +16,11 @@ namespace XD
         m_renderThread(),
         m_resourcesMutex(),
         m_config(),
+        m_vertexBufferHandleMap(),
+        m_indexBufferHandleMap(),
+        m_layoutHandleMap(),
+        m_shaderHandleMap(),
+        m_shaderProgramHandleMap(),
         m_readyForSwapFrames(true),
         m_renderThreadIsStopped(false),
         m_graphicsSystemIsShutdown(false)
@@ -95,13 +95,19 @@ namespace XD
     {
         mXD_ASSERT(fIsMainThread());
 
-        _resultHandle = m_vertexBufferHandleMap.fCreateHandle();
-        mXD_ASSERT(m_vertexBufferHandleMap.fIsValid(_resultHandle));
-
         {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvCreateVBOX(_resultHandle, _data, _layout), "Can't create vertex buffer");
+            XD_LockScope{m_resourcesMutex};
+
+            _resultHandle = m_vertexBufferHandleMap.fCreateHandle();
+            mXD_ASSERT(m_vertexBufferHandleMap.fIsValid(_resultHandle));
         }
+
+        eRenderCommand createVBOCommand = eRenderCommand::CreateVBO;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(createVBOCommand), "Can't write down create vbo command to command buffer");
+        X_Call(commandBuffer.fWriteX<VertexBufferObjectHandle>(_resultHandle), "Can't write down vbo handle to command buffer");
+        X_Call(commandBuffer.fWriteX<Memory>(*_data), "Can't write down vbo data to command buffer");
+        X_Call(commandBuffer.fWriteX<VertexBufferLayoutHandle>(_layout), "Can't write down layout to command buffer");
 
         mLOG("Created VBO with handle " << _resultHandle);
         return A_A;
@@ -112,10 +118,10 @@ namespace XD
     {
         mXD_ASSERT(fIsMainThread());
 
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvBindVBOX(_vbHandle), "Can't bind vbo");
-        }
+        eRenderCommand bindVBOCommand = eRenderCommand::BindVBO;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(bindVBOCommand), "Can't write down bind vbo command to command buffer");
+        X_Call(commandBuffer.fWriteX<VertexBufferObjectHandle>(_vbHandle), "Can't write down vbo handle to command buffer");
 
         return A_A;
     }
@@ -125,13 +131,13 @@ namespace XD
     {
         mXD_ASSERT(fIsMainThread());
 
-        {
-            XD_LockScope resScope{ m_resourcesMutex };
-            X_Call(m_renderer->fvDestroyVBOX(_vbHandle), "Can't destroy vertex buffer data");
-        }
+        eRenderCommand destroyVBOCommand = eRenderCommand::BindVBO;
+        XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
+        X_Call(commandBuffer.fWriteX<eRenderCommand>(destroyVBOCommand), "Can't write down destroy vbo command to command buffer");
+        X_Call(commandBuffer.fWriteX<VertexBufferObjectHandle>(_vbHandle), "Can't write down vbo handle to command buffer");
 
-        X_Call(m_vertexBufferHandleMap.fFreeHandleX(_vbHandle), "Can't free vertex buffer handle");
-        mLOG("Destroyed VBO with handle " << _vbHandle);
+        //Handle will be deleted in render thread
+
         return A_A;
     }
 
@@ -139,6 +145,7 @@ namespace XD
     XD_GraphicsSystem::fCreateIndexBufferX(IndexBufferObjectHandle& _handle, Memory* _data)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         _handle = m_indexBufferHandleMap.fCreateHandle();
         mXD_ASSERT(m_indexBufferHandleMap.fIsValid(_handle));
@@ -156,6 +163,7 @@ namespace XD
     XD_GraphicsSystem::fBindIndexBufferObjectX(IndexBufferObjectHandle _ibHandle)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         {
             XD_LockScope resScope{ m_resourcesMutex };
@@ -169,6 +177,7 @@ namespace XD
     XD_GraphicsSystem::fDestroyIndexBufferX(IndexBufferObjectHandle _ibHandle)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         {
             XD_LockScope resScope{ m_resourcesMutex };
@@ -185,6 +194,7 @@ namespace XD
     XD_GraphicsSystem::fCreateVertexBufferLayoutX(VertexBufferLayoutHandle& _resultHandle, const std::vector<eShaderDataType>& _elements)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         _resultHandle = m_layoutHandleMap.fCreateHandle();
         mXD_ASSERT(m_layoutHandleMap.fIsValid(_resultHandle));
@@ -202,6 +212,7 @@ namespace XD
     XD_GraphicsSystem::fDestroyVertexBufferLayoutX(VertexBufferLayoutHandle _layoutHandle)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         {
             XD_LockScope resScope{ m_resourcesMutex };
@@ -217,6 +228,7 @@ namespace XD
     XD_GraphicsSystem::fCreateShaderX(ShaderHandle& _resultHandle, const std::string &_filePath)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         _resultHandle = m_shaderHandleMap.fCreateHandle();
         mXD_ASSERT(m_shaderHandleMap.fIsValid(_resultHandle));
@@ -234,6 +246,7 @@ namespace XD
     XD_GraphicsSystem::fDestroyShaderX(ShaderHandle _shaderHandle)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         {
             XD_LockScope resScope{ m_resourcesMutex };
@@ -249,6 +262,7 @@ namespace XD
     XD_GraphicsSystem::fCreateShaderProgramX(ShaderProgramHandle& _resultHandle, ShaderHandle _vsHandle, ShaderHandle _fsHandle)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         _resultHandle = m_shaderProgramHandleMap.fCreateHandle();
         mXD_ASSERT(m_shaderProgramHandleMap.fIsValid(_resultHandle));
@@ -266,6 +280,7 @@ namespace XD
     XD_GraphicsSystem::fBindShaderProgramX(ShaderProgramHandle _programHandle)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         {
             XD_LockScope resScope{ m_resourcesMutex };
@@ -278,6 +293,7 @@ namespace XD
     XD_GraphicsSystem::fDestroyShaderProgramX(ShaderProgramHandle _programHandle)
     {
         mXD_ASSERT(fIsMainThread());
+        mXD_NOT_IMPLEMENTED();
 
         {
             XD_LockScope resScope{ m_resourcesMutex };
@@ -378,14 +394,35 @@ namespace XD
     }
 
     X 
-    XD_GraphicsSystem::fExecuteCommandsX_RenderThread()
+    XD_GraphicsSystem::fTryExecuteInitializeCommandX_RenderThread()
     {
         mXD_ASSERT(!fIsMainThread());
 
         eRenderCommand command = eRenderCommand::End;
         XD_CommandBuffer& renderCommands = m_renderingFrame->fGetCommandBuffer();
 
-        if(renderCommands.fGetSize() == 0) return A_A;
+        if(renderCommands.fGetSize() == 0) return X_X;
+
+        X_Call(renderCommands.fReadX<eRenderCommand>(command), "Can't read next render command");
+        if(command == eRenderCommand::RendererCreate)
+        {
+            XD_LockScope{m_resourcesMutex};
+            X_Call(m_renderer->fvInitializeX(m_config.m_hwnd), "Can't initialize target renderer");
+        }
+        
+        return A_A;
+    }
+
+
+    X 
+    XD_GraphicsSystem::fExecuteCommonCommandsX_RenderThread()
+    {
+        mXD_ASSERT(!fIsMainThread());
+
+        eRenderCommand command = eRenderCommand::End;
+        XD_CommandBuffer& renderCommands = m_renderingFrame->fGetCommandBuffer();
+
+        if(renderCommands.fGetSize() == 0) return X_X;
         
         do
         {
@@ -393,17 +430,46 @@ namespace XD
 
             switch (command)
             {
-            case eRenderCommand::RendererCreate:
-            {
-                XD_LockScope{m_resourcesMutex};
-                X_Call(m_renderer->fvInitializeX(m_config.m_hwnd), "Can't initialize target renderer");
-            }
-                break;
             case eRenderCommand::SetClearColor:
             {
                 XD_Color newClearColor{};
                 X_Call(renderCommands.fReadX<XD_Color>(newClearColor), "Can't read new clear color struct");
                 X_Call(m_renderer->fvSetClearColorX(newClearColor), "Can't set new clear color to renderer");
+            }
+                break;
+            case eRenderCommand::CreateVBO:
+            {
+                VertexBufferObjectHandle vboHandle{};
+                Memory data{};
+                VertexBufferLayoutHandle layoutHandle{};
+
+                X_Call(renderCommands.fReadX<VertexBufferObjectHandle>(vboHandle), "Can't read vbo handle while creating vbo");
+                X_Call(renderCommands.fReadX<Memory>(data), "Can't read vbo data while creating vbo");
+                X_Call(renderCommands.fReadX<VertexBufferLayoutHandle>(layoutHandle), "Can't read layout handle while creating vbo");
+                X_Call(m_renderer->fvCreateVBOX(vboHandle, &data, layoutHandle), "Can't create vertex buffer");
+            }
+                break;
+            case eRenderCommand::BindVBO:
+            {
+                VertexBufferObjectHandle vboHandle{};
+
+                X_Call(renderCommands.fReadX<VertexBufferObjectHandle>(vboHandle), "Can't read vbo handle while binding vbo");
+                X_Call(m_renderer->fvBindVBOX(vboHandle), "Can't bind vbo");
+            }
+                break;
+            case eRenderCommand::DestroyVBO:
+            {
+                VertexBufferObjectHandle vboHandle{};
+
+                X_Call(renderCommands.fReadX<VertexBufferObjectHandle>(vboHandle), "Can't read vbo handle while destroying vbo");
+                X_Call(m_renderer->fvDestroyVBOX(vboHandle), "Can't destroy vertex buffer data");
+
+                {
+                    XD_LockScope{m_resourcesMutex};
+
+                    X_Call(m_vertexBufferHandleMap.fFreeHandleX(vboHandle), "Can't free vertex buffer handle");
+                    mLOG("Destroyed VBO with handle " << vboHandle);
+                }
             }
                 break;
             default:
@@ -413,8 +479,6 @@ namespace XD
 
         } while (command != eRenderCommand::End);
         
-        renderCommands.fFinishRead();
-
         return A_A;
     }
 
@@ -456,17 +520,19 @@ namespace XD
     {
         mXD_ASSERT(!fIsMainThread());
 
-        //ExecuteCommands
-        fExecuteCommandsX_RenderThread().fCheck();
-
         if(!m_renderer->fvIsInitialized())
         {
+            fTryExecuteInitializeCommandX_RenderThread().fCheck();
             return eRenderThreadState::NotInitialized;
         }
 
         //RenderFrame
 
         fBeginFrameX_RenderThread().fCheck();
+        
+        //ExecuteCommands
+        fExecuteCommonCommandsX_RenderThread().fCheck();
+
         fEndFrameX_RenderThread().fCheck();
 
         return eRenderThreadState::Render;

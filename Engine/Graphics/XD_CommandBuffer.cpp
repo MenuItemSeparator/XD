@@ -44,12 +44,6 @@ namespace XD
         return A_A;
     }
 
-    void XD_CommandBuffer::fFinishRead()
-    {
-        m_pos = 0;
-        m_size = 0;
-    }
-
     X 
     XD_CommandBuffer::fWriteX(ubyte* _data, uint32_t _size)
     {

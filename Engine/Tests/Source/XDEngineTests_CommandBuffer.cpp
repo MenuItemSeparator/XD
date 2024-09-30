@@ -30,7 +30,6 @@ namespace XD
         X_Call(commandBuffer.fReadX<int>(checkInt), "Can't read int from command buffer in tests");
         mXD_ASSERT(checkInt == dataInt);
         X_Call(commandBuffer.fReadX<TestStruct>(checkStruct), "Can't read struct from command buffer in tests");
-        commandBuffer.fFinishRead();
         mXD_ASSERT(checkStruct.X == dataStruct.X);
         mXD_ASSERT(checkStruct.Y == dataStruct.Y);
         mXD_ASSERT(checkStruct.Z == dataStruct.Z);
