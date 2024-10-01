@@ -558,6 +558,11 @@ namespace XD
         ReleaseDC(dummyHwnd, dummyDC);
         DeleteDC(dummyDC);
         DestroyWindow(dummyHwnd);
+        if(!UnregisterClass("Dummy_WGL", hInstance))
+        {
+            mLOG("Can't unregister dummy window class in opengl renderer");
+            return X_X;
+        }
         return A_A;
     }
 

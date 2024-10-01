@@ -61,7 +61,7 @@ echo "===================================="
 echo "===|      Started XD tests      |==="
 echo "===================================="
 
-ctest --test-dir ./Engine/Tests/.
+ctest --test-dir ./Engine/Tests/. --extra-verbose
 
 echo "===================================="
 echo "===| Started build installation |==="

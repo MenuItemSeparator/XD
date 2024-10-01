@@ -87,6 +87,14 @@ namespace XD
         DestroyWindow(m_hwnd);
         m_hwnd = NULL;
 
+        HMODULE hInstance = GetModuleHandle(NULL);
+
+        if(!UnregisterClass(m_config.m_windowName.c_str(), hInstance))
+        {
+            mLOG("Can't unregister window class");
+            return X_X;
+        }
+
         return X::fSuccess();
     }
 

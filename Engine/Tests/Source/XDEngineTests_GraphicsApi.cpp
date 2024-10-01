@@ -5,8 +5,6 @@
 
 namespace XD
 {
-    XD::XD_ApplicationConfig applicationConfig{};
-
     class SetClearColorApplication : public XD_Application
     {
     public:
@@ -46,6 +44,7 @@ namespace XD
     X
     Test_SetClearColor()
     {
+        XD::XD_ApplicationConfig applicationConfig{};
         tUptr<SetClearColorApplication> application = std::make_unique<SetClearColorApplication>(applicationConfig);
         X_Call(application->fvInitializeX(), "Set clear color test application initialization error");
         X_Call(application->fLoopX(), "Application loop error");
@@ -93,6 +92,7 @@ namespace XD
             XD::ShaderHandle vsHandle;
             static std::string vsFilePath = cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestVS.vs";
             X_Call(fGetGraphicsSystem()->fCreateShaderX(vsHandle, vsFilePath), "Can't create vertex shader");
+
             XD::ShaderHandle fsHandle;
             static std::string fsFilePath = cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestFS.fs";
             X_Call(fGetGraphicsSystem()->fCreateShaderX(fsHandle, fsFilePath), "Can't create fragment shader");
@@ -126,6 +126,8 @@ namespace XD
     X
     Test_DrawQuad()
     {
+        XD::XD_ApplicationConfig applicationConfig{};
+        applicationConfig.m_displayName = "Draw quad";
         tUptr<DrawQuadApplication> application = std::make_unique<DrawQuadApplication>(applicationConfig);
         X_Call(application->fvInitializeX(), "Draw quad test application initialization error");
         X_Call(application->fLoopX(), "Application loop error");
@@ -137,7 +139,7 @@ namespace XD
 int
 main(int argc, const char** argv)
 {
-    X_Call(XD::Test_DrawQuad(), "Drawing test quad was failed");
     X_Call(XD::Test_SetClearColor(), "Change clear color test was failed");
+    X_Call(XD::Test_DrawQuad(), "Drawing test quad was failed");
     return 0;
 }

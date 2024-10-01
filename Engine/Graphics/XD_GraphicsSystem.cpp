@@ -428,8 +428,6 @@ namespace XD
             {
             case eRenderCommand::SetClearColor:
             {
-                mLOG("SetClearColor command started");
-
                 XD_Color newClearColor{};
                 X_Call(renderCommands.fReadX<XD_Color>(newClearColor), "Can't read new clear color struct");
                 X_Call(m_renderer->fvSetClearColorX(newClearColor), "Can't set new clear color to renderer");
@@ -437,8 +435,6 @@ namespace XD
                 break;
             case eRenderCommand::CreateVBO:
             {
-                mLOG("CreateVBO command started");
-
                 VertexBufferObjectHandle vboHandle{};
                 Memory data{};
                 VertexBufferLayoutHandle layoutHandle{};
@@ -451,8 +447,6 @@ namespace XD
                 break;
             case eRenderCommand::BindVBO:
             {
-                mLOG("BindVBO command started");
-
                 VertexBufferObjectHandle vboHandle{};
 
                 X_Call(renderCommands.fReadX<VertexBufferObjectHandle>(vboHandle), "Can't read vbo handle while binding vbo");
@@ -461,8 +455,6 @@ namespace XD
                 break;
             case eRenderCommand::DestroyVBO:
             {
-                mLOG("DestroyVBO command started");
-
                 VertexBufferObjectHandle vboHandle{};
 
                 X_Call(renderCommands.fReadX<VertexBufferObjectHandle>(vboHandle), "Can't read vbo handle while destroying vbo");
@@ -478,8 +470,6 @@ namespace XD
                 break;
             case eRenderCommand::CreateIBO:
             {
-                mLOG("CreateIBO command started");
-
                 IndexBufferObjectHandle iboHandle{};
                 Memory data{};
 
@@ -491,8 +481,6 @@ namespace XD
                 break;
             case eRenderCommand::BindIBO:
             {
-                mLOG("BindIBO command started");
-
                 IndexBufferObjectHandle iboHandle{};
 
                 X_Call(renderCommands.fReadX<IndexBufferObjectHandle>(iboHandle), "Can't read ibo handle while binding ibo");
@@ -501,8 +489,6 @@ namespace XD
                 break;
             case eRenderCommand::DestroyIBO:
             {
-                mLOG("DestroyIBO command started");
-
                 IndexBufferObjectHandle iboHandle{};
 
                 X_Call(renderCommands.fReadX<IndexBufferObjectHandle>(iboHandle), "Can't read ibo handle while destroying ibo");
@@ -518,8 +504,6 @@ namespace XD
                 break;
             case eRenderCommand::CreateLayout:
             {
-                mLOG("CreateLayout command started");
-
                 VertexBufferLayoutHandle layoutHandle{};
                 Memory data{};
 
@@ -530,8 +514,6 @@ namespace XD
                 break;
             case eRenderCommand::DestroyLayout:
             {
-                mLOG("DestroyLayout command started");
-
                 VertexBufferLayoutHandle layoutHandle{};
 
                 X_Call(renderCommands.fReadX<VertexBufferLayoutHandle>(layoutHandle), "Can't read layout handle while destroying layout");
@@ -547,8 +529,6 @@ namespace XD
                 break;
             case eRenderCommand::CreateShader:
             {
-                mLOG("CreateShader command started");
-
                 ShaderHandle shaderHandle{};
                 std::string filePath{};
 
@@ -559,8 +539,6 @@ namespace XD
                 break;
             case eRenderCommand::DestroyShader:
             {
-                mLOG("DestroyShader command started");
-
                 ShaderHandle shaderHandle{};
 
                 X_Call(renderCommands.fReadX<ShaderHandle>(shaderHandle), "Can't read shader handle while destroying shader");
@@ -576,8 +554,6 @@ namespace XD
                 break;
             case eRenderCommand::CreateShaderProgram:
             {
-                mLOG("CreateShaderProgram command started");
-
                 ShaderProgramHandle programHandle{};
                 ShaderHandle vsShaderHandle{};
                 ShaderHandle fsShaderHandle{};
@@ -590,8 +566,6 @@ namespace XD
                 break;
             case eRenderCommand::BindShaderProgram:
             {
-                mLOG("BindShaderProgram command started");
-
                 ShaderProgramHandle programHandle{};
 
                 X_Call(renderCommands.fReadX<ShaderProgramHandle>(programHandle), "Can't read shader program handle while binding shader program");
@@ -600,8 +574,6 @@ namespace XD
                 break;
             case eRenderCommand::DestroyShaderProgram:
             {
-                mLOG("DestroyShaderProgram command started");
-
                 ShaderProgramHandle programHandle{};
                 X_Call(renderCommands.fReadX<ShaderProgramHandle>(programHandle), "Can't read shader program handle while destroying shader program");
                 X_Call(m_renderer->fvDestroyShaderProgramX(programHandle), "Can't destroy shader program");
@@ -616,7 +588,6 @@ namespace XD
                 break;
             case eRenderCommand::RenderPrimitive:
             {
-                mLOG("Render command started");
                 X_Call(m_renderer->fvRenderX(), "Error while rendering primitive");
             }
                 break;
