@@ -7,9 +7,12 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <utility>
+#include <memory>
 #include <chrono>
 #include <thread>
 #include <mutex>
+#include <functional>
 #include <condition_variable>
 
 //XDEngine

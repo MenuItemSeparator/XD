@@ -1,4 +1,5 @@
 #include "XD_Application.h"
+#include "Common/Allocator/XD_MallocWrapper.h"
 
 namespace XD
 {
@@ -16,12 +17,18 @@ namespace XD
         m_requestedTermination(false)
     {}
 
+    XD_Application::~XD_Application()
+    {
+    }
+
     X
     XD_Application::fvInitializeX()
     {
+        gGlobalAllocator = new XD_MallocWrapper();
+
         XD_WindowConfig windowConfig{};
         windowConfig.m_windowName = m_config.m_displayName;
-        m_window = std::make_shared<XD_Window>(windowConfig);
+        m_window = fAlloc<XD_Window>(gGlobalAllocator, windowConfig);
         X_Call(m_window->fvInitializeX(), "Can't initialize window");
         m_window->fOnWindowWantsToClose().fBind(*this, &XD_Application::fTerminateWindowX);
 
@@ -30,41 +37,6 @@ namespace XD
         graphicsConfig.m_hwnd = m_window->fvGetWindowRawPtr();
 
         X_Call(m_graphicsSystem.fInitializeX(graphicsConfig), "Failed when initializing graphics system");
-
-        if(false)
-        {
-            XD::VertexBufferLayoutHandle layoutHandle;
-            static std::vector<XD::eShaderDataType> shaderTypes{ XD::eShaderDataType::Float3 };
-            X_Call(fGetGraphicsSystem()->fCreateVertexBufferLayoutX(layoutHandle, shaderTypes), "Can't create vb layout");
-
-            static float vboRawData[] = {
-                0.5f,  0.5f, 0.0f,  // top right
-                0.5f, -0.5f, 0.0f,  // bottom right
-                -0.5f, -0.5f, 0.0f,  // bottom left
-                -0.5f,  0.5f, 0.0f   // top left 
-            };
-            static XD::Memory vboMem{vboRawData, sizeof(vboRawData)};
-            X_Call(fGetGraphicsSystem()->fCreateVertexBufferObjectX(m_vboHandle, &vboMem, layoutHandle), "Can't create vbo");
-
-            static int iboRawData[] = {
-                0, 1, 3,   // first triangle
-                1, 2, 3 
-            };
-            static XD::Memory iboMem{iboRawData, sizeof(iboRawData)};
-            X_Call(fGetGraphicsSystem()->fCreateIndexBufferX(m_iboHandle, &iboMem), "Can't create ibo");
-
-            XD::ShaderHandle vsHandle;
-            static std::string vsFilePath = cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestVS.vs";
-            X_Call(fGetGraphicsSystem()->fCreateShaderX(vsHandle, vsFilePath), "Can't create vertex shader");
-            XD::ShaderHandle fsHandle;
-            static std::string fsFilePath = cXD_ENGINE_RESOURCE_FOLDER_PATH + "TestFS.fs";
-            X_Call(fGetGraphicsSystem()->fCreateShaderX(fsHandle, fsFilePath), "Can't create fragment shader");
-
-            X_Call(fGetGraphicsSystem()->fCreateShaderProgramX(m_programHandle, vsHandle, fsHandle), "Can't create shader program");
-
-            XD_Color col{1.0f, 0.2f, 0.2f, 1.0f};
-            X_Call(fGetGraphicsSystem()->fSetClearColorX(col), "");
-        }
 
         return A_A;
     }
@@ -99,11 +71,7 @@ namespace XD
             X_Call(m_graphicsSystem.fStageFrameX(), "Error while swapping render frames.");
         }
 
-        mLOG("Requested application termination");
-        X_Call(fTerminateSubsystemsX(), "Error while terminating application subsystems");
-        X_Call(m_window->fvTerminateX(), "Can't terminate window with title " << m_window->fGetWidgetTitleName());
-        mLOG("Window " << m_window->fGetWidgetTitleName() << " was terminated");
-
+        X_Call(fTerminateApplicationX(), "Can't terminate application properly");
         return X::fSuccess();
     }
 
@@ -124,6 +92,21 @@ namespace XD
         return X::fSuccess();
     }
 
+    X 
+    XD_Application::fTerminateApplicationX()
+    {
+        mLOG("Requested application termination");
+
+        X_Call(fTerminateSubsystemsX(), "Error while terminating application subsystems");
+        X_Call(m_window->fvTerminateX(), "Can't terminate window with title " << m_window->fGetWidgetTitleName());
+        mLOG("Window " << m_window->fGetWidgetTitleName() << " was terminated");
+
+        fFree(gGlobalAllocator, m_window);        
+        delete gGlobalAllocator;
+
+        return A_A;
+    }
+
     X
     XD_Application::fTerminateWindowX(XD_Window* _window)
     {
@@ -132,5 +115,6 @@ namespace XD
         X_Call(fvTerminateX(), "Can't terminate application after receiving window termination callback");
         return A_A;
     }
+
 
 }

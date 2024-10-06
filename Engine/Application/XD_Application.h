@@ -28,6 +28,7 @@ namespace XD
     {
     public:
         XD_Application(const XD_ApplicationConfig& _config);
+        ~XD_Application();
         XD_Application(const XD_Application&) = delete;
         XD_Application& operator=(const XD_Application&) = delete;
 
@@ -44,7 +45,7 @@ namespace XD
         XD::ShaderProgramHandle m_programHandle;
 
     protected:
-        tSptr<XD_Window> m_window;
+        XD_Window* m_window;
         XD_GraphicsSystem m_graphicsSystem;
         XD_TimerManager m_timerManager;
         XD_TimeClock m_timeClock;
@@ -56,6 +57,7 @@ namespace XD
 
         bl fWantsToTerminate() const;
         X fTerminateSubsystemsX();
+        X fTerminateApplicationX();
         X fTerminateWindowX(XD_Window* _widget);
     };
 

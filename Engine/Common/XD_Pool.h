@@ -11,5 +11,16 @@ namespace XD
         ~XD_Pool();
         XD_Pool(const XD_Pool&) = delete;
         XD_Pool& operator=(const XD_Pool&) = delete;
+        
     };
+    
+    template <typename T>
+    inline XD_Pool<T>::XD_Pool()
+    {
+    }
+
+    template <typename T>
+    inline XD_Pool<T>::~XD_Pool()
+    {
+    }
 }
