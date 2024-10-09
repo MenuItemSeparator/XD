@@ -30,27 +30,27 @@ namespace XD
         XD_Delegate& operator=(const XD_Delegate&) = delete;
         ~XD_Delegate() 
         {
-            XD_MemoryUtils::fFree(fGetGlobalAllocator(), m_callable);
+            fFree(fGetGlobalAllocator(), m_callable);
         }
 
         template<typename T>
         void
         fBind(T* instance, tFnPtr<T> ptrToFn)
         {
-            m_callable = XD_MemoryUtils::fAlloc<XD_MemFunCallable<T, Ret(Args...)>>(fGetGlobalAllocator(), instance, ptrToFn );
+            m_callable = fAlloc<XD_MemFunCallable<T, Ret(Args...)>>(fGetGlobalAllocator(), instance, ptrToFn );
         }
 
         template<typename T>
         void
         fBind(T* instance, tConstFnPtr<T> ptrToFn)
         {
-            m_callable = XD_MemoryUtils::fAlloc<XD_ConstMemFunCallable<T, Ret(Args...)>>(fGetGlobalAllocator(), instance, ptrToFn );
+            m_callable = fAlloc<XD_ConstMemFunCallable<T, Ret(Args...)>>(fGetGlobalAllocator(), instance, ptrToFn );
         }
 
         bl fIsValid() const { return m_callable != nullptr; }
         Ret operator()(Args... args) { return m_callable->fInvoke(std::forward<Args>(args)...); }
         Ret fInvoke(Args... args) { return m_callable->fInvoke(std::forward<Args>(args)...); }
-        void fClear() { XD_MemoryUtils::fFree(fGetGlobalAllocator(), m_callable); }
+        void fClear() { fFree(fGetGlobalAllocator(), m_callable); }
     private:
         XD_Callable<Ret(Args...)>* m_callable;
     };
@@ -79,27 +79,27 @@ namespace XD
         }
         ~XD_Delegate() 
         {
-            XD_MemoryUtils::fFree(fGetGlobalAllocator(), m_callable);
+            fFree(fGetGlobalAllocator(), m_callable);
         };
 
         template<typename T>
         void
         fBind(T* instance, tFnPtr<T> ptrToFn)
         {
-            m_callable = XD_MemoryUtils::fAlloc<XD_MemFunCallable<T, XD::X(Args...)>>(fGetGlobalAllocator(), instance, ptrToFn);
+            m_callable = fAlloc<XD_MemFunCallable<T, XD::X(Args...)>>(fGetGlobalAllocator(), instance, ptrToFn);
         }
 
         template<typename T>
         void
         fBind(T* instance, tConstFnPtr<T> ptrToFn)
         {
-            m_callable = XD_MemoryUtils::fAlloc<XD_ConstMemFunCallable<T, XD::X(Args...)>>(fGetGlobalAllocator(), instance, ptrToFn);
+            m_callable = fAlloc<XD_ConstMemFunCallable<T, XD::X(Args...)>>(fGetGlobalAllocator(), instance, ptrToFn);
         }
 
         bl fIsValid() const { return m_callable != nullptr; }
         XD::X operator()(Args... args) { X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
         XD::X fInvoke(Args... args) { mXD_ASSERT(fIsValid()); X_Call(m_callable->fInvoke(std::forward<Args>(args)...), "Unknown delegate error"); return X::fSuccess(); }
-        XD::X fClearX() { XD_MemoryUtils::fFree(fGetGlobalAllocator(), m_callable); return A_A; }
+        XD::X fClearX() { fFree(fGetGlobalAllocator(), m_callable); return A_A; }
     private:
         XD_Callable<XD::X(Args...)>* m_callable;
     };

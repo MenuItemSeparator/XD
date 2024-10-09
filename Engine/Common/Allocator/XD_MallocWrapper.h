@@ -8,10 +8,14 @@ namespace XD
     {
     public:
         XD_MallocWrapper() :
-            XD_Allocator(0)
+            XD_Allocator(0),
+            m_allocationsCounter(0)
         {}
+        ~XD_MallocWrapper();
 
         virtual void* fAllocate(sz _size, sz _alignment = 0) override;
         virtual void fFree(void* _ptr) override;
+    private:
+        std::atomic<u8> m_allocationsCounter;
     };
 }

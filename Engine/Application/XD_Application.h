@@ -40,10 +40,6 @@ namespace XD
 
         X fLoopX();
 
-        XD::VertexBufferObjectHandle m_vboHandle;
-        XD::IndexBufferObjectHandle m_iboHandle;
-        XD::ShaderProgramHandle m_programHandle;
-
     protected:
         XD_Window* m_window;
         XD_GraphicsSystem m_graphicsSystem;
