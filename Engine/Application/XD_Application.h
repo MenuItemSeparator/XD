@@ -28,7 +28,6 @@ namespace XD
     {
     public:
         XD_Application(const XD_ApplicationConfig& _config);
-        ~XD_Application();
         XD_Application(const XD_Application&) = delete;
         XD_Application& operator=(const XD_Application&) = delete;
 

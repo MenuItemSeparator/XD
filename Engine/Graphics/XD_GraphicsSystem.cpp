@@ -77,7 +77,10 @@ namespace XD
         mLOG("Graphics system termination started.")
 
         m_graphicsSystemIsShutdown = true;
-        while(!m_renderThreadIsStopped) {};
+        while(!m_renderThreadIsStopped) 
+        {
+            std::this_thread::yield();
+        };
 
         X_Call(m_vertexBufferHandleMap.fClearX(), "Can't clear vbo handle map");
         X_Call(m_layoutHandleMap.fClearX(), "Can't clear layout handle map");
@@ -351,7 +354,11 @@ namespace XD
         XD_CommandBuffer& commandBuffer = m_constructingFrame->fGetCommandBuffer();
         commandBuffer.fFinishWrite_Internal();
 
-        while(!m_readyForSwapFrames) {};
+        while(!m_readyForSwapFrames)
+        {
+            std::this_thread::yield();
+        };
+        
         X_Call(fSwapFramesX(), "Error while swapping constructing and render frames");
         m_readyForSwapFrames = false;
 
@@ -615,7 +622,7 @@ namespace XD
     {
         mXD_ASSERT(!fIsMainThread());
 
-        do
+        while (m_readyForSwapFrames)
         {
             if(m_graphicsSystemIsShutdown)
             {
@@ -626,8 +633,8 @@ namespace XD
                 return eRenderThreadState::Exiting;
             }
 
-        } while (m_readyForSwapFrames);
-        
+            std::this_thread::yield();
+        }
 
         eRenderThreadState result = fRenderFrame_Internal_RenderThread();
 

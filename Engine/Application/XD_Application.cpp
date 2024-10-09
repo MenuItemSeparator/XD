@@ -15,15 +15,15 @@ namespace XD
         m_timeClock(),
         m_config(_config),
         m_requestedTermination(false)
-    {}
-
-    XD_Application::~XD_Application()
     {
+        mLOG("Application with title " << _config.m_displayName << " was created.");
     }
 
     X
     XD_Application::fvInitializeX()
     {
+        mLOG("Application with title " << m_config.m_displayName << " initialization starts.");
+
         gGlobalAllocator = new XD_MallocWrapper();
 
         XD_WindowConfig windowConfig{};
@@ -103,6 +103,7 @@ namespace XD
         fFree(gGlobalAllocator, m_window);   
 
         delete gGlobalAllocator;
+        gGlobalAllocator = nullptr;
 
         return A_A;
     }

@@ -45,8 +45,13 @@ namespace XD
     {
         XD::XD_ApplicationConfig applicationConfig{};
         tUptr<SetClearColorApplication> application = std::make_unique<SetClearColorApplication>(applicationConfig);
+        mLOG("Test clear color initialization started");
         X_Call(application->fvInitializeX(), "Set clear color test application initialization error");
+        mLOG("Test clear color initialization ended");
+
+        mLOG("Test clear color loop started");
         X_Call(application->fLoopX(), "Application loop error");
+        mLOG("Test clear color loop ended");
         return A_A;
     }
 
@@ -66,7 +71,7 @@ namespace XD
             X_Call(XD_Application::fvInitializeX(), "Super initialization fail");
 
             TimerHandle timerHandle{};
-            X_Call(fGetTimerManager()->fStartTimerX(timerHandle, 1.0f, this, &DrawQuadApplication::fStopApplication), "Can't start app stopper timer");
+            X_Call(fGetTimerManager()->fStartTimerX(timerHandle, 0.4, this, &DrawQuadApplication::fStopApplication), "Can't start app stopper timer");
 
             XD::VertexBufferLayoutHandle layoutHandle;
             static std::vector<XD::eShaderDataType> shaderTypes{ XD::eShaderDataType::Float3 };
@@ -139,6 +144,9 @@ int
 main(int argc, const char** argv)
 {
     X_Call(XD::Test_DrawQuad(), "Drawing test quad was failed");
+    mLOG("Test draw quad completed successfully");
     X_Call(XD::Test_SetClearColor(), "Change clear color test was failed");
+    mLOG("Test clear color completed successfully");
+
     return 0;
 }
