@@ -1,5 +1,10 @@
 #pragma once
-#include "XD_Engine_Minimal.h"
+#include "STDIncludes.h"
+#include "XD_Engine_Definitions.h"
+#include "XD_Engine_PlatformSelector.h"
+#include "Common/XD_Log.h"
+#include "Common/XD_Utility.h"
+#include "Common/XD_Types.h"
 
 namespace XD
 {
@@ -27,56 +32,72 @@ namespace XD
         static sz fCalculatePadding(sz _baseAddress, sz _alignment);
     };
 
-    extern XD_ENGINE_API XD_Allocator* gGlobalAllocator;    
+    XD_ENGINE_API extern XD_Allocator* gGlobalAllocator;    
+    XD_ENGINE_API XD_Allocator* fGetGlobalAllocator();
 
-    template<typename T, typename ...Args>
-    T* 
-    fAlloc(XD_Allocator* _allocator, sz _alignment, Args... _args)
+    class XD_ENGINE_API XD_MemoryUtils 
     {
-        void* allocatedMemory = _allocator->fAllocate(sizeof(T), _alignment);
-        return ::new(allocatedMemory)T(std::forward<Args>(_args)...);
-    }
+    public:
+        static XD_Allocator* fGetGlobalAllocator();
+        static void fSetGlobalAllocator(XD_Allocator* _globalAllocator);
 
-    template<typename T, typename ...Args>
-    T* 
-    fAlloc(XD_Allocator* _allocator, Args... _args)
-    {
-        return fAlloc<T>( _allocator, alignof(T), std::forward<Args>(_args)...);
-    }
-
-    template<typename T>
-    void 
-    fFree(XD_Allocator* _allocator, T* _ptr)
-    {
-        if(!_ptr) return;
-
-        _ptr->~T();
-        _allocator->fFree(_ptr);
-    }
-
-    template<typename T, typename ...Args>
-    tSptr<T> 
-    fMakeShared(XD_Allocator* _allocator, Args... _args)
-    {
-        const auto customDeleter = [_allocator](T* _ptr) mutable
+        template<typename T, typename ...Args> 
+        static T* 
+        fAlloc(XD_Allocator* _allocator, sz _alignment, Args... _args)
         {
-            fFree<T>(_allocator, _ptr);
-        };
+            void* allocatedMemory = _allocator->fAllocate(sizeof(T), _alignment);
+            return ::new(allocatedMemory)T(std::forward<Args>(_args)...);
+        }
 
-        T* ptr = fAlloc<T>(_allocator, std::forward<Args>(_args)...);
-        return std::shared_ptr<T>{ ptr, customDeleter };
-    }
-
-    template<typename T, typename ...Args>
-    tUptr<T> 
-    fMakeUnique(XD_Allocator* _allocator, Args... _args)
-    {
-        const auto customDeleter = [_allocator](T* _ptr) mutable
+        template<typename T, typename ...Args>
+        static T* 
+        fAlloc(XD_Allocator* _allocator, Args... _args)
         {
-            fFree<T>(_allocator, _ptr);
-        };
+            return fAlloc<T>( _allocator, alignof(T), std::forward<Args>(_args)...);
+        }
 
-        T* ptr = fAlloc<T>(_allocator, std::forward<Args>(_args)...);
-        return std::unique_ptr<T>{ ptr, customDeleter };
-    }
+        template<typename T>
+        static void 
+        fFree(XD_Allocator* _allocator, T* _ptr)
+        {
+            if(!_ptr) return;
+
+            _ptr->~T();
+            _allocator->fFree(_ptr);
+        }
+
+        template<typename T, typename ...Args>
+        static tSptr<T> 
+        fMakeShared(XD_Allocator* _allocator, Args... _args)
+        {
+            const auto customDeleter = [_allocator](T* _ptr) mutable
+            {
+                fFree<T>(_allocator, _ptr);
+            };
+
+            T* ptr = fAlloc<T>(_allocator, std::forward<Args>(_args)...);
+            return std::shared_ptr<T>{ ptr, customDeleter };
+        }
+
+        template<typename T, typename ...Args>
+        static tUptr<T> 
+        fMakeUnique(XD_Allocator* _allocator, Args... _args)
+        {
+            const auto customDeleter = [_allocator](T* _ptr) mutable
+            {
+                fFree<T>(_allocator, _ptr);
+            };
+
+            T* ptr = fAlloc<T>(_allocator, std::forward<Args>(_args)...);
+            return std::unique_ptr<T>{ ptr, customDeleter };
+        }
+    };
+
+
+
+
+
+
+
+
 }

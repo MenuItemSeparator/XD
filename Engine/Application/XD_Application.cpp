@@ -28,9 +28,9 @@ namespace XD
 
         XD_WindowConfig windowConfig{};
         windowConfig.m_windowName = m_config.m_displayName;
-        m_window = fAlloc<XD_Window>(gGlobalAllocator, windowConfig);
+        m_window = XD_MemoryUtils::fAlloc<XD_Window>(gGlobalAllocator, windowConfig);
         X_Call(m_window->fvInitializeX(), "Can't initialize window");
-        m_window->fOnWindowWantsToClose().fBind(*this, &XD_Application::fTerminateWindowX);
+        m_window->fOnWindowWantsToClose().fBind(this, &XD_Application::fTerminateWindowX);
 
         XD::XD_GraphicsConfig graphicsConfig{};
         graphicsConfig.m_rendererType = XD::eRendererType::OpenGL;
@@ -101,7 +101,7 @@ namespace XD
         X_Call(m_window->fvTerminateX(), "Can't terminate window with title " << m_window->fGetWidgetTitleName());
         mLOG("Window " << m_window->fGetWidgetTitleName() << " was terminated");
 
-        fFree(gGlobalAllocator, m_window);        
+        XD_MemoryUtils::fFree(gGlobalAllocator, m_window);        
         delete gGlobalAllocator;
 
         return A_A;

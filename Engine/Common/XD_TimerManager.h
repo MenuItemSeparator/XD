@@ -28,7 +28,7 @@ namespace XD
         XD_TimerManager& operator=(const XD_TimerManager&) = delete;
 
         template<typename T>
-        X fStartTimerX(TimerHandle& _timerHandle, f8 _timeToWait, T& _instance, void(T::*_callback)(void));
+        X fStartTimerX(TimerHandle& _timerHandle, f8 _timeToWait, T* _instance, void(T::*_callback)(void));
         X fStopTimerX(TimerHandle _timerHandle);
         X fUpdateX(double _deltaTime);
     private:
@@ -38,7 +38,7 @@ namespace XD
     
     template <typename T>
     inline X 
-    XD_TimerManager::fStartTimerX(TimerHandle &_timerHandle, f8 _timeToWait, T& _instance, void (T::*_callback)(void))
+    XD_TimerManager::fStartTimerX(TimerHandle &_timerHandle, f8 _timeToWait, T* _instance, void (T::*_callback)(void))
     {
         _timerHandle = m_timerHandles.fCreateHandle();
         XD_TimerInstance& instance = m_timers[_timerHandle];

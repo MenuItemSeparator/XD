@@ -2,7 +2,6 @@
 #include "Application/XD_Application.h"
 #include "XD_Test_Minimal.h"
 
-
 namespace XD
 {
     class SetClearColorApplication : public XD_Application
@@ -17,7 +16,7 @@ namespace XD
             X_Call(XD_Application::fvInitializeX(), "Super initialization fail");
 
             TimerHandle timerHandle{};
-            X_Call(fGetTimerManager()->fStartTimerX(timerHandle, 0.5, *this, &SetClearColorApplication::fStopApplication), "Can't start app stopper timer");
+            X_Call(fGetTimerManager()->fStartTimerX(timerHandle, 0.5, this, &SetClearColorApplication::fStopApplication), "Can't start app stopper timer");
             
             return A_A;
         }
@@ -67,7 +66,7 @@ namespace XD
             X_Call(XD_Application::fvInitializeX(), "Super initialization fail");
 
             TimerHandle timerHandle{};
-            X_Call(fGetTimerManager()->fStartTimerX(timerHandle, 0.5, *this, &DrawQuadApplication::fStopApplication), "Can't start app stopper timer");
+            X_Call(fGetTimerManager()->fStartTimerX(timerHandle, 1.0f, this, &DrawQuadApplication::fStopApplication), "Can't start app stopper timer");
 
             XD::VertexBufferLayoutHandle layoutHandle;
             static std::vector<XD::eShaderDataType> shaderTypes{ XD::eShaderDataType::Float3 };
@@ -139,7 +138,7 @@ namespace XD
 int
 main(int argc, const char** argv)
 {
-    X_Call(XD::Test_SetClearColor(), "Change clear color test was failed");
     X_Call(XD::Test_DrawQuad(), "Drawing test quad was failed");
+    X_Call(XD::Test_SetClearColor(), "Change clear color test was failed");
     return 0;
 }

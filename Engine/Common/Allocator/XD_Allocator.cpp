@@ -2,7 +2,7 @@
 
 namespace XD
 {
-    XD_Allocator* gGlobalAllocator;
+    XD_Allocator* gGlobalAllocator = nullptr;
 
     sz 
     XD_Allocator::fCalculatePadding(sz _baseAddress, sz _alignment)
@@ -20,5 +20,10 @@ namespace XD
 		const sz multiplier = (_baseAddress / _alignment) + 1;
 		const sz alignedAddress = _alignment * multiplier;
 		return alignedAddress - _baseAddress;
+    }
+    
+    XD_Allocator* fGetGlobalAllocator()
+    {
+        return gGlobalAllocator;
     }
 }

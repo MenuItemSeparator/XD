@@ -1,19 +1,5 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <type_traits>
-#include <map>
-#include <unordered_set>
-#include <filesystem>
-#include <fstream>
-#include <sstream>
-#include <utility>
-#include <memory>
-#include <chrono>
-#include <thread>
-#include <mutex>
-#include <functional>
-#include <condition_variable>
+#include "STDIncludes.h"
 
 //XDEngine
 #include "XD_Engine_Definitions.h"
@@ -21,6 +7,7 @@
 #include "Common/XD_Math.h"
 #include "Common/XD_Log.h"
 #include "Common/XD_Utility.h"
+#include "Common/Allocator/XD_Allocator.h"
 #include "Common/XD_Types.h"
 #include "Common/XD_Delegate.h"
 #include "Common/XD_MulticastDelegate.h"
