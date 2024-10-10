@@ -97,14 +97,14 @@ namespace XD
     inline XD_Array<T>&
     XD_Array<T>::operator=(const XD_Array &_other)
     {
-        mXD_NOT_IMPLEMENTED();
-        
+        if(&_other == this) return *this;
+
         const u8 size = _other.fGetSize();
         fResize(size);
 
         for (sz i = 0; i < size; ++i)
         {
-            new (m_data + i) T (_other.m_data[i]);
+            m_data[i] = _other.m_data[i];
         }
 
         return *this;
