@@ -24,6 +24,7 @@ setup_test_module(XDEngineTests_BufferLayout ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEn
 setup_test_module(XDEngineTests_GraphicsApi ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_GraphicsApi.cpp)
 setup_test_module(XDEngineTests_CommandBuffer ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_CommandBuffer.cpp)
 setup_test_module(XDEngineTests_HandleMap ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_HandleMap.cpp)
+setup_test_module(XDEngineTests_Containers ${XD_ENGINE_TESTS_SOURCE_PATH}/XDEngineTests_Containers.cpp)
 
 add_custom_command(TARGET XDEngineTests_Math POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/../XDEngine.dll" "${CMAKE_CURRENT_BINARY_DIR}/")
 install(TARGETS XDEngine DESTINATION ${CMAKE_INSTALL_PREFIX}/XDEngine/Tests)
