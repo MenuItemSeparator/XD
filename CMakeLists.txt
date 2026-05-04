@@ -11,4 +11,36 @@ endif()
 
 set(XD_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_subdirectory(${XD_ROOT_PATH}/Engine)
+# Include directories
+include_directories(${XD_ROOT_PATH}/_mod)
+include_directories(${XD_ROOT_PATH}/_mod/_app)
+include_directories(${XD_ROOT_PATH}/_mod/_data)
+include_directories(${XD_ROOT_PATH}/_mod/_os)
+include_directories(${XD_ROOT_PATH}/_mod/_os/Win)
+
+# Source files for the application
+set(SOURCES
+    src/Win/main.cpp
+    _mod/_app/Result.cpp
+    _mod/_app/App.cpp
+    _mod/_app/Log.cpp
+    _mod/_data/Data.cpp
+    _mod/_data/String.cpp
+    _mod/_os/Widget.cpp
+    _mod/_os/Win/WindowsWidget.cpp
+)
+
+# Create executable
+add_executable(XD ${SOURCES})
+
+# Link Windows libraries if on Windows
+if(WIN32)
+    target_link_libraries(XD PRIVATE user32)
+endif()
+
+# Set output directory
+set_target_properties(XD PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
+
+
