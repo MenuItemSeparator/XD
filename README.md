@@ -2,6 +2,15 @@
 
 > **Note:** All entries in this file must be in English.
 
+## Building the Project
+
+The `_cmake` folder is the **working directory for the build system** and must not be deleted. The project should only be built using the batch files provided in this folder:
+
+- `build_windows_debug.bat` - Build in Debug configuration
+- `build_windows_release.bat` - Build in Release configuration
+
+To build the project, navigate to the `_cmake` folder and run the desired batch file.
+
 ## Modules
 
 The project consists of independent modules located in the `_mod` folder. Each module is responsible for specific functionality:

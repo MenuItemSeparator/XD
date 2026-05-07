@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.5)
 
 project(XD LANGUAGES CXX)
 
+#Temp
+set(WIN32 TRUE)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -40,7 +43,7 @@ endif()
 
 # Set output directory
 set_target_properties(XD PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin
 )
 
 
