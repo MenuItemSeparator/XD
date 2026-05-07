@@ -3,9 +3,6 @@
 // Error codes: < 0 = error, 0 = warning, > 0 = success
 #pragma once
 
-#include <vector>
-#include <string>
-
 namespace XD{
 
 enum class ResultStatus {
@@ -24,9 +21,6 @@ class Result
         void fn_SetStatus(int _status);
         int fn_GetStatus() const;
 
-        void fn_AddErrorMessage(const std::string& _message);
-        std::vector<std::string> fn_GetErrorMessages() const;
-
         void fn_SetData(void* _data);
         void* fn_GetData() const;
 
@@ -41,7 +35,6 @@ class Result
 
     private:
         int Var_Status;
-        std::vector<std::string> Var_ErrorMessages;
         void* Var_Data;
 };
 }

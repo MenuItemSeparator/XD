@@ -4,7 +4,8 @@ REM This script must be run from the _cmake folder
 
 cd /d "%~dp0"
 echo Building XD project in Debug configuration...
-cmake --build . --config Debug
+cmake ./.. 
+cmake --build ./.. --config Debug
 if %errorlevel% neq 0 (
     echo Build failed!
     pause

@@ -4,27 +4,6 @@
     <ClCompile Include="A:\_w\XD\src\Win\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="A:\_w\XD\_mod\_app\Result.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A:\_w\XD\_mod\_app\App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A:\_w\XD\_mod\_app\Log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A:\_w\XD\_mod\_data\Data.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A:\_w\XD\_mod\_data\String.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A:\_w\XD\_mod\_os\Widget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="A:\_w\XD\_mod\_os\Win\WindowsWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="A:\_w\XD\CMakeLists.txt" />

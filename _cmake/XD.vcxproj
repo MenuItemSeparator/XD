@@ -373,13 +373,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="A:\_w\XD\src\Win\main.cpp" />
-    <ClCompile Include="A:\_w\XD\_mod\_app\Result.cpp" />
-    <ClCompile Include="A:\_w\XD\_mod\_app\App.cpp" />
-    <ClCompile Include="A:\_w\XD\_mod\_app\Log.cpp" />
-    <ClCompile Include="A:\_w\XD\_mod\_data\Data.cpp" />
-    <ClCompile Include="A:\_w\XD\_mod\_data\String.cpp" />
-    <ClCompile Include="A:\_w\XD\_mod\_os\Widget.cpp" />
-    <ClCompile Include="A:\_w\XD\_mod\_os\Win\WindowsWidget.cpp" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

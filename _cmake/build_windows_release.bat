@@ -4,6 +4,7 @@ REM This script must be run from the _cmake folder
 
 cd /d "%~dp0"
 echo Building XD project in Release configuration...
+cmake -S ./.. -B .
 cmake --build . --config Release
 if %errorlevel% neq 0 (
     echo Build failed!
