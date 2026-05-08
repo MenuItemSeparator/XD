@@ -60,4 +60,3 @@ echo Cleanup finished in 2 stages:
 echo - Stage 1: CMake clean targets executed
 echo - Stage 2: Manual cleanup of remaining files
 echo ============================================
-pause

@@ -1,4 +1,4 @@
-// #include "../_mod/_app/App.h"
+#include "../_mod/_app/App.h"
 #include "_app/Result.h"
 
 int main()

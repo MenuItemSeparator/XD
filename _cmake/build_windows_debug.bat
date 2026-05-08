@@ -11,5 +11,14 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
+echo ============================================
 echo Build completed successfully!
+echo - Stage 1: Makefiles generated
+echo - Stage 2: Exec writed in XD/bin/XD.exe
+echo ============================================
+call clear_all.bat
+if exist build_mingw32_debug rmdir /s /q build_mingw32_debug
+if exist Release rmdir /s /q Release
+if exist Debug rmdir /s /q Debug
+if exist build rmdir /s /q build
 pause
