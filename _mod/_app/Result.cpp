@@ -9,7 +9,6 @@ Result::Result(int _status) : Var_Status(_status), Var_Data(nullptr) {
 }
 
 Result::~Result() {
-    Var_ErrorMessages.clear();
     Var_Data = nullptr;
 }
 
@@ -21,13 +20,7 @@ int Result::fn_GetStatus() const {
     return Var_Status;
 }
 
-void Result::fn_AddErrorMessage(const std::string& _message) {
-    Var_ErrorMessages.push_back(_message);
-}
 
-std::vector<std::string> Result::fn_GetErrorMessages() const {
-    return Var_ErrorMessages;
-}
 
 void Result::fn_SetData(void* _data) {
     Var_Data = _data;
@@ -39,7 +32,6 @@ void* Result::fn_GetData() const {
 
 void Result::fn_Clear() {
     Var_Status = (int)ResultStatus::Success;
-    Var_ErrorMessages.clear();
     Var_Data = nullptr;
 }
 

@@ -2,8 +2,14 @@ cmake_minimum_required(VERSION 3.5)
 
 project(XD LANGUAGES CXX)
 
-#Temp
-set(WIN32 TRUE)
+# Verify C++ compiler is found
+if(NOT CMAKE_CXX_COMPILER)
+    message(FATAL_ERROR
+        "C++ compiler not found!\n"
+        "Make sure the toolchain is properly installed and configured.\n"
+        "For MinGW 32-bit: C:\\MinGW\\bin\\g++.exe\n"
+        "For MinGW 64-bit: C:\\MinGWx64\\bin\\g++.exe")
+endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
