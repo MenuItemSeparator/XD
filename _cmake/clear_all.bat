@@ -52,6 +52,10 @@ REM Delete solution file
 if exist *.sln del /f /q *.sln
 echo Deleted solution file
 
+if exist build rmdir /s /q build
+if exist .vs rmdir /s /q .vs
+if exist ./../build rmdir /s /q ./../build
+
 echo.
 echo Step 2 completed!
 echo.

@@ -30,13 +30,13 @@ include_directories(${XD_ROOT_PATH}/_mod/_os/Win)
 # Source files for the application
 set(SOURCES
     src/Win/main.cpp
-#   _mod/_app/Result.cpp
-#    _mod/_app/App.cpp
-#    _mod/_app/Log.cpp
-#    _mod/_data/Data.cpp
-#    _mod/_data/String.cpp
-#    _mod/_os/Widget.cpp
-#    _mod/_os/Win/WindowsWidget.cpp
+   _mod/_app/Result.cpp
+   _mod/_app/App.cpp
+   _mod/_app/Log.cpp
+   _mod/_data/Data.cpp
+   _mod/_data/String.cpp
+   _mod/_os/Widget.cpp
+   _mod/_os/Win/WindowsWidget.cpp
 )
 
 # Create executable

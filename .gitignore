@@ -35,3 +35,6 @@
 # qtcreator generated files
 *.pro.user*
 CMakeLists.txt.user*
+
+.sixth
+*sixth/**
