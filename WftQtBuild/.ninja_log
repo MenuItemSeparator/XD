@@ -1,0 +1,10 @@
+# ninja log v7
+5	114	7810303107109574	modules/xcall/CMakeFiles/wtf_xcall.dir/XCall.cpp.obj	4e725befd633c670
+19	116	7810303107286937	modules/module_1/CMakeFiles/wtf_m1.dir/module_1.cpp.obj	144903ceeae6be03
+12	129	7810303107212232	modules/xcall/CMakeFiles/wtf_xcall.dir/XCallTests.cpp.obj	748291d1ea50b54d
+116	194	7810303108269805	D:/_w/GameEngine/XD/Wtf/build_cmake/lib/lib/wtf_m1.lib	802d9ed50613997c
+129	194	7810303108400793	D:/_w/GameEngine/XD/Wtf/build_cmake/lib/lib/wtf_xcall.lib	aac1e964f1866e7f
+2	999	7810317821716182	projects/sample_1/CMakeFiles/wtf_s1.dir/main.cpp.obj	7551fe0e168af151
+999	1153	7810317831688227	D:/_w/GameEngine/XD/Wtf/build_cmake/lib/bin/wtf_s1.exe	8cc8e3c0cde7014e
+7	978	7810317821769003	projects/sample_2/CMakeFiles/wtf_s2.dir/main.cpp.obj	efe78bf76b92001e
+992	1270	7810317831619098	D:/_w/GameEngine/XD/Wtf/build_cmake/lib/bin/wtf_s2.exe	71278b3bb92f84e3

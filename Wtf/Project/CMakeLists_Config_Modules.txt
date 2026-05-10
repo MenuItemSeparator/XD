@@ -1,0 +1,11 @@
+#=== Configure modules ===#
+
+set(wtf_module_names
+    module_1
+    xcall
+    xml
+)
+
+foreach(i IN LISTS wtf_module_names)
+    add_subdirectory(modules/${i}/)
+endforeach()

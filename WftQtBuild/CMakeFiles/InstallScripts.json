@@ -1,0 +1,12 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/_w/GameEngine/XD/WftQtBuild/cmake_install.cmake",
+		"D:/_w/GameEngine/XD/WftQtBuild/modules/module_1/cmake_install.cmake",
+		"D:/_w/GameEngine/XD/WftQtBuild/modules/xcall/cmake_install.cmake",
+		"D:/_w/GameEngine/XD/WftQtBuild/modules/xml/cmake_install.cmake",
+		"D:/_w/GameEngine/XD/WftQtBuild/projects/sample_1/cmake_install.cmake",
+		"D:/_w/GameEngine/XD/WftQtBuild/projects/sample_2/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

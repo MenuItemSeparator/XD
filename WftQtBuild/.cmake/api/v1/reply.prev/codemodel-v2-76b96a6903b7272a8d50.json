@@ -1,0 +1,201 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.9"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "modules/module_1",
+					"jsonFile" : "directory-modules.module_1-Debug-404972cc5d4dddf15494.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.9"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "modules/module_1",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "modules/xcall",
+					"jsonFile" : "directory-modules.xcall-Debug-fb419703fafdf66f5e26.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.9"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "modules/xcall",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "modules/xml",
+					"jsonFile" : "directory-modules.xml-Debug-019c6486ae15e0d0c777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.9"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "modules/xml",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "projects/sample_1",
+					"jsonFile" : "directory-projects.sample_1-Debug-4fd58fe27cdc70e8fe6c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.9"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "projects/sample_1",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "projects/sample_2",
+					"jsonFile" : "directory-projects.sample_2-Debug-d2eea6723b025291622d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.9"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "projects/sample_2",
+					"targetIndexes" : 
+					[
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					],
+					"name" : "wtf",
+					"targetIndexes" : 
+					[
+						0,
+						3,
+						4
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "wtf_s1",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "wtf_s2",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "wtf_m1::@2955ac77b793a9b583c6",
+					"jsonFile" : "target-wtf_m1-Debug-400753ee939bb84ef731.json",
+					"name" : "wtf_m1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "wtf_s1::@331a60ad222ff518ae5b",
+					"jsonFile" : "target-wtf_s1-Debug-dc09b70ce8d81fadb338.json",
+					"name" : "wtf_s1",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "wtf_s2::@d46927dc5270c4035095",
+					"jsonFile" : "target-wtf_s2-Debug-58bae34549c4955faed3.json",
+					"name" : "wtf_s2",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "wtf_xcall::@d13a2384502dc38f835d",
+					"jsonFile" : "target-wtf_xcall-Debug-a6ebd8877fc4c58caf48.json",
+					"name" : "wtf_xcall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "wtf_xml::@f78778f48278f2d1b81f",
+					"jsonFile" : "target-wtf_xml-Debug-54d61f1830905895d717.json",
+					"name" : "wtf_xml",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/_w/GameEngine/XD/WftQtBuild",
+		"source" : "D:/_w/GameEngine/XD/Wtf/Project"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 8
+	}
+}

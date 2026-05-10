@@ -1,0 +1,10 @@
+#=== Configure projects ===#
+
+set(wtf_project_names
+    sample_1
+    sample_2
+)
+
+foreach(i IN LISTS wtf_project_names)
+    add_subdirectory(projects/${i})
+endforeach()

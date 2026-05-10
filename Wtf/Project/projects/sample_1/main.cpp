@@ -4,6 +4,8 @@
 int
 main()
 {
+    std::cout<<"Sample 1 started! "<<std::endl;
+
     wtf::tests::Result_Tests tests;
     wtf::Result res = tests.fnTests();
     if(res < 0)

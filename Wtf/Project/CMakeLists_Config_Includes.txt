@@ -1,0 +1,8 @@
+#=== Configure includes ===#
+
+set(includes ${includes}
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/
+)
+
+include_directories(${includes})
