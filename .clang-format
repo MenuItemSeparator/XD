@@ -1,0 +1,40 @@
+# Generated from CODE_STANDARD.md (version 1.1)
+# Tabs for indentation, tab width 4, max line length 280, Allman brace style
+---
+# Base style to inherit sensible defaults
+BasedOnStyle: LLVM
+
+# Indentation
+IndentWidth: 4
+TabWidth: 4
+UseTab: ForIndentation
+IndentCaseLabels: false
+
+# Line length
+ColumnLimit: 280
+
+# Brace placement: opening brace on new line (Allman)
+BreakBeforeBraces: Allman
+
+# Function return type and name placement: put return type on its own line as in examples
+BreakAfterReturnType: All
+
+# Do not collapse short functions/blocks to single line
+AllowShortFunctionsOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+# Pointer alignment preference
+DerivePointerAlignment: false
+PointerAlignment: Left
+
+# Keep spaces before trailing comments
+SpacesBeforeTrailingComments: 1
+
+# Do not reflow comments (preserve formatting)
+ReflowComments: false
+
+# Use Unix line endings when writing files from tools that respect this setting
+# (clang-format itself doesn't change line endings reliably across platforms)
+*** End Of File
