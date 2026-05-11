@@ -1,7 +1,7 @@
 #include "Widget.h"
 #include "../_app/Result.h"
 
-namespace XD {
+namespace nXD {
 
 Widget::Widget() 
     : Var_PositionX(0), Var_PositionY(0), Var_Width(100), Var_Height(100),
@@ -11,35 +11,41 @@ Widget::Widget()
 Widget::~Widget() {
 }
 
-XD::Result Widget::fn_Show() {
+nXD::Result 
+Widget::fn_Show() 
+{
     Var_IsVisible = true;
-    XD::Result result;
+    nXD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }
 
-XD::Result Widget::fn_Hide() {
+nXD::Result 
+Widget::fn_Hide() 
+{
     Var_IsVisible = false;
-    XD::Result result;
+    nXD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }
 
-XD::Result Widget::fn_Enable() {
+nXD::Result 
+Widget::fn_Enable() 
+{
     Var_IsEnabled = true;
-    XD::Result result;
+    nXD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }
 
-XD::Result Widget::fn_Disable() {
+nXD::Result Widget::fn_Disable() {
     Var_IsEnabled = false;
     XD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }
 
-XD::Result Widget::fn_SetPosition(int _x, int _y) {
+nXD::Result Widget::fn_SetPosition(int _x, int _y) {
     Var_PositionX = _x;
     Var_PositionY = _y;
     XD::Result result;
@@ -51,7 +57,7 @@ std::pair<int, int> Widget::fn_GetPosition() const {
     return std::make_pair(Var_PositionX, Var_PositionY);
 }
 
-XD::Result Widget::fn_SetSize(int _width, int _height) {
+nXD::Result Widget::fn_SetSize(int _width, int _height) {
     if (_width <= 0 || _height <= 0) {
         XD::Result result;
         result.fn_SetStatus((int)ResultStatus::Error);
@@ -78,4 +84,4 @@ bool Widget::fn_IsEnabled() const {
     return Var_IsEnabled;
 }
 
-} // namespace XD
+} // namespace nXD

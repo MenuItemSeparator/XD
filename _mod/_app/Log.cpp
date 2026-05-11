@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iomanip>
 
-namespace XD {
+namespace nXD {
 
 Log::Log() : Var_IsRunning(false) {
 }
@@ -14,11 +14,11 @@ Log::~Log() {
     }
 }
 
-Result Log::fn_Run(const std::string& _filePath) {
+Result 
+Log::fn_Run(const std::string& _filePath) {
     if (Var_IsRunning) {
         Result result;
         result.fn_SetStatus((int)ResultStatus::Warning);
-        result.fn_AddErrorMessage("Logger already running");
         return result;
     }
 
@@ -50,7 +50,8 @@ Result Log::fn_Run(const std::string& _filePath) {
     return result;
 }
 
-Result Log::fn_Log(const std::string& _message, LogLevel _level, int _code) {
+Result 
+Log::fn_Log(const std::string& _message, LogLevel _level, int _code) {
     auto now = std::chrono::system_clock::now();
     auto time = std::chrono::system_clock::to_time_t(now);
 
@@ -81,7 +82,8 @@ Result Log::fn_Log(const std::string& _message, LogLevel _level, int _code) {
     return result;
 }
 
-Result Log::fn_Stop() {
+Result 
+Log::fn_Stop() {
     Var_IsRunning = false;
 
     if (Var_LoggerThread.joinable()) {
@@ -93,7 +95,8 @@ Result Log::fn_Stop() {
     return result;
 }
 
-Result Log::fn_ClearFile() {
+Result 
+Log::fn_ClearFile() {
     std::ofstream logFile(Var_FilePath, std::ios::trunc);
     logFile.close();
 
@@ -102,7 +105,8 @@ Result Log::fn_ClearFile() {
     return result;
 }
 
-Result Log::fn_GetError() {
+Result 
+Log::fn_GetError() {
     Result result;
     if (Var_Errors.empty()) {
         result.fn_SetStatus((int)ResultStatus::Warning);
@@ -112,7 +116,8 @@ Result Log::fn_GetError() {
     return result;
 }
 
-Result Log::fn_ClearErrors() {
+Result 
+Log::fn_ClearErrors() {
     Var_Errors.clear();
 
     Result result;
@@ -120,4 +125,4 @@ Result Log::fn_ClearErrors() {
     return result;
 }
 
-} // namespace XD
+} // namespace nXD

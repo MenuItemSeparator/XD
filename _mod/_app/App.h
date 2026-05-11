@@ -2,16 +2,16 @@
 
 #include "Result.h"
 
-namespace XD{
+namespace nXD{
 class App
 {
 public:
     App();
     ~App();
 
-    XD::Result fn_Init();
-    XD::Result fn_Run();
-    XD::Result fn_Stop();
+    nXD::Result fn_Init();
+    nXD::Result fn_Run();
+    nXD::Result fn_Stop();
 
 private:
     bool Var_IsInitialized;

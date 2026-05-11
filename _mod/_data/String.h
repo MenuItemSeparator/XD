@@ -5,7 +5,7 @@
 #include <string>
 #include <cstring>
 
-namespace XD{
+namespace nXD{
 
 class String
 {
@@ -19,11 +19,11 @@ public:
     bool operator==(const String& _other) const;
     bool operator!=(const String& _other) const;
 
-    XD::Result fn_Concat(const String& _str);
+    nXD::Result fn_Concat(const String& _str);
     int fn_Find(const String& _substr) const;
-    XD::Result fn_Replace(char _oldChar, char _newChar);
-    XD::Result fn_ToUpper();
-    XD::Result fn_ToLower();
+    nXD::Result fn_Replace(char _oldChar, char _newChar);
+    nXD::Result fn_ToUpper();
+    nXD::Result fn_ToLower();
     size_t fn_Length() const;
     char fn_CharAt(int _index) const;
     bool fn_Equals(const String& _str) const;

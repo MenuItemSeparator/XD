@@ -1,6 +1,6 @@
 #include "Data.h"
 
-namespace XD {
+namespace nXD {
 
 Data::Data() : Var_IsLoaded(false), Var_IsModified(false) {
 }
@@ -9,55 +9,62 @@ Data::~Data() {
     fn_ClearData();
 }
 
-XD::Result Data::fn_LoadData(const std::string& _filePath) {
+nXD::Result 
+Data::fn_LoadData(const std::string& _filePath) {
     // TODO: Implement actual data loading from file
     // For now, just mark as loaded
     Var_IsLoaded = true;
     Var_IsModified = false;
 
-    XD::Result result;
+    nXD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }
 
-XD::Result Data::fn_SaveData(const std::string& _filePath) {
+nXD::Result 
+Data::fn_SaveData(const std::string& _filePath) {
     if (!Var_IsLoaded) {
-        XD::Result result;
+    nXD::Result result;
         result.fn_SetStatus((int)ResultStatus::Error);
-        result.fn_AddErrorMessage("No data loaded to save");
         return result;
     }
 
     // TODO: Implement actual data saving to file
     Var_IsModified = false;
 
-    XD::Result result;
+    nXD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }
 
-XD::Result Data::fn_ProcessData() {
-    if (!Var_IsLoaded) {
-        XD::Result result;
+nXD::Result 
+Data::fn_ProcessData() 
+{
+    if (!Var_IsLoaded) 
+    {
+        nXD::Result result;
         result.fn_SetStatus((int)ResultStatus::Error);
-        result.fn_AddErrorMessage("No data loaded to process");
         return result;
     }
 
     // TODO: Implement data processing logic
     Var_IsModified = true;
 
-    XD::Result result;
+    nXD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }
 
-void* Data::fn_GetData() const {
+void* 
+Data::fn_GetData() const 
+{
     // Return pointer to data map for now
     return (void*)&Var_DataMap;
 }
 
-XD::Result Data::fn_ClearData() {
+nXD::Result 
+Data::fn_ClearData() 
+{
     for (auto& pair : Var_DataMap) {
         if (pair.second != nullptr) {
             // TODO: Implement proper cleanup based on data type
@@ -67,9 +74,9 @@ XD::Result Data::fn_ClearData() {
     Var_IsLoaded = false;
     Var_IsModified = false;
 
-    XD::Result result;
+    nXD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }
 
-} // namespace XD
+} // namespace nXD

@@ -3,7 +3,7 @@
 // Error codes: < 0 = error, 0 = warning, > 0 = success
 #pragma once
 
-namespace XD{
+namespace nXD{
 
 enum class ResultStatus {
     Error = -1,

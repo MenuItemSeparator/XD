@@ -42,6 +42,23 @@ set(SOURCES
 # Create executable
 add_executable(XD ${SOURCES})
 
+# Add preprocessor definitions requested by user
+target_compile_definitions(XD PRIVATE 
+    XD 
+    B2D 
+    XML2
+)
+
+# Add compiler flags requested by user for non-MSVC compilers
+if(NOT MSVC)
+    # Use older C++ standard switch and enable pthreads where available
+    target_compile_options(XD PRIVATE -std=c++0x -pthread)
+else()
+    # MSVC does not recognize -std or -pthread; leave defaults or adjust as needed
+    # Example alternative for MSVC (uncomment to enable):
+    # target_compile_options(XD PRIVATE /std:c++14)
+endif()
+
 # Link Windows libraries if on Windows
 if(WIN32)
     target_link_libraries(XD PRIVATE user32)

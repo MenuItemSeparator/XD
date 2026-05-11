@@ -10,7 +10,7 @@
 #include <sstream>
 #include "Result.h"
 
-namespace XD{
+namespace nXD{
 
 enum class LogLevel {
     Info = 0,

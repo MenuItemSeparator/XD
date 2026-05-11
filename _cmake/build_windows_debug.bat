@@ -8,7 +8,6 @@ cmake -G "MinGW Makefiles" -S ./.. -B ./build -DCMAKE_BUILD_TYPE=Debug
 cmake --build ./build
 if %errorlevel% neq 0 (
     echo Build failed!
-    pause
     exit /b 1
 )
 echo ============================================
@@ -21,4 +20,3 @@ if exist build_mingw32_debug rmdir /s /q build_mingw32_debug
 if exist Release rmdir /s /q Release
 if exist Debug rmdir /s /q Debug
 if exist build rmdir /s /q build
-pause

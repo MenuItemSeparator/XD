@@ -7,7 +7,7 @@
 #include <memory>
 #include "../_app/Result.h"
 
-namespace XD{
+namespace nXD{
 
 class Data
 {
@@ -15,11 +15,11 @@ public:
     Data();
     ~Data();
 
-    XD::Result fn_LoadData(const std::string& _filePath);
-    XD::Result fn_SaveData(const std::string& _filePath);
-    XD::Result fn_ProcessData();
+    nXD::Result fn_LoadData(const std::string& _filePath);
+    nXD::Result fn_SaveData(const std::string& _filePath);
+    nXD::Result fn_ProcessData();
     void* fn_GetData() const;
-    XD::Result fn_ClearData();
+    nXD::Result fn_ClearData();
 
 private:
     std::map<std::string, void*> Var_DataMap;

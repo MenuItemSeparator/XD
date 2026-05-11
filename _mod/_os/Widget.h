@@ -4,7 +4,7 @@
 
 #include <utility>
 
-namespace XD{
+namespace nXD{
 
 class Widget
 {
@@ -12,15 +12,15 @@ public:
     Widget();
     virtual ~Widget();
 
-    virtual XD::Result fn_Show();
-    virtual XD::Result fn_Hide();
-    virtual XD::Result fn_Enable();
-    virtual XD::Result fn_Disable();
+    virtual nXD::Result fn_Show();
+    virtual nXD::Result fn_Hide();
+    virtual nXD::Result fn_Enable();
+    virtual nXD::Result fn_Disable();
     
-    virtual XD::Result fn_SetPosition(int _x, int _y);
+    virtual nXD::Result fn_SetPosition(int _x, int _y);
     virtual std::pair<int, int> fn_GetPosition() const;
     
-    virtual XD::Result fn_SetSize(int _width, int _height);
+    virtual nXD::Result fn_SetSize(int _width, int _height);
     virtual std::pair<int, int> fn_GetSize() const;
 
     bool fn_IsVisible() const;

@@ -63,7 +63,8 @@ MyClass::MyClass()
 
 }
 
-void MyClass::fn_Method() 
+void 
+MyClass::fn_Method() 
 {
 
 }
