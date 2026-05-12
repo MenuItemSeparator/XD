@@ -23,7 +23,7 @@ App::fn_Init() {
     // Initialize subsystems here
     Var_IsInitialized = true;
 
-    XD::Result result;
+    nXD::Result result;
     result.fn_SetStatus((int)ResultStatus::Success);
     return result;
 }

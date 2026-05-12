@@ -1,5 +1,19 @@
 cmake_minimum_required(VERSION 3.5)
 
+#== User Configuration Start ==#
+set(SOURCES
+    src/Win/main.cpp
+)
+
+set(INCLUDES
+
+)
+
+set(DEPENDENCIES
+
+)
+#== User Configuration End ==#
+
 project(XD LANGUAGES CXX)
 
 # Verify C++ compiler is found
@@ -20,32 +34,56 @@ endif()
 
 set(XD_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Include directories
-include_directories(${XD_ROOT_PATH}/_mod)
-include_directories(${XD_ROOT_PATH}/_mod/_app)
-include_directories(${XD_ROOT_PATH}/_mod/_data)
-include_directories(${XD_ROOT_PATH}/_mod/_os)
-include_directories(${XD_ROOT_PATH}/_mod/_os/Win)
+# ==================================================== #
+# ==== Include solution and module configurations ====
+if(XD_SOLUTION)
+    include(Solution_${XD_TARGET}.cmake)
+else()
+    #set(XD_TARGET "Engine")
+    #set(XD_TARGET "Editor")
+    #set(XD_TARGET "Feature")
+    set(XD_SOLUTION "Test")
+    include(Solution_${XD_SOLUTION}.cmake)
+endif()
+message(====================================)
+message("Solution : ${XD_SOLUTION}")
+message("LIST : ${XD_SOLUTION_LIST}")
+foreach(solution ${XD_SOLUTION_LIST}) # Solution
+    message("Solution : ${solution}")
+    include(${solution}/_module.cmake)
 
-# Source files for the application
-set(SOURCES
-    src/Win/main.cpp
-   _mod/_app/Result.cpp
-   _mod/_app/App.cpp
-   _mod/_app/Log.cpp
-   _mod/_data/Data.cpp
-   _mod/_data/String.cpp
-   _mod/_os/Widget.cpp
-   _mod/_os/Win/WindowsWidget.cpp
-)
+    set(SOURCES ${SOURCES} ${Module${solution}_Sources})
+    set(INCLUDES ${INCLUDES} ${Module${solution}_Includes})
+    set (DEPENDENCIES ${DEPENDENCIES} ${Module${solution}_Dependencies})
 
-# Create executable
+endforeach() # Solution
+
+list(REMOVE_DUPLICATES DEPENDENCIES)
+
+message("Dependencies: ${DEPENDENCIES}")
+foreach(dep ${DEPENDENCIES})
+    include(Modules/${dep}/_module.cmake)
+    set(SOURCES ${SOURCES} ${Module${dep}_Sources})
+    set(INCLUDES ${INCLUDES} ${Module${dep}_Includes})
+endforeach()
+
+list(REMOVE_DUPLICATES XD_SOURCES)
+
+message("Sources: ${SOURCES}")
+message("Includes: ${INCLUDES}")
+message(====================================)
+
+# ==================================================== #
+# TARGET
 add_executable(XD ${SOURCES})
+
+list(REMOVE_DUPLICATES INCLUDES)
+target_include_directories(XD PUBLIC ${INCLUDES})
 
 # Add preprocessor definitions requested by user
 target_compile_definitions(XD PRIVATE 
-    XD 
-    B2D 
+    XD_ENABLED
+    B2D
     XML2
 )
 

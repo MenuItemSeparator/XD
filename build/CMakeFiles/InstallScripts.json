@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"A:/_w/XD/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
