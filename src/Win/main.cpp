@@ -1,11 +1,14 @@
 #include "Solution.h"
 
+#include <vector>
+
 int main()
 {
-    nXD::App app;
-    if (app.fn_Init() != (int)nXD::ResultStatus::Success)
+    std::vector<void*> t;
+    nXD::Solution app;
+    if (app.fn_Init() != 1)
         return -1;
-    if (app.fn_Run() != (int)nXD::ResultStatus::Success)
+    if (app.fn_Run() != 1)
         return -1; 
-    return (int)nXD::ResultStatus::Success;
+    return 1;
 }

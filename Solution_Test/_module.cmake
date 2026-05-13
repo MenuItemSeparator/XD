@@ -15,7 +15,7 @@ set(Module${ModuleName}_Sources
 
 #Modules
 set(Module${ModuleName}_Dependencies
-    App
+    Log
 )
 
 message(------------------------------------)

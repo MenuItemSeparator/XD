@@ -1,12 +1,11 @@
 #pragma once
-#include "App/App.h"
 
 namespace nXD
 {
-    class Solution : public App
+    class Solution
     {
     public:
-        nXD::Result fn_Init();
-        nXD::Result fn_Run();
+        int fn_Init();
+        int fn_Run();
     };
 }

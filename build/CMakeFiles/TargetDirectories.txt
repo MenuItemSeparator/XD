@@ -1,3 +1,0 @@
-A:/_w/XD/build/CMakeFiles/XD.dir
-A:/_w/XD/build/CMakeFiles/ALL_BUILD.dir
-A:/_w/XD/build/CMakeFiles/ZERO_CHECK.dir

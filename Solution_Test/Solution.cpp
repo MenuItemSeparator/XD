@@ -1,13 +1,18 @@
 #include "Solution.h"
+#include "Stream.h"
+namespace nXD{
 
-nXD::Result 
+int
 Solution::fn_Init()
 {
-    return nXD::Result(nXD::ResultStatus::Success);
+    return 1;
 }
 
-nXD::Result 
+int
 Solution::fn_Run()
 {
-    return nXD::Result(nXD::ResultStatus::Success);
+    StreamChecker streamChecker;
+    return 1;
 }
+
+} // namespace nXD
